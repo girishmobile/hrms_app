@@ -4,18 +4,19 @@ const String basePath="assets/icons";
 const String iconLoginPath="$basePath/login";
 const String icEmail="$iconLoginPath/mail.png";
 const String icPassword="$iconLoginPath/padlock.png";
-const String icPasswordShow="$iconLoginPath/show.png";
-const String icPasswordHide="$iconLoginPath/hide.png";
-const String icPhone="$iconLoginPath/ic_phone.png";
-const String icStore="$iconLoginPath/store.png";
-const String icUser="$iconLoginPath/user.png";
-const String icNetwork="$iconLoginPath/network.png";
-//const String icAppLogo="$iconLoginPath/app_logo.jpg";
-//const String icAppLogo="$iconLoginPath/applogo.png";
 const String icAppLogo="$iconLoginPath/ic_new_logo.png";
+const String icSplash="$iconLoginPath/ic_splash.jpg";
 
 //==============================dashboard=============================
+const String iconDashboardPath="$basePath/dashboard";
 
+const String icMenuHome="$iconDashboardPath/home.png";
+const String icMenuKPI="$iconDashboardPath/kpi.png";
+const String icMenuProfile="$iconDashboardPath/user.png";
+const String icMenuAttendance="$iconDashboardPath/attendance.png";
+const String icMenuCalender="$iconDashboardPath/calenders.png";
+const String icMenuUser="$iconDashboardPath/user.png";
+const String icDummyUser="$iconDashboardPath/ic_dummy_user.png";
 
 
 //==============================Product=============================

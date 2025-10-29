@@ -67,3 +67,13 @@ String formatString(String? timestamp) {
   // Format the DateTime
   return DateFormat("d MMMM yyyy, h:mm a").format(dateTime.toLocal());
 }
+
+String formatDate(String? date) {
+  if (date == null || date.isEmpty) return '';
+  try {
+    final parsed = DateTime.parse(date);
+    return DateFormat("dd-MMM-yy").format(parsed);
+  } catch (_) {
+    return date;
+  }
+}

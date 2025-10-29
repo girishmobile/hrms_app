@@ -2,7 +2,10 @@ const String appName = "ECom Manager";
 const String fontRoboto = "Roboto";
 const String noCustomer = "No Customer";
 const String rupeeIcon = "\$";
-const String otpServiceID = "service_q3x803q";
-const String otpTemplateID = "template_qh9hhmd";
-const String otpPublicID = "BdeTStneobP-p2DNW";
+
 const String errorMsg = "Data Not Available";
+const String myKAP = "My KPI";
+const String calendar = "Calendar";
+const String home = "Home";
+const String attendance = "Attendance";
+const String profile = "Profile";

@@ -1,0 +1,286 @@
+
+import 'package:flutter/material.dart';
+import 'package:hrms/data/models/dashboard/leave_model.dart';
+
+class DashboardProvider with ChangeNotifier {
+
+  int _currentIndex = 2;
+
+  int get currentIndex => _currentIndex;
+
+  String? _appbarTitle;
+
+  String? get appbarTitle => _appbarTitle;
+
+  void setIndex(int index) {
+    _currentIndex = index;
+    notifyListeners();
+  }
+
+  void setAppBarTitle(String? value) {
+    _appbarTitle = value;
+    notifyListeners();
+  }
+
+  //=================================Leave ================================
+  String _selectedLeaveType = "All";
+
+  void setSelectedLeaveType(String type) {
+    _selectedLeaveType = type;
+    notifyListeners();
+  }
+
+  final List<LeaveModel> _leaves = [
+    LeaveModel(title: 'Pending Leaves', count: 5, bgColor: Colors.orange,),
+    LeaveModel(title: 'Cancel Leaves', count: 3, bgColor: Colors.red,),
+    LeaveModel(title: 'Approved', count: 10, bgColor: Colors.green,),
+    LeaveModel(title: 'Reject Leaves', count: 4, bgColor: Colors.grey,),
+    LeaveModel(title: 'All', count: 22, bgColor: Colors.blue,),
+    LeaveModel(title: 'Apply Leave', count: 0, bgColor: Colors.redAccent,),
+  ];
+
+  List<LeaveModel> get leaves => _leaves;
+
+
+  String ?_leaveType ;
+
+  String ? get leaveType => _leaveType;
+  void setLeaveType(String value) {
+    _leaveType = value;
+    notifyListeners();
+  }
+  void clearLeaveType() {
+    _leaveType = null;
+    _isHalfDay = false;
+    _fromDate = null;
+    _toDate = null;
+    notifyListeners();
+
+  }
+
+
+  final List<Map<String, dynamic>> allLeaveDetails = [
+    {
+      "type": "Sick Leave",
+      "reason": "Fever",
+      "from": "2025-10-01",
+      "to": "2025-10-03",
+      "days": 3,
+      "appliedOn": "2025-09-28",
+      "status": "Pending Leaves",
+    },
+    {
+      "type": "Casual Leave",
+      "reason": "Family function",
+      "from": "2025-09-10",
+      "to": "2025-09-12",
+      "days": 3,
+      "appliedOn": "2025-09-01",
+      "status": "Approved",
+    },
+    {
+      "type": "Medical Leave",
+      "reason": "Checkup",
+      "from": "2025-08-15",
+      "to": "2025-08-15",
+      "days": 1,
+      "appliedOn": "2025-08-13",
+      "status": "Cancel Leaves",
+    },
+    {
+      "type": "Unpaid Leave",
+      "reason": "Personal Work",
+      "from": "2025-07-20",
+      "to": "2025-07-21",
+      "days": 2,
+      "appliedOn": "2025-07-19",
+      "status": "Reject Leaves",
+    },
+    {
+      "type": "Sick Leave",
+      "reason": "Cold and cough",
+      "from": "2025-06-05",
+      "to": "2025-06-06",
+      "days": 2,
+      "appliedOn": "2025-06-04",
+      "status": "Approved",
+    },
+    {
+      "type": "Casual Leave",
+      "reason": "Marriage ceremony",
+      "from": "2025-05-10",
+      "to": "2025-05-12",
+      "days": 3,
+      "appliedOn": "2025-05-05",
+      "status": "Pending Leaves",
+    },
+    {
+      "type": "Paternity Leave",
+      "reason": "Newborn care",
+      "from": "2025-04-01",
+      "to": "2025-04-10",
+      "days": 10,
+      "appliedOn": "2025-03-25",
+      "status": "Approved",
+    },
+    {
+      "type": "Unpaid Leave",
+      "reason": "Travel abroad",
+      "from": "2025-03-15",
+      "to": "2025-03-20",
+      "days": 6,
+      "appliedOn": "2025-03-10",
+      "status": "Reject Leaves",
+    },
+    {
+      "type": "Sick Leave",
+      "reason": "Migraine",
+      "from": "2025-02-01",
+      "to": "2025-02-02",
+      "days": 2,
+      "appliedOn": "2025-01-31",
+      "status": "Cancel Leaves",
+    },
+    {
+      "type": "Casual Leave",
+      "reason": "Festival celebration",
+      "from": "2025-01-10",
+      "to": "2025-01-11",
+      "days": 2,
+      "appliedOn": "2025-01-08",
+      "status": "Approved",
+    },
+    {
+      "type": "Medical Leave",
+      "reason": "Surgery recovery",
+      "from": "2024-12-20",
+      "to": "2024-12-25",
+      "days": 6,
+      "appliedOn": "2024-12-18",
+      "status": "Approved",
+    },
+    {
+      "type": "Sick Leave",
+      "reason": "Viral infection",
+      "from": "2024-11-10",
+      "to": "2024-11-12",
+      "days": 3,
+      "appliedOn": "2024-11-08",
+      "status": "Pending Leaves",
+    },
+    {
+      "type": "Unpaid Leave",
+      "reason": "House shifting",
+      "from": "2024-10-05",
+      "to": "2024-10-06",
+      "days": 2,
+      "appliedOn": "2024-10-04",
+      "status": "Cancel Leaves",
+    },
+    {
+      "type": "Casual Leave",
+      "reason": "Vacation trip",
+      "from": "2024-09-15",
+      "to": "2024-09-20",
+      "days": 6,
+      "appliedOn": "2024-09-10",
+      "status": "Approved",
+    },
+    {
+      "type": "Sick Leave",
+      "reason": "Back pain",
+      "from": "2024-08-02",
+      "to": "2024-08-04",
+      "days": 3,
+      "appliedOn": "2024-08-01",
+      "status": "Reject Leaves",
+    },
+    {
+      "type": "Casual Leave",
+      "reason": "Friend’s wedding",
+      "from": "2024-07-10",
+      "to": "2024-07-12",
+      "days": 3,
+      "appliedOn": "2024-07-08",
+      "status": "Pending Leaves",
+    },
+    {
+      "type": "Medical Leave",
+      "reason": "Dental treatment",
+      "from": "2024-06-05",
+      "to": "2024-06-06",
+      "days": 2,
+      "appliedOn": "2024-06-03",
+      "status": "Approved",
+    },
+    {
+      "type": "Unpaid Leave",
+      "reason": "Urgent family matter",
+      "from": "2024-05-01",
+      "to": "2024-05-02",
+      "days": 2,
+      "appliedOn": "2024-04-30",
+      "status": "Reject Leaves",
+    },
+    {
+      "type": "Casual Leave",
+      "reason": "Outstation event",
+      "from": "2024-03-15",
+      "to": "2024-03-17",
+      "days": 3,
+      "appliedOn": "2024-03-10",
+      "status": "Approved",
+    },
+    {
+      "type": "Sick Leave",
+      "reason": "Food poisoning",
+      "from": "2024-02-05",
+      "to": "2024-02-06",
+      "days": 2,
+      "appliedOn": "2024-02-04",
+      "status": "Pending Leaves",
+    },
+  ];
+
+  List<Map<String, dynamic>> getLeavesByType(String title) {
+    if (title == "All") return allLeaveDetails;
+    return allLeaveDetails
+        .where((l) => l["status"].toString().toLowerCase() ==
+        title.toLowerCase())
+        .toList();
+  }
+  bool _isHalfDay = false;
+  bool get isHalfDay => _isHalfDay;
+  void setHalfDay(bool value) {
+    _isHalfDay = value;
+    notifyListeners();
+  }
+  //Date
+
+  DateTime? _fromDate;
+  DateTime? _toDate;
+
+  DateTime? get fromDate => _fromDate;
+  DateTime? get toDate => _toDate;
+
+  void setFromDate(DateTime date) {
+    _fromDate = date;
+    // Reset toDate if it's before fromDate
+    if (_toDate != null && _toDate!.isBefore(_fromDate!)) {
+      _toDate = null;
+    }
+    notifyListeners();
+  }
+
+  void setToDate(DateTime date) {
+    _toDate = date;
+    notifyListeners();
+  }
+
+  void clearDates() {
+    _fromDate = null;
+    _toDate = null;
+    notifyListeners();
+  }
+
+}

@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> init() async {
-    redirectToIntro();
+   redirectToIntro();
   }
 
   void redirectToIntro() {
@@ -40,12 +40,24 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     var size = MediaQuery.sizeOf(context);
     return commonScaffold(
-      body: Center(
-        child: commonAssetImage(
-          icAppLogo,
-          fit: BoxFit.scaleDown,
+      body: SizedBox(
+        width: size.width,
+        height: size.height,
+        /*decoration: commonBoxDecoration(
+          image: DecorationImage(
+              fit: BoxFit.fill,
 
-          width: size.width * 0.7,
+              opacity: 0.9,
+              image: AssetImage(  icSplash,))
+        ),*/
+        child: SizedBox(
+          width: size.width,
+          height: size.height,
+          //color: Colors.black.withValues(alpha: 0.3),
+          child: Center(
+            
+            child: commonAssetImage(icAppLogo,width: size.width*0.7)/*commonText(text: "Welcome to HRMS",fontSize: 28 ,color: Colors.white,fontWeight: FontWeight.w800)*/,
+          ),
         ),
       ),
     );

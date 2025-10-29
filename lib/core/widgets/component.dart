@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hrms/core/constants/image_utils.dart';
 
 import '../../main.dart';
 import '../constants/color_utils.dart';
@@ -37,7 +38,7 @@ AppBar commonAppBar({
       ),
     ),
     centerTitle: centerTitle,
-    backgroundColor: backgroundColor,
+    backgroundColor: backgroundColor??colorProduct,
     // important
     elevation: 0,
     actions: actions,
@@ -51,7 +52,7 @@ AppBar commonAppBar({
         ),
     flexibleSpace: Container(
       decoration: BoxDecoration(
-        color: colorLogo,
+        color:backgroundColor??colorProduct,
         borderRadius: BorderRadius.circular(0),
       ),
     ),
@@ -172,7 +173,7 @@ BoxDecoration commonBoxDecoration({
   double borderRadius = 8.0,
   Color borderColor = Colors.transparent,
   double borderWidth = 1.0,
-  List<BoxShadow>? boxShadow,
+
   Gradient? gradient,
   DecorationImage? image,
   BoxShape shape = BoxShape.rectangle,
@@ -207,10 +208,10 @@ Widget commonButton({
 }) {
   return SizedBox(
     height: height ?? 56,
-    width: kIsWeb?width:MediaQuery.sizeOf(navigatorKey.currentContext!).width,
+    width: width??MediaQuery.sizeOf(navigatorKey.currentContext!).width,
     child: DecoratedBox(
       decoration: BoxDecoration(
-        color: color ,
+        color: color??colorProduct ,
 
         borderRadius: BorderRadius.circular(radius ?? 15),
       ),
@@ -243,7 +244,7 @@ Widget commonButton({
           children: [
             commonText(
               color:
-                  textColor ,
+                  textColor??Colors.white ,
               text: text.toUpperCase(),
               fontSize: fontSize,
               // color: provider.isDark?colorDarkBgColor:Colors.white,
@@ -743,7 +744,7 @@ String cleanFirebaseError(String message) {
   return message.replaceAll(RegExp(r"\[.*?\]\s*"), "");
 }
 
-Container commonAppBackground({required Widget child}) {
+Container commonAppBackground({required Widget child,Color ?color}) {
   var size = MediaQuery.of(navigatorKey.currentContext!).size;
 
   return Container(
@@ -751,7 +752,7 @@ Container commonAppBackground({required Widget child}) {
     height: size.height,
     decoration: commonBoxDecoration(
       borderRadius: 0,
-      color: Colors.white,
+      color:color?? Colors.white,
       //image: DecorationImage(fit: BoxFit.fill, image: AssetImage(icSa)),
     ),
     child: child,
@@ -820,26 +821,26 @@ Widget commonPrefixIcon({
 class BottomNavItems {
   static const List<BottomNavigationBarItem> items = [
     BottomNavigationBarItem(
-      icon: ImageIcon(AssetImage('icProductMenu')),
-      label: 'Product',
+      icon: ImageIcon(AssetImage(icMenuKPI)),
+      label: myKAP,
     ),
     BottomNavigationBarItem(
-      icon: ImageIcon(AssetImage('icOrderMenu')),
-      label: 'Order',
-    ),
-
-    BottomNavigationBarItem(
-      icon: ImageIcon(AssetImage('icHomeMenu')),
-      label: 'Home',
+      icon: ImageIcon(AssetImage(icMenuCalender)),
+      label: calendar,
     ),
 
     BottomNavigationBarItem(
-      icon: ImageIcon(AssetImage('icTotalUser')),
-      label: 'Customers',
+      icon: ImageIcon(AssetImage(icMenuHome)),
+      label: home,
+    ),
+
+    BottomNavigationBarItem(
+      icon: ImageIcon(AssetImage(icMenuAttendance)),
+      label: attendance,
     ),
     BottomNavigationBarItem(
-      icon: ImageIcon(AssetImage('icSetting')),
-      label: 'Account',
+      icon: ImageIcon(AssetImage(icMenuUser)),
+      label: profile,
     ),
   ];
 }
