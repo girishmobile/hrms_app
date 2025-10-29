@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 
 import '../../main.dart';
 import '../constants/color_utils.dart';
+import '../constants/string_utils.dart';
 
 
 
@@ -157,7 +158,7 @@ TextStyle commonTextStyle({
     wordSpacing: wordSpacing,
     decoration: decoration,
     overflow: overflow,
-    fontFamily: fontFamily ?? '',
+    fontFamily: fontFamily ?? fontRoboto,
     decorationColor: decorationColor,
     letterSpacing: letterSpacing,
     fontStyle: fontStyle ?? FontStyle.normal,

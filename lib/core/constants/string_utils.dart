@@ -1,5 +1,5 @@
 const String appName = "ECom Manager";
-const String fontPoppins = "Poppins";
+const String fontRoboto = "Roboto";
 const String noCustomer = "No Customer";
 const String rupeeIcon = "\$";
 const String otpServiceID = "service_q3x803q";
