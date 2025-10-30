@@ -17,6 +17,7 @@ const String icMenuAttendance="$iconDashboardPath/attendance.png";
 const String icMenuCalender="$iconDashboardPath/calenders.png";
 const String icMenuUser="$iconDashboardPath/user.png";
 const String icDummyUser="$iconDashboardPath/ic_dummy_user.png";
+const String icEdit="$iconDashboardPath/edit.png";
 
 
 //==============================Product=============================

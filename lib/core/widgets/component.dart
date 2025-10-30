@@ -1,9 +1,7 @@
 import 'dart:async';
 
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,8 +10,6 @@ import 'package:hrms/core/constants/image_utils.dart';
 import '../../main.dart';
 import '../constants/color_utils.dart';
 import '../constants/string_utils.dart';
-
-
 
 AppBar commonAppBar({
   required final String title,
@@ -25,7 +21,6 @@ AppBar commonAppBar({
   final IconThemeData? iconTheme,
   final List<Color>? gradientColors,
 }) {
-
   return AppBar(
     surfaceTintColor: Colors.transparent,
     iconTheme: iconTheme,
@@ -38,7 +33,7 @@ AppBar commonAppBar({
       ),
     ),
     centerTitle: centerTitle,
-    backgroundColor: backgroundColor??colorProduct,
+    backgroundColor: backgroundColor ?? colorProduct,
     // important
     elevation: 0,
     actions: actions,
@@ -52,7 +47,7 @@ AppBar commonAppBar({
         ),
     flexibleSpace: Container(
       decoration: BoxDecoration(
-        color:backgroundColor??colorProduct,
+        color: backgroundColor ?? colorProduct,
         borderRadius: BorderRadius.circular(0),
       ),
     ),
@@ -135,7 +130,7 @@ Widget commonText({
           fontFamily: fontFamily,
           fontSize: fontSize,
           fontWeight: fontWeight,
-        color: color,
+          color: color,
           decoration: decoration,
         ),
   );
@@ -208,10 +203,10 @@ Widget commonButton({
 }) {
   return SizedBox(
     height: height ?? 56,
-    width: width??MediaQuery.sizeOf(navigatorKey.currentContext!).width,
+    width: width ?? MediaQuery.sizeOf(navigatorKey.currentContext!).width,
     child: DecoratedBox(
       decoration: BoxDecoration(
-        color: color??colorProduct ,
+        color: color ?? colorProduct,
 
         borderRadius: BorderRadius.circular(radius ?? 15),
       ),
@@ -243,8 +238,7 @@ Widget commonButton({
           mainAxisSize: MainAxisSize.min,
           children: [
             commonText(
-              color:
-                  textColor??Colors.white ,
+              color: textColor ?? Colors.white,
               text: text.toUpperCase(),
               fontSize: fontSize,
               // color: provider.isDark?colorDarkBgColor:Colors.white,
@@ -299,32 +293,20 @@ Widget commonTextField({
     autocorrect: false,
     onChanged: onChanged,
     inputFormatters: inputFormatters,
-    style:
-        textStyle ??
-        commonTextStyle(
-          fontSize: 14,
-
-        ),
+    style: textStyle ?? commonTextStyle(fontSize: 14),
     decoration: InputDecoration(
       hintText: hintText,
-      hintStyle:
-          hintStyle ??
-          commonTextStyle(
-
-          ),
+      hintStyle: hintStyle ?? commonTextStyle(),
       contentPadding: contentPadding,
 
       prefixIcon: prefixIcon,
       suffixIcon: suffixIcon,
       border:
-          enabledBorder ??
-          commonTextFiledBorder(borderRadius: borderRadius),
+          enabledBorder ?? commonTextFiledBorder(borderRadius: borderRadius),
       enabledBorder:
-          enabledBorder ??
-          commonTextFiledBorder(borderRadius: borderRadius),
+          enabledBorder ?? commonTextFiledBorder(borderRadius: borderRadius),
       focusedBorder:
-          enabledBorder ??
-          commonTextFiledBorder(borderRadius: borderRadius),
+          enabledBorder ?? commonTextFiledBorder(borderRadius: borderRadius),
       filled: filled,
       fillColor: fillColor,
     ),
@@ -556,7 +538,7 @@ Center commonErrorView({String? text}) {
         //commonAssetImage(icNoData, width: 100, height: 100),
         commonText(
           textAlign: TextAlign.center,
-          text: text??'',
+          text: text ?? '',
           fontSize: 14,
           fontWeight: FontWeight.w500,
           color: Colors.black.withValues(alpha: 0.5),
@@ -570,18 +552,16 @@ void hideKeyboard(BuildContext context) {
   FocusScope.of(context).unfocus();
 }
 
-
 void showCommonBottomSheet({
   required BuildContext context,
   required Widget content,
 
   bool isDismissible = true,
 }) {
-
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
-    backgroundColor:  Colors.white,
+    backgroundColor: Colors.white,
     isDismissible: isDismissible,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -610,7 +590,7 @@ void appBottomSheetWithSafeArea({
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
-    backgroundColor:Colors.white,
+    backgroundColor: Colors.white,
     barrierColor: Colors.black.withValues(alpha: 0.2),
     builder: (context) {
       return Container(
@@ -744,7 +724,7 @@ String cleanFirebaseError(String message) {
   return message.replaceAll(RegExp(r"\[.*?\]\s*"), "");
 }
 
-Container commonAppBackground({required Widget child,Color ?color}) {
+Container commonAppBackground({required Widget child, Color? color}) {
   var size = MediaQuery.of(navigatorKey.currentContext!).size;
 
   return Container(
@@ -752,7 +732,7 @@ Container commonAppBackground({required Widget child,Color ?color}) {
     height: size.height,
     decoration: commonBoxDecoration(
       borderRadius: 0,
-      color:color?? Colors.white,
+      color: color ?? Colors.white,
       //image: DecorationImage(fit: BoxFit.fill, image: AssetImage(icSa)),
     ),
     child: child,
@@ -845,10 +825,7 @@ class BottomNavItems {
   ];
 }
 
-
-
 /// Helper model for filter items
-
 
 Widget commonCircleNetworkImage(
   String? imageUrl, {
@@ -946,14 +923,13 @@ Widget commonNetworkImage(
                     ),
                   ),
               errorWidget: (context, url, error) =>
-                  errorWidget ?? Center(child: commonAssetImage('icErrorImage')),
+                  errorWidget ??
+                  Center(child: commonAssetImage('icErrorImage')),
             )
           : (errorWidget ?? Center(child: commonAssetImage('icErrorImage'))),
     ),
   );
 }
-
-
 
 Widget commonErrorBoxView({required String text, Color? colorText}) {
   return Container(
@@ -973,9 +949,6 @@ Widget commonErrorBoxView({required String text, Color? colorText}) {
     ),
   );
 }
-
-
-
 
 Widget commonRefreshIndicator({
   required final Future<void> Function() onRefresh,
@@ -998,7 +971,6 @@ Widget commonTextRich({
   TextStyle? textStyle2,
   GestureRecognizer? onTap,
 }) {
-
   return Text.rich(
     textAlign: textAlign ?? TextAlign.center,
     TextSpan(
@@ -1021,3 +993,66 @@ Widget commonTextRich({
   );
 }
 
+Widget commonBoxView({required Widget contentView, required String title}) {
+  return Container(
+    decoration: commonBoxDecoration(
+        color: colorSale,
+        borderColor: colorBorder, borderRadius: 8),
+    margin: const EdgeInsets.all(0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Title
+        commonHeadingView(title: title,),
+
+        const Divider(height: 0.5, color: colorBorder),
+
+        // Content
+        Padding(padding: const EdgeInsets.all(12.0), child: contentView),
+      ],
+    ),
+  );
+}
+
+Widget commonRowLeftRightView({required String title,  String? value,Widget? customView}) {
+  return Row(
+    children: [
+      Expanded(
+
+        child: commonText(
+          text: title,
+          fontWeight: FontWeight.w500,
+          fontSize: 12,
+        ),
+      ),
+      Expanded(
+        child: customView??commonText(
+          text: value??'',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.right,
+          fontWeight: FontWeight.w400,
+          fontSize: 12,
+        ),
+      ),
+    ],
+  );
+}
+
+
+Widget commonHeadingView({String? title}) {
+  return Padding(
+    padding: EdgeInsets.all(12.0),
+    child: Row(
+      children: [
+        Expanded(
+          child: commonText(
+            text: title ?? "Product Information",
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
+    ),
+  );
+}

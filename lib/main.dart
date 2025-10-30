@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hrms/provider/dashboard_provider.dart';
 import 'package:hrms/provider/leave_provider.dart';
 import 'package:hrms/provider/login_provider.dart';
+import 'package:hrms/provider/profile_provider.dart';
 import 'package:hrms/provider/theme_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +19,7 @@ List<SingleChildWidget> providers =[
   ChangeNotifierProvider<LoginProvider>(create: (_) => LoginProvider()),
   ChangeNotifierProvider<DashboardProvider>(create: (_) => DashboardProvider()),
   ChangeNotifierProvider<LeaveProvider>(create: (_) => LeaveProvider()),
+  ChangeNotifierProvider<ProfileProvider>(create: (_) => ProfileProvider()),
 ];
 void main() {
   runApp(

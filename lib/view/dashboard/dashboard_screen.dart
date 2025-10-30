@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hrms/core/constants/image_utils.dart';
 import 'package:hrms/core/constants/string_utils.dart';
 import 'package:hrms/view/dashboard/page/home_page.dart';
+import 'package:hrms/view/dashboard/page/profile_page.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/constants/color_utils.dart';
@@ -28,7 +29,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case 3:
         return Container();
       case 4:
-        return Container();
+        return ProfilePage();
       default:
         return Container();
     }
