@@ -996,7 +996,7 @@ Widget commonTextRich({
 Widget commonBoxView({required Widget contentView, required String title}) {
   return Container(
     decoration: commonBoxDecoration(
-        color: colorSale,
+        color: colorProduct.withValues(alpha: 0.01),
         borderColor: colorBorder, borderRadius: 8),
     margin: const EdgeInsets.all(0),
     child: Column(
