@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hrms/core/constants/image_utils.dart';
 import 'package:hrms/core/constants/string_utils.dart';
 import 'package:hrms/view/dashboard/page/home_page.dart';
+import 'package:hrms/view/dashboard/page/my_kpi_page.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/constants/color_utils.dart';
@@ -20,7 +21,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget getPage(int index) {
     switch (index) {
       case 0:
-        return Container();
+        return MyKpiPage();
       case 1:
         return Container();
       case 2:
