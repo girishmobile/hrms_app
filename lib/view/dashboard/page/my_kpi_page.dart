@@ -110,6 +110,7 @@ class _MyKpiPageState extends State<MyKpiPage> {
 
   Widget _buildMonthCard(Map<String, dynamic> item) {
     return Card(
+      color: _getColor(item["percent"]).withValues(alpha: 0.04),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
         side: BorderSide(color: colorBorder),
