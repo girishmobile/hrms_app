@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
     final items = provider.leaves;
 
     return ListView(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       physics: BouncingScrollPhysics(),
       children: [
         commonText(
@@ -63,7 +63,7 @@ class HomePage extends StatelessWidget {
         ),
         SizedBox(height: 10),
         Column(
-          spacing: 20,
+          spacing: 16,
           children: [
             _buildRow(
               context: context,
@@ -142,7 +142,7 @@ class HomePage extends StatelessWidget {
     }
 
     return Row(
-      spacing: 20,
+      spacing: 16,
       children: [
         Expanded(
           child: _buildCard(
@@ -181,32 +181,29 @@ class HomePage extends StatelessWidget {
           Navigator.pushNamed(
             context,
 
-            RouteName.leaveDetailsScreen, // define this route in app_routes.dart
+            RouteName
+                .leaveDetailsScreen, // define this route in app_routes.dart
             arguments: LeaveDetailsArgs(
-              title: item.title??'',
-              color:item.bgColor??Colors.green,
+              title: item.title ?? '',
+              color: item.bgColor ?? Colors.green,
             ),
           );
         }
 
         if (item.title.toString().toLowerCase().contains('apply')) {
-
           // navigate to Leave Listing Screen
           Navigator.pushNamed(
             context,
             RouteName.addLeaveScreen, // define this route in app_routes.dart
           );
         }
-
-
       },
       child: Container(
-
         height: height ?? 120,
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: item.bgColor?.withValues(alpha: 0.05),
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(8),
           border: Border.all(color: item.bgColor ?? Colors.black, width: 1),
         ),
         child: Column(
@@ -233,7 +230,7 @@ class HomePage extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-          /*  if (item.title.toString().toLowerCase().contains('apply'))
+            /*  if (item.title.toString().toLowerCase().contains('apply'))
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: commonButton(
