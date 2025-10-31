@@ -77,3 +77,137 @@ String formatDate(String? date) {
     return date;
   }
 }
+
+Map<String, String> formatDateSplit(String? date) {
+  if (date == null || date.isEmpty) return {'top': '', 'bottom': ''};
+  try {
+    final parsed = DateTime.parse(date);
+    return {
+      'top': DateFormat('dd').format(parsed),
+      'bottom': DateFormat('MMM-yy').format(parsed),
+    };
+  } catch (_) {
+    return {'top': date, 'bottom': ''};
+  }
+}
+String formatHolidayDate(String dateString) {
+  try {
+    final date = DateTime.parse(dateString);
+    final day = date.day;
+    final month = DateFormat('MMMM').format(date); // e.g. December
+    final year = DateFormat('yyyy').format(date);  // e.g. 2025
+    final weekday = DateFormat('EEE').format(date); // e.g. Thu
+
+    // Get suffix like 1st, 2nd, 3rd, 4th...
+    String suffix;
+    if (day >= 11 && day <= 13) {
+      suffix = 'th';
+    } else {
+      switch (day % 10) {
+        case 1:
+          suffix = 'st';
+          break;
+        case 2:
+          suffix = 'nd';
+          break;
+        case 3:
+          suffix = 'rd';
+          break;
+        default:
+          suffix = 'th';
+      }
+    }
+
+    return '$day$suffix $month | $weekday $year';
+  } catch (_) {
+    return dateString;
+  }
+}
+String formatHolidayDate1(String dateString) {
+  try {
+    final date = DateTime.parse(dateString);
+    final day = date.day;
+    final month = DateFormat('MMM').format(date); // e.g. December
+   // final year = DateFormat('yyyy').format(date);  // e.g. 2025
+    //final weekday = DateFormat('EEE').format(date); // e.g. Thu
+
+    // Get suffix like 1st, 2nd, 3rd, 4th...
+    String suffix;
+    if (day >= 11 && day <= 13) {
+      suffix = 'th';
+    } else {
+      switch (day % 10) {
+        case 1:
+          suffix = 'st';
+          break;
+        case 2:
+          suffix = 'nd';
+          break;
+        case 3:
+          suffix = 'rd';
+          break;
+        default:
+          suffix = 'th';
+      }
+    }
+
+    return '$day$suffix $month';
+  } catch (_) {
+    return dateString;
+  }
+}
+String formatWeek(String dateString) {
+  try {
+    final date = DateTime.parse(dateString);
+    final weekday = DateFormat('EEE').format(date); // e.g. Thu
+
+
+    return weekday;
+  } catch (_) {
+    return dateString;
+  }
+}
+String formatMonth(String dateString) {
+  try {
+    final date = DateTime.parse(dateString);
+    final month = DateFormat('MMMM').format(date); // e.g. December
+
+
+    return month;
+  } catch (_) {
+    return dateString;
+  }
+}
+String formatDay(String dateString) {
+  try {
+    final date = DateTime.parse(dateString);
+    final day = date.day;
+  //  final month = DateFormat('MMM').format(date); // e.g. December
+    // final year = DateFormat('yyyy').format(date);  // e.g. 2025
+    //final weekday = DateFormat('EEE').format(date); // e.g. Thu
+
+    // Get suffix like 1st, 2nd, 3rd, 4th...
+    String suffix;
+    if (day >= 11 && day <= 13) {
+      suffix = 'th';
+    } else {
+      switch (day % 10) {
+        case 1:
+          suffix = 'st';
+          break;
+        case 2:
+          suffix = 'nd';
+          break;
+        case 3:
+          suffix = 'rd';
+          break;
+        default:
+          suffix = 'th';
+      }
+    }
+
+    return '$day$suffix ';
+  } catch (_) {
+    return dateString;
+  }
+}

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hrms/core/constants/image_utils.dart';
 import 'package:hrms/core/constants/string_utils.dart';
+import 'package:hrms/view/dashboard/page/attendance_page.dart';
+import 'package:hrms/view/dashboard/page/calender_page.dart';
 import 'package:hrms/view/dashboard/page/home_page.dart';
 import 'package:hrms/view/dashboard/page/profile_page.dart';
 import 'package:hrms/view/dashboard/page/my_kpi_page.dart';
@@ -24,11 +26,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case 0:
         return MyKpiPage();
       case 1:
-        return Container();
+        return CalenderPage();
       case 2:
         return HomePage();
       case 3:
-        return Container();
+        return AttendancePage();
       case 4:
         return ProfilePage();
       default:
@@ -52,7 +54,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 title: provider.appbarTitle ?? home,
                 context: context,
                 leading: Container(
-                  padding: EdgeInsets.only(left: 16),
+                  padding: const EdgeInsets.only(left: 16),
 
                   child: commonInkWell(
                     onTap: () => provider.setIndex(4),

@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> init() async {
-   redirectToIntro();
+    redirectToIntro();
   }
 
   void redirectToIntro() {
@@ -43,21 +43,9 @@ class _SplashScreenState extends State<SplashScreen> {
       body: SizedBox(
         width: size.width,
         height: size.height,
-        /*decoration: commonBoxDecoration(
-          image: DecorationImage(
-              fit: BoxFit.fill,
 
-              opacity: 0.9,
-              image: AssetImage(  icSplash,))
-        ),*/
-        child: SizedBox(
-          width: size.width,
-          height: size.height,
-          //color: Colors.black.withValues(alpha: 0.3),
-          child: Center(
-            
-            child: commonAssetImage(icAppLogo,width: size.width*0.7)/*commonText(text: "Welcome to HRMS",fontSize: 28 ,color: Colors.white,fontWeight: FontWeight.w800)*/,
-          ),
+        child: Center(
+          child: commonAssetImage(icAppLogo, width: size.width * 0.7),
         ),
       ),
     );

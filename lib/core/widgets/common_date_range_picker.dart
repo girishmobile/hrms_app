@@ -1,69 +1,99 @@
 import 'package:flutter/material.dart';
-import 'package:hrms/provider/dashboard_provider.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
+import 'package:calendar_date_picker2/calendar_date_picker2.dart';
+import 'package:hrms/core/constants/color_utils.dart';
 import 'package:hrms/core/widgets/component.dart';
+import 'package:intl/intl.dart';
 
-import '../constants/image_utils.dart';
+class CommonInlineRangePicker extends StatefulWidget {
+  final Function(DateTimeRange)? onRangeSelected;
 
-class CommonDateField extends StatelessWidget {
-  final String text;
-  final bool isFromField;
+  const CommonInlineRangePicker({super.key, this.onRangeSelected});
 
-  const CommonDateField({
-    super.key,
-    required this.text,
-    required this.isFromField,
-  });
+  @override
+  State<CommonInlineRangePicker> createState() => _CommonInlineRangePickerState();
+}
 
-  Future<void> _selectDate(BuildContext context) async {
-    final provider = Provider.of<DashboardProvider>(context, listen: false);
+class _CommonInlineRangePickerState extends State<CommonInlineRangePicker> {
+  List<DateTime?> _rangeDates = [];
 
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day); // 🔒 removes past dates
-
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: isFromField
-          ? (provider.fromDate ?? today)
-          : (provider.toDate ?? provider.fromDate ?? today),
-      firstDate: isFromField
-          ? today // 🔒 disable all past dates
-          : (provider.fromDate ?? today),
-      lastDate: DateTime(2100),
-    );
-
-    if (picked != null) {
-      if (isFromField) {
-        provider.setFromDate(picked);
-      } else {
-        provider.setToDate(picked);
-      }
+  String get formattedRange {
+    if (_rangeDates.length < 2 || _rangeDates[0] == null || _rangeDates[1] == null) {
+      return "Select Date Range";
     }
+    final f = DateFormat('dd-MMM-yyyy');
+    return "${f.format(_rangeDates[0]!)} → ${f.format(_rangeDates[1]!)}";
   }
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<DashboardProvider>(context);
-    final dateFormat = DateFormat('dd-MM-yyyy');
-
-    final selectedDate = isFromField ? provider.fromDate : provider.toDate;
-    final controller = TextEditingController(
-      text: selectedDate != null ? dateFormat.format(selectedDate) : '',
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        InkWell(
+          onTap: () {
+            _openInlinePicker(context);
+          },
+          borderRadius: BorderRadius.circular(8),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            decoration: commonBoxDecoration(
+              borderColor: colorProduct,
+              borderRadius: 8,
+            ),
+            child: Row(
+              spacing: 8,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                commonText(text: formattedRange, fontSize: 12,color: colorProduct),
+                 Icon(Icons.calendar_month_outlined, size: 20,color: colorProduct.withValues(alpha: 0.6),),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
+  }
 
-    return GestureDetector(
-      onTap: () => _selectDate(context),
-      child: AbsorbPointer(
-        child: commonTextFieldView(
-          text: text,
-          maxLines: 1,
-          controller: controller,
-          readOnly: true,
-          keyboardType: TextInputType.none,
-          suffixIcon: IconButton(
-            icon: commonPrefixIcon(image: icMenuCalender),
-            onPressed: () => _selectDate(context),
+  void _openInlinePicker(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CalendarDatePicker2(
+                config: CalendarDatePicker2Config(
+                  calendarType: CalendarDatePicker2Type.range,
+                  firstDate: DateTime(2020),
+                  lastDate: DateTime(2035),
+                  selectedDayHighlightColor: colorProduct,
+                ),
+                value: _rangeDates,
+                onValueChanged: (dates) {
+                  setState(() => _rangeDates = dates);
+                },
+              ),
+              const SizedBox(height: 10),
+              commonButton(
+                  height: 45,
+                  text: "Done", onPressed: (){
+                if (_rangeDates.length >= 2 &&
+                    _rangeDates[0] != null &&
+                    _rangeDates[1] != null) {
+
+                  final range = DateTimeRange(
+                    start: _rangeDates[0]!,
+                    end: _rangeDates[1]!,
+                  );
+                  widget.onRangeSelected?.call(range);
+                }
+                Navigator.pop(context);
+              }),
+
+            ],
           ),
         ),
       ),

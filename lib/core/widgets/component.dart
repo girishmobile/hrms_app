@@ -1047,6 +1047,7 @@ Widget commonHeadingView({String? title}) {
       children: [
         Expanded(
           child: commonText(
+            color: colorProduct,
             text: title ?? "Product Information",
             fontSize: 16,
             fontWeight: FontWeight.w600,

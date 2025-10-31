@@ -141,7 +141,7 @@ class LeaveDetailsScreen extends StatelessWidget {
         spacing: 3,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          //   commonText(text: "From", color: color, textAlign: TextAlign.center,fontSize: 12,fontWeight: FontWeight.w600),
+
           commonText(
             text: formattedFrom,
             fontSize: 12,

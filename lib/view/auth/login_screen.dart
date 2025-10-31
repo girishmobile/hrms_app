@@ -30,7 +30,6 @@ class LoginScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Align(
-
                           alignment: AlignmentGeometry.center,
                           child: commonAssetImage(
                             icAppLogo,
@@ -47,7 +46,6 @@ class LoginScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 15),
                         commonTextFieldView(
-
                           text: "Password",
                           keyboardType: TextInputType.visiblePassword,
 
@@ -77,10 +75,14 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 36),
-                        commonButton(text: "Login", onPressed: () {
-
-                          navigatorKey.currentState?.pushNamed(RouteName.dashboardScreen);
-                        }),
+                        commonButton(
+                          text: "Login",
+                          onPressed: () {
+                            navigatorKey.currentState?.pushNamed(
+                              RouteName.dashboardScreen,
+                            );
+                          },
+                        ),
                       ],
                     ),
                   ),
@@ -92,6 +94,4 @@ class LoginScreen extends StatelessWidget {
       ),
     );
   }
-
-
 }
