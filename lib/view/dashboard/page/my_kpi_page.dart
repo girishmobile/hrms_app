@@ -4,7 +4,6 @@ import 'package:hrms/core/widgets/component.dart';
 import 'package:hrms/provider/dashboard_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../widget/home_widget.dart';
 import '../widget/kpi_widget.dart';
 
 class MyKpiPage extends StatefulWidget {

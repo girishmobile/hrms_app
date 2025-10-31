@@ -13,7 +13,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.sizeOf(context);
-    final formLoginKey = GlobalKey<FormState>();
+
     return commonScaffold(
       body: Consumer<LoginProvider>(
         builder: (context, provider, child) {
