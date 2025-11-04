@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +25,7 @@ class ProfileView extends StatelessWidget {
     } else if (provider.imageUrl != null && provider.imageUrl!.isNotEmpty) {
       imageProvider = NetworkImage(provider.imageUrl!);
     } else {
-      imageProvider = AssetImage(assetPath ?? icDummyUser);
+      imageProvider = AssetImage(assetPath ?? icBoy);
     }
 
     return Stack(
@@ -38,10 +39,7 @@ class ProfileView extends StatelessWidget {
             borderWidth: 2,
             shape: BoxShape.circle,
 
-            image: DecorationImage(
-              image: imageProvider,
-              fit: BoxFit.cover,
-            ),
+            image: DecorationImage(image: imageProvider, fit: BoxFit.fill),
           ),
         ),
 
@@ -67,7 +65,12 @@ class ProfileView extends StatelessWidget {
                 color: colorProduct,
               ),
               child: Center(
-                child: commonPrefixIcon(image: icEdit, colorIcon: Colors.white,width: 20,height: 20),
+                child: commonPrefixIcon(
+                  image: icEdit,
+                  colorIcon: Colors.white,
+                  width: 20,
+                  height: 20,
+                ),
               ),
             ),
           ),

@@ -1,7 +1,22 @@
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hrms/data/models/dashboard/leave_model.dart';
 
+import '../core/api/api_config.dart';
+import '../core/api/gloable_status_code.dart';
+import '../core/api/network_repository.dart';
+import '../core/widgets/component.dart';
+import '../data/models/dashboard/HolidayBirthdayModel.dart';
+import '../main.dart';
+class LeaveModel {
+  final String? title;
+  final String? desc;
+  int? count;
+  final Color? bgColor;
+  LeaveModel({this.title,  this.count, this.bgColor,this.desc});
+}
 class DashboardProvider with ChangeNotifier {
 
   int _currentIndex = 2;
@@ -57,21 +72,7 @@ class DashboardProvider with ChangeNotifier {
 
 
 
-  String ?_leaveType ;
 
-  String ? get leaveType => _leaveType;
-  void setLeaveType(String value) {
-    _leaveType = value;
-    notifyListeners();
-  }
-  void clearLeaveType() {
-    _leaveType = null;
-    _isHalfDay = false;
-    _fromDate = null;
-    _toDate = null;
-    notifyListeners();
-
-  }
 
 
   final List<Map<String, dynamic>> allLeaveDetails = [
@@ -677,39 +678,6 @@ class DashboardProvider with ChangeNotifier {
         return const Color(0xFFE0E0E0); // Light grey fallback
     }
   }
-  bool _isHalfDay = false;
-  bool get isHalfDay => _isHalfDay;
-  void setHalfDay(bool value) {
-    _isHalfDay = value;
-    notifyListeners();
-  }
-  //Date
-
-  DateTime? _fromDate;
-  DateTime? _toDate;
-
-  DateTime? get fromDate => _fromDate;
-  DateTime? get toDate => _toDate;
-
-  void setFromDate(DateTime date) {
-    _fromDate = date;
-    // Reset toDate if it's before fromDate
-    if (_toDate != null && _toDate!.isBefore(_fromDate!)) {
-      _toDate = null;
-    }
-    notifyListeners();
-  }
-
-  void setToDate(DateTime date) {
-    _toDate = date;
-    notifyListeners();
-  }
-
-  void clearDates() {
-    _fromDate = null;
-    _toDate = null;
-    notifyListeners();
-  }
 
 
   final List<Map<String, dynamic>> monthData = [
@@ -739,4 +707,47 @@ class DashboardProvider with ChangeNotifier {
   }
   // default selected year
   List<String> years = ["2021", "2022", "2023", "2024", "2025"];
+
+
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
+
+  void _setLoading(bool val) {
+    _isLoading = val;
+    notifyListeners();
+  }
+  HolidayBirthdayModel ? _birthdayModel;
+
+  HolidayBirthdayModel? get birthdayModel => _birthdayModel;
+  Future<void> getBirthdayHoliday() async {
+    _setLoading(true);
+    try {
+      final response = await callApi(
+        url: ApiConfig.upcomingLeaveHoliday,
+        method: HttpMethod.GET,
+
+        headers: null,
+      );
+
+      if (globalStatusCode == 200) {
+        final decoded = json.decode(response);
+        _birthdayModel = HolidayBirthdayModel.fromJson(json.decode(response));
+
+        print('======$decoded');
+        _setLoading(false);
+      } else {
+        showCommonDialog(
+          showCancel: false,
+          title: "Error",
+          context: navigatorKey.currentContext!,
+          content: errorMessage,
+        );
+      }
+      _setLoading(false);
+      notifyListeners();
+    } catch (e) {
+      _setLoading(false);
+    }
+  }
 }

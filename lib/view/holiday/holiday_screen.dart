@@ -25,9 +25,9 @@ class HolidayScreen extends StatelessWidget {
                     scrollDirection: Axis.vertical,
                     physics: const BouncingScrollPhysics(),
                     padding: const EdgeInsets.only(left: 0, right: 0, bottom: 16),
-                    itemCount: provider.allHolidayDetails.length,
+                    itemCount: provider.birthdayModel?.holidays?.length??0,
                     itemBuilder: (context, index) {
-                      final item = provider.allHolidayDetails[index];
+                      final item = provider.birthdayModel?.holidays?[index];
                       return Padding(
                         padding: const EdgeInsets.all(6.0),
                         child: buildHolidayItemView(

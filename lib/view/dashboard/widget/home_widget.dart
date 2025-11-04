@@ -8,6 +8,7 @@ import '../../../core/constants/date_utils.dart';
 import '../../../core/routes/app_routes.dart';
 import '../../../core/widgets/animated_counter.dart';
 import '../../../core/widgets/component.dart';
+import '../../../data/models/dashboard/HolidayBirthdayModel.dart';
 import '../../leave_details/leave_details_args.dart';
 
 Widget buildItemView({
@@ -77,12 +78,12 @@ Widget buildItemView({
 }
 
 Widget buildHolidayItemView({
-  required Map<String, dynamic> item,
+  required Holidays ? item,
   required DashboardProvider provider,
 double ?verticalPadding,
   required BuildContext context,
 }) {
-  final Color bgColor = provider.getHolidayBgColor(item['type']);
+  final Color bgColor = provider.getHolidayBgColor(item?.startDate?.date??DateTime.now().toString());
   return SizedBox(
     width: 300,
     child: commonInkWell(
@@ -117,19 +118,19 @@ double ?verticalPadding,
                   children: [
                     commonText(
                       fontWeight: FontWeight.w500,
-                      text: formatDay(item['date']),
+                      text: formatDay(item?.startDate?.date??DateTime.now().toString()),
                       fontSize: 12,
                       color: colorText,
                     ),
                     commonText(
                       fontWeight: FontWeight.w600,
-                      text: formatWeek(item['date']),
+                      text: formatWeek(item?.startDate?.date??DateTime.now().toString()),
                       fontSize: 14,
                       color: colorProduct,
                     ),
                     commonText(
                       fontWeight: FontWeight.w500,
-                      text: formatMonth(item['date']),
+                      text: formatMonth(item?.startDate?.date??DateTime.now().toString()),
                       fontSize: 12,
                       color: colorText,
                     ),
@@ -144,20 +145,20 @@ double ?verticalPadding,
                   children: [
 
                     commonText(
-                      text: item['name'],
+                      text: item?.eventName??'',
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                       color: colorProduct,
                     ),
 
-                    commonText(
+                   /* commonText(
                       text: item['type'],
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                       color: colorProduct,
-                    ),
+                    ),*/
                     commonText(
-                      text: item['description'],
+                      text: item?.description??'',
                       fontSize: 12,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -176,12 +177,12 @@ double ?verticalPadding,
 }
 
 Widget buildBirthdayItemView({
-  required Map<String, dynamic> item,
+   Birthdays ?item,
   required DashboardProvider provider,
   double ?verticalPadding,
   required BuildContext context,
 }) {
-  final bgColor = provider.getBirthdayBgColor(DateTime.parse(item['date']));
+  final bgColor = provider.getBirthdayBgColor(DateTime.parse(item?.dateOfBirth?.date??DateTime.now().toString()));
   return SizedBox(
     width: 300,
     child: commonInkWell(
@@ -204,21 +205,27 @@ Widget buildBirthdayItemView({
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                commonAssetImage(icDummyUser,width: 50,height: 50),
+                commonAssetImage(icBoy,width: 50,height: 50),
                 Column(
                   spacing: 3,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     commonText(
-                      text: item['name'],
+                      text:'${ item?.firstname} ${ item?.lastname}',
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: colorProduct,
                     ),
 
                     commonText(
-                      text: item['department'],
+                      text: '${item?.department}',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: colorProduct,
+                    ),
+                    commonText(
+                      text: '${item?.designation}',
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                       color: colorProduct,
@@ -228,14 +235,14 @@ Widget buildBirthdayItemView({
                       children: [
                         commonText(
                           fontWeight: FontWeight.w400,
-                          text: formatDay(item['date']),
+                          text: formatDay(item?.dateOfBirth?.date??DateTime.now().toString()),
                           fontSize: 12,
                           color: colorText,
                         ),
 
                         commonText(
                           fontWeight: FontWeight.w400,
-                          text: formatMonth(item['date']),
+                          text: formatDate(item?.dateOfBirth?.date??DateTime.now().toString(),format: "MMMM yyyy"),
                           fontSize: 12,
                           color: colorText,
                         ),

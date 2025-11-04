@@ -22,8 +22,14 @@ AppBar commonAppBar({
   final List<Color>? gradientColors,
 }) {
   return AppBar(
+
     surfaceTintColor: Colors.transparent,
     iconTheme: iconTheme,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(
+        bottom: Radius.circular(30),
+      ),
+    ),
     title: Text(
       title.toUpperCase(),
       style: commonTextStyle(

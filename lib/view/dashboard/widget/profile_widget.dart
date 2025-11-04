@@ -1,32 +1,34 @@
-
 import 'package:flutter/material.dart';
 import 'package:hrms/provider/dashboard_provider.dart';
+import 'package:hrms/provider/profile_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/color_utils.dart';
+import '../../../core/constants/date_utils.dart';
 import '../../../core/constants/image_utils.dart';
+import '../../../core/hive/app_config_cache.dart';
 import '../../../core/routes/app_routes.dart';
 import '../../../core/widgets/component.dart';
 import '../../../core/widgets/profile_view.dart';
 import '../../../main.dart';
 
-
-Widget profileTopView(){
+Widget profileTopView({required ProfileProvider provider}) {
+  var data = provider.profileModel;
   return Column(
     crossAxisAlignment: CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Center(child: ProfileView(assetPath: icDummyUser)),
+      Center(child: ProfileView(assetPath: data?.gender?.valueText =="Male"?icBoy:icGirl)),
 
       SizedBox(height: 15),
       commonText(
-        text: "Sameer Khan",
+        text: '${data?.firstname ?? ''} ${data?.lastname ?? ''}',
         textAlign: TextAlign.center,
         fontWeight: FontWeight.w600,
         fontSize: 16,
       ),
       commonText(
-        text: "sameer@redefinesolutions.com",
+        text: data?.email ?? '',
         textAlign: TextAlign.center,
         fontWeight: FontWeight.w400,
         fontSize: 13,
@@ -34,88 +36,114 @@ Widget profileTopView(){
     ],
   );
 }
-Widget basicInfoWidget(){
- return commonBoxView(
-   contentView: Column(
-     spacing: 12,
 
-     children: [
-       commonRowLeftRightView(title: 'Full Name', value: 'Sameer Khan'),
+Widget basicInfoWidget({required ProfileProvider provider}) {
+  var data = provider.profileModel;
 
-       commonRowLeftRightView(
-         title: 'Employee ID',
-         customView: commonText(
-           text: "150",
-           textAlign: TextAlign.right,
-           fontSize: 12,
-           fontWeight: FontWeight.w600,
-         ),
-       ),
-       commonRowLeftRightView(
-         title: 'Personal Email',
-         value: 'sameer@redefine..',
-       ),
-       commonRowLeftRightView(
-         title: 'Company Email',
-         value: 'sameer@redefine..',
-       ),
-       commonRowLeftRightView(title: 'Gender', value: 'Male'),
-       commonRowLeftRightView(title: 'Birthday', value: '12-12-1993'),
-       commonRowLeftRightView(title: 'Marital Status', value: 'Married'),
-       commonRowLeftRightView(title: 'Blood Group', value: 'B+'),
-       commonRowLeftRightView(
-         title: 'Status',
-         customView: Row(
-           mainAxisAlignment: MainAxisAlignment.end,
-           mainAxisSize: MainAxisSize.min,
-           children: [
-             Container(
-               decoration: commonBoxDecoration(
-                 borderRadius: 5,
-                 borderColor: Colors.green,
-                 borderWidth: 0.5,
 
-                 color: Colors.green.withValues(alpha: 0.10),
-               ),
-               padding: EdgeInsets.symmetric(
-                 vertical: 2,
-                 horizontal: 10,
-               ),
-               child: commonText(
-                 text: "Active",
-                 textAlign: TextAlign.right,
-                 color: Colors.green,
-                 fontSize: 10,
-                 fontWeight: FontWeight.w600,
-               ),
-             ),
-           ],
-         ),
-       ),
-     ],
-   ),
-   title: 'Basic Information',
- );
+  return commonBoxView(
+    contentView: Column(
+      spacing: 12,
+
+      children: [
+        commonRowLeftRightView(
+          title: 'Full Name',
+          value: '${data?.firstname ?? ''} ${data?.lastname ?? ''}',
+        ),
+
+        commonRowLeftRightView(
+          title: 'Employee ID',
+          customView: commonText(
+            text: data?.employeeId ?? "-",
+            textAlign: TextAlign.right,
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        commonRowLeftRightView(
+          title: 'Personal Email',
+          value: data?.email ?? "-",
+        ),
+        commonRowLeftRightView(
+          title: 'Company Email',
+          value: data?.companyEmail ?? "-",
+        ),
+        commonRowLeftRightView(
+          title: 'Gender',
+          value: data?.gender?.valueText ?? '',
+        ),
+        commonRowLeftRightView(
+          title: 'Birthday',
+          value: formatDate(
+            data?.dateOfBirth?.date ?? '',
+            format: "dd-MM-yyyy",
+          ),
+        ),
+        commonRowLeftRightView(
+          title: 'Marital Status',
+          value: data?.maritalStatus == true ? 'Married' : 'Unmarried',
+        ),
+        commonRowLeftRightView(
+          title: 'Blood Group',
+          value: data?.bloodGroup ?? '-',
+        ),
+        commonRowLeftRightView(
+          title: 'Status',
+          customView: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                decoration: commonBoxDecoration(
+                  borderRadius: 5,
+                  borderColor: data?.userExitStatus == true
+                      ? Colors.green
+                      : Colors.red,
+                  borderWidth: 0.5,
+
+                  color: data?.userExitStatus == true
+                      ? Colors.green.withValues(alpha: 0.10)
+                      : Colors.red.withValues(alpha: 0.10),
+                ),
+                padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+                child: commonText(
+                  text: data?.userExitStatus == true ? "Active" : "Inactive",
+                  textAlign: TextAlign.right,
+                  color: data?.userExitStatus == true
+                      ? Colors.green
+                      : Colors.red,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+    title: 'Basic Information',
+  );
 }
 
-
-Widget contactInfoWidget(){
-  return  commonBoxView(
+Widget contactInfoWidget({required ProfileProvider provider}) {
+  var data = provider.profileModel;
+  return commonBoxView(
     contentView: Column(
-
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 12,
       children: [
         commonRowLeftRightView(
           title: 'Mobile Phone',
-          value: '0932892332',
+          value: data?.contactNo ?? '-',
         ),
         commonRowLeftRightView(
           title: 'Emergency Contact Number',
-          value: '0932892332',
+          value: data?.emergencyContactNo ?? '-',
         ),
         commonRowLeftRightView(
           title: 'Emergency Contact Person',
-          value: 'Kaushalam Digital Pvt. Ltd',
+          value: data?.emergencyContactPerson ?? '-',
         ),
 
         Column(
@@ -128,7 +156,7 @@ Widget contactInfoWidget(){
               fontSize: 12,
             ),
             commonText(
-              text: 'Turquoise 3, BLOCK-A, 501, Gala Gymkhana Rd, South Bopal, Bopal, Ahmedabad, Gujarat 380058',
+              text: data?.address ?? '-',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
 
@@ -147,56 +175,56 @@ Widget contactInfoWidget(){
               fontSize: 12,
             ),
             commonText(
-              text:'Turquoise 3, BLOCK-A, 501, Gala Gymkhana Rd, South Bopal, Bopal, Ahmedabad, Gujarat 380058',
+              text: data?.perAddress ?? '-',
 
               fontWeight: FontWeight.w400,
               fontSize: 12,
             ),
           ],
         ),
-
-
       ],
     ),
     title: 'Contact Information',
   );
 }
 
-Widget companyInfoWidget(){
-  return  commonBoxView(
+Widget companyInfoWidget({required ProfileProvider provider}) {
+  var data = provider.profileModel;
+  return commonBoxView(
     contentView: Column(
       spacing: 12,
       children: [
         commonRowLeftRightView(
           title: 'Department',
-          value: 'Mobile Application Developer',
+          value: data?.department?.name ?? "-",
         ),
         commonRowLeftRightView(
           title: 'Designation',
-          value: 'Flutter Developer',
+          value: data?.designation?.name ?? "-",
         ),
         commonRowLeftRightView(
           title: 'Batch',
-          value: 'Batch:- 9:30 to 7:30',
+          value: data?.location?.name ?? "-",
         ),
         commonRowLeftRightView(
           title: 'Joining Date',
-          value: '06-05-2024',
+          value: formatDate(
+            data?.joiningDate?.date ?? "-",
+            format: "dd-MM-yyyy",
+          ),
         ),
         commonRowLeftRightView(
           title: 'Work Duration',
-          value: '1 year, 5 months, 22 days ago',
+          value: calculateWorkDuration(data?.joiningDate?.date),
         ),
       ],
     ),
     title: 'Company Relations',
   );
-
-
 }
 
-Widget logoutButton(BuildContext context){
-  return   commonButton(
+Widget logoutButton(BuildContext context) {
+  return commonButton(
     color: colorRed,
     radius: 8,
     text: "Logout",
@@ -206,9 +234,11 @@ Widget logoutButton(BuildContext context){
         confirmText: "Yes",
         onPressed: () async {
           dashboardProvider.setIndex(2);
+
+          await AppConfigCache.clearUserData();
           navigatorKey.currentState?.pushNamedAndRemoveUntil(
             RouteName.loginScreen,
-                (route) => false,
+            (Route<dynamic> route) => false,
           );
         },
         cancelText: "No",

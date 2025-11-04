@@ -62,15 +62,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       child: SizedBox(
                         width: 45,
                         height: 45,
-                        child: commonCircleAssetImage(icDummyUser),
+                        child: commonCircleAssetImage(icBoy),
                       ),
                     ),
                   ),
                 ),
               ),
 
-              body: getPage(provider.currentIndex),
-
+              body: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(0.1, 0), // Slide from right
+                        end: Offset.zero,
+                      ).animate(animation),
+                      child: child,
+                    ),
+                  );
+                },
+                child: getPage(provider.currentIndex),
+              ),
               // 👈 only current page
               bottomNavigationBar: CommonBottomNavBar(
                 currentIndex: provider.currentIndex,

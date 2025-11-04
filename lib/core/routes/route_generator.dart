@@ -16,49 +16,118 @@ class RouteGenerate {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case RouteName.splashScreen:
-        return MaterialPageRoute(builder: (_) => const SplashScreen());
+        return _buildPageRoute(const SplashScreen());
 
       case RouteName.loginScreen:
-        return MaterialPageRoute(builder: (_) => const LoginScreen());
+        return _buildPageRoute(const LoginScreen());
+
+     //   return MaterialPageRoute(builder: (_) => const LoginScreen());
       case RouteName.dashboardScreen:
-        return MaterialPageRoute(builder: (_) => const DashboardScreen());
+        return _buildPageRoute(const DashboardScreen());
+      //  return MaterialPageRoute(builder: (_) => const DashboardScreen());
       case RouteName.addLeaveScreen:
-        return MaterialPageRoute(builder: (_) => const AddLeaveScreen());
+        return _buildPageRoute(const AddLeaveScreen());
+       // return MaterialPageRoute(builder: (_) => const AddLeaveScreen());
       case RouteName.holidayScreen:
-        return MaterialPageRoute(builder: (_) => const HolidayScreen());
+        return _buildPageRoute(const HolidayScreen());
+      //  return MaterialPageRoute(builder: (_) => const HolidayScreen());
 
       case RouteName.upcomingBirthdayScreen:
-        return MaterialPageRoute(builder: (_) => const UpcomingBirthdayScreen());
+        return _buildPageRoute(const UpcomingBirthdayScreen());
+      //  return MaterialPageRoute(builder: (_) => const UpcomingBirthdayScreen());
       case RouteName.leaveDetailsScreen:
+
         final args = settings.arguments as LeaveDetailsArgs;
-        return MaterialPageRoute(
+
+        return _buildPageRoute( LeaveDetailsScreen(
+          title: args.title,
+          color: args.color,
+        ));
+       /* return MaterialPageRoute(
           builder: (_) => LeaveDetailsScreen(
             title: args.title,
             color: args.color,
           ),
-        );
+        );*/
 
       case RouteName.attendanceDetailsScreen:
         final args = settings.arguments as LeaveDetailsArgs;
-        return MaterialPageRoute(
+        return _buildPageRoute( AttendanceDetailsScreen(
+          title: args.title,
+          color: args.color,
+        ));
+      /*  return MaterialPageRoute(
           builder: (_) => AttendanceDetailsScreen(
             title: args.title,
             color: args.color,
           ),
-        );
+        );*/
 
       case RouteName.kpiDetailsScreen:
         final args = settings.arguments as LeaveDetailsArgs;
-        return MaterialPageRoute(
+        return _buildPageRoute( KpiDetailsScreen(
+          title: args.title,
+          color: args.color,
+          year: args.year,
+        ));
+      /*  return MaterialPageRoute(
           builder: (_) => KpiDetailsScreen(
             title: args.title,
             year: args.year,
             color: args.color,
           ),
-        );
+        );*/
 
       default:
-        return MaterialPageRoute(builder: (_) => const SplashScreen());
+        return _buildPageRoute(const SplashScreen());
+      //  return MaterialPageRoute(builder: (_) => const SplashScreen());
     }
   }
+
+ /* static PageRouteBuilder _buildPageRoute(Widget page) {
+    return PageRouteBuilder(
+      transitionDuration: const Duration(milliseconds: 500),
+      pageBuilder: (_, __, ___) => page,
+      transitionsBuilder: (_, animation, secondaryAnimation, child) {
+        const begin = Offset(1.0, 0.0); // right to left
+        const end = Offset.zero;
+        const curve = Curves.easeInOut;
+
+        final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: FadeTransition(
+            opacity: animation,
+            child: child,
+          ),
+        );
+      },
+    );
+  }
+*/
+  static PageRouteBuilder _buildPageRoute(Widget page) {
+    return PageRouteBuilder(
+      transitionDuration: const Duration(milliseconds: 500),
+      pageBuilder: (_, __, ___) => page,
+      transitionsBuilder: (_, animation, secondaryAnimation, child) {
+        // Animation starts from bottom (Offset(0, 1)) → center (Offset.zero)
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.easeInOut;
+
+        final tween = Tween(begin: begin, end: end)
+            .chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: FadeTransition( // optional fade effect
+            opacity: animation,
+            child: child,
+          ),
+        );
+      },
+    );
+  }
+
 }

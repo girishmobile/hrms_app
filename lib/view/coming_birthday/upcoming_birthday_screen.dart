@@ -21,9 +21,9 @@ class UpcomingBirthdayScreen extends StatelessWidget {
             scrollDirection: Axis.vertical,
             physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.only(left: 0, right: 0, bottom: 16),
-            itemCount:provider.allBirthdayDetails.length,
+            itemCount:provider.birthdayModel?.birthdays?.length??0,
             itemBuilder: (context, index) {
-              final item = provider.allBirthdayDetails[index];
+              final item = provider.birthdayModel?.birthdays?[index];
               return Padding(
                 padding: const EdgeInsets.all(6.0),
                 child: buildBirthdayItemView(

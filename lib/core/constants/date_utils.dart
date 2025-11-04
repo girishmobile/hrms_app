@@ -68,11 +68,12 @@ String formatString(String? timestamp) {
   return DateFormat("d MMMM yyyy, h:mm a").format(dateTime.toLocal());
 }
 
-String formatDate(String? date) {
+
+String formatDate(String? date, {String format = "dd-MMM-yy"}) {
   if (date == null || date.isEmpty) return '';
   try {
     final parsed = DateTime.parse(date);
-    return DateFormat("dd-MMM-yy").format(parsed);
+    return DateFormat(format).format(parsed);
   } catch (_) {
     return date;
   }
@@ -208,6 +209,41 @@ String formatDay(String dateString) {
 
     return '$day$suffix ';
   } catch (_) {
+
     return dateString;
+  }
+}
+
+String calculateWorkDuration(String? joiningDate) {
+  if (joiningDate == null || joiningDate.isEmpty) return '';
+
+  try {
+    final joinDate = DateTime.parse(joiningDate);
+    final now = DateTime.now();
+
+    int years = now.year - joinDate.year;
+    int months = now.month - joinDate.month;
+    int days = now.day - joinDate.day;
+
+    // Adjust negatives
+    if (days < 0) {
+      months -= 1;
+      final prevMonth = DateTime(now.year, now.month, 0);
+      days += prevMonth.day;
+    }
+    if (months < 0) {
+      years -= 1;
+      months += 12;
+    }
+
+    // Build readable text
+    final parts = <String>[];
+    if (years > 0) parts.add('$years year${years > 1 ? 's' : ''}');
+    if (months > 0) parts.add('$months month${months > 1 ? 's' : ''}');
+    if (days > 0) parts.add('$days day${days > 1 ? 's' : ''}');
+
+    return parts.isEmpty ? 'Today' : '${parts.join(', ')} ago';
+  } catch (e) {
+    return '';
   }
 }
