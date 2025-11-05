@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "913862869329",
+    "project_id": "hrms-1eb10",
+    "storage_bucket": "hrms-1eb10.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:913862869329:android:6f0f84411cdaf4e9979370",
+        "android_client_info": {
+          "package_name": "com.redefine.hrms"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfBvNn6UCoCtkX1bEAls0Ly_OfJCffLpM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

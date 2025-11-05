@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:hrms/data/models/dashboard/leave_model.dart';
 
 import '../core/api/api_config.dart';
 import '../core/api/gloable_status_code.dart';
 import '../core/api/network_repository.dart';
 import '../core/widgets/component.dart';
 import '../data/models/leave/LeaveModel.dart';
+import '../data/models/leave/all_leave_model.dart';
 import '../main.dart';
 
 enum LeaveStatus { pending, approved, cancelled, rejected }
@@ -67,22 +67,28 @@ class LeaveProvider with ChangeNotifier {
   }
 
   bool _isHalfDay = false;
-  int leaveDays = 0;
+  double leaveDays = 0; // change from int to double
+  String _selectedHalfType = "First Half";
+  String get selectedHalfType => _selectedHalfType;
   bool get isHalfDay => _isHalfDay;
-  void setHalfDay(bool value) {
-    _isHalfDay = value;
+  void setSelectedHalfType(String value) {
+    _selectedHalfType = value;
     notifyListeners();
   }
+
+
   //Date
 
   DateTime? _fromDate;
   DateTime? _toDate;
 
   DateTime? get fromDate => _fromDate;
+
   DateTime? get toDate => _toDate;
 
-var tetReason=TextEditingController();
-  void setFromDate(DateTime date) {
+  var tetReason = TextEditingController();
+
+ /* void setFromDate(DateTime date) {
     _fromDate = date;
 
     // Reset toDate if it's before fromDate
@@ -99,28 +105,77 @@ var tetReason=TextEditingController();
     _toDate = date;
     _calculateDays();
     notifyListeners();
+  }*/
+  void setFromDate(DateTime date) {
+    _fromDate = date;
+
+    // Reset toDate if it's before fromDate
+    if (toDate != null && toDate!.isBefore(fromDate!)) {
+      _toDate = null;
+    }
+
+    _calculateDays();
+    notifyListeners();
   }
 
+  void setToDate(DateTime date) {
+    _toDate = date;
+
+    // If range is more than 1 day, turn off half-day
+    if (_fromDate != null && toDate!.difference(_fromDate!).inDays > 0) {
+      _isHalfDay = false;
+      _selectedHalfType = '';
+    }
+
+    _calculateDays();
+    notifyListeners();
+  }
+
+
   void _calculateDays() {
-    if (fromDate != null && toDate != null) {
-      leaveDays = toDate!.difference(fromDate!).inDays + 1;
+    if (_fromDate != null && _toDate != null) {
+      int fullDays = _toDate!.difference(_fromDate!).inDays + 1;
+
+      // If half-day is selected and only 1 day
+      leaveDays = (_isHalfDay && fullDays == 1) ? 0.5 : fullDays.toDouble();
+    } else if (_fromDate != null && _toDate == null && _isHalfDay) {
+      leaveDays = 0.5;
     } else {
       leaveDays = 0;
     }
   }
 
+  void setHalfDay(bool value) {
+    // Only allow half-day if fromDate == toDate or toDate is null
+    if (fromDate != null && toDate != null && toDate!.difference(fromDate!).inDays > 0) {
+      _isHalfDay = false; // cannot set half-day on multiple days
+    } else {
+      _isHalfDay = value;
+    }
+
+    _calculateDays();
+    notifyListeners();
+  }
+  /*void setHalfDay(bool value) {
+   _isHalfDay = value;
+    _calculateDays(); // Recalculate leave days when half-day changes
+    notifyListeners();
+  }*/
   void clearDates() {
     _fromDate = null;
     _toDate = null;
     notifyListeners();
   }
-  String ?_leaveType ;
 
-  String ? get leaveType => _leaveType;
+  String? _leaveType;
+
+  String? get leaveType => _leaveType;
+
   void setLeaveType(String value) {
     _leaveType = value;
     notifyListeners();
   }
+
   void clearLeaveType() {
     _fromDate = null;
     _toDate = null;
@@ -131,7 +186,6 @@ var tetReason=TextEditingController();
     notifyListeners();
   }
 
-
   bool _isLoading = false;
 
   bool get isLoading => _isLoading;
@@ -140,9 +194,11 @@ var tetReason=TextEditingController();
     _isLoading = val;
     notifyListeners();
   }
-  LeaveModel ? _leaveModel;
+
+  LeaveModel? _leaveModel;
 
   LeaveModel? get leaveModel => _leaveModel;
+
   Future<void> getLeaveData({required Map<String, dynamic> body}) async {
     _setLoading(true);
     try {
@@ -157,7 +213,7 @@ var tetReason=TextEditingController();
         final decoded = json.decode(response);
         _leaveModel = LeaveModel.fromJson(json.decode(response));
 
-        print('======$decoded');
+        debugPrint('======$decoded');
         _setLoading(false);
       } else {
         showCommonDialog(
@@ -173,6 +229,7 @@ var tetReason=TextEditingController();
       _setLoading(false);
     }
   }
+
   Future<void> addLeaveAPI({required Map<String, dynamic> body}) async {
     _setLoading(true);
     try {
@@ -182,11 +239,28 @@ var tetReason=TextEditingController();
         body: body,
         headers: null,
       );
-      print('==globalStatusCode===$globalStatusCode');
+      debugPrint('==globalStatusCode===$globalStatusCode');
       if (globalStatusCode == 200) {
         final decoded = json.decode(response);
 
-        print('=====$decoded');
+        if (decoded == "created") {
+          showCommonDialog(
+            title: "Success",
+            context: navigatorKey.currentContext!,
+            content: "Leave applied successfully!",
+            showCancel: false,
+          );
+
+          clearLeaveType();
+        } else {
+          showCommonDialog(
+            title: "Message",
+            context: navigatorKey.currentContext!,
+            content: decoded,
+            showCancel: false,
+          );
+        }
+
         _setLoading(false);
       } else {
         showCommonDialog(
@@ -204,10 +278,62 @@ var tetReason=TextEditingController();
 
   LeaveTypes? _selectedLeaveType;
 
-  LeaveTypes ? get selectedLeaveType => _selectedLeaveType;
+  LeaveTypes? get selectedLeaveType => _selectedLeaveType;
 
   void setSelectedLeaveType(LeaveTypes type) {
     _selectedLeaveType = type;
     notifyListeners();
   }
+
+  LeaveResponse? _allLeaveModel;
+  LeaveResponse? get allLeaveModel => _allLeaveModel;
+  Future<void> getAllLeave({required Map<String, dynamic> body}) async {
+    _setLoading(true);
+    try {
+      final response = await callApi(
+        url: ApiConfig.getAllLeave,
+        method: HttpMethod.POST,
+        body: body,
+        headers: null,
+      );
+
+      debugPrint('API Status Code: $globalStatusCode');
+      debugPrint('Raw Response: $response');
+
+      if (globalStatusCode == 200) {
+        // Decode response
+        final decoded = json.decode(response);
+
+        // Parse JSON into model
+        _allLeaveModel = LeaveResponse.fromJson(decoded);
+
+        // Safe debug prints
+        final leaveList = _allLeaveModel?.data;
+        if (leaveList != null && leaveList.isNotEmpty) {
+          debugPrint('Total leaves: ${leaveList.length}');
+          debugPrint('First leave status: ${leaveList.first.status}');
+          debugPrint('First leave type: ${leaveList.first.leaveType?.leavetype ?? 'N/A'}');
+        } else {
+          debugPrint('No leave data available.');
+        }
+      } else {
+        // Show error dialog
+        showCommonDialog(
+          showCancel: false,
+          title: "Error",
+          context: navigatorKey.currentContext!,
+          content: errorMessage,
+        );
+      }
+    } catch (e, stacktrace) {
+      // Print full error with stacktrace for better debugging
+      debugPrint("Error while fetching leave data: $e");
+
+    } finally {
+      _setLoading(false);
+      notifyListeners();
+    }
+  }
+
+
 }

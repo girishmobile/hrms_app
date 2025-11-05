@@ -1,8 +1,11 @@
 
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:hrms/data/models/dashboard/leave_model.dart';
+import 'package:hrms/data/models/dashboard/current_attendace_model.dart';
+import 'package:hrms/data/models/leave/LeaveCountDataModel.dart';
+import 'package:hrms/data/models/notification/notification_model.dart';
 
 import '../core/api/api_config.dart';
 import '../core/api/gloable_status_code.dart';
@@ -72,7 +75,14 @@ class DashboardProvider with ChangeNotifier {
 
 
 
-
+  final List<Color> colors = [
+    Colors.orange,
+    Colors.red,
+    Colors.green,
+    Colors.grey,
+    Colors.blue,
+    Colors.redAccent,
+  ];
 
 
   final List<Map<String, dynamic>> allLeaveDetails = [
@@ -734,7 +744,159 @@ class DashboardProvider with ChangeNotifier {
         final decoded = json.decode(response);
         _birthdayModel = HolidayBirthdayModel.fromJson(json.decode(response));
 
-        print('======$decoded');
+        debugPrint('======$decoded');
+        _setLoading(false);
+      } else {
+        showCommonDialog(
+          showCancel: false,
+          title: "Error",
+          context: navigatorKey.currentContext!,
+          content: errorMessage,
+        );
+      }
+      _setLoading(false);
+      notifyListeners();
+    } catch (e) {
+      _setLoading(false);
+    }
+  }
+  CurrentAttendanceModel  ? _currentAttendanceModel;
+
+  CurrentAttendanceModel? get currentAttendanceModel => _currentAttendanceModel;
+  Future<void> getCurrentAttendanceRecord() async {
+    _setLoading(true);
+    try {
+      final response = await callApi(
+        url: ApiConfig.currentAttendanceRecord,
+        method: HttpMethod.GET,
+
+        headers: null,
+      );
+      debugPrint('======$globalStatusCode');
+      if (globalStatusCode == 200) {
+        _currentAttendanceModel = CurrentAttendanceModel.fromJson(json.decode(response));
+
+
+        _setLoading(false);
+      } else {
+        showCommonDialog(
+          showCancel: false,
+          title: "Error",
+          context: navigatorKey.currentContext!,
+          content: errorMessage,
+        );
+      }
+      _setLoading(false);
+      notifyListeners();
+    } catch (e) {
+      _setLoading(false);
+    }
+  }
+
+  List<NotificationModel> _notificationList = [];
+
+  List<NotificationModel> get notificationList => _notificationList;
+  Future<void> getNotification() async {
+    _setLoading(true);
+    try {
+      final response = await callApi(
+        url: ApiConfig.getNotification  ,
+        method: HttpMethod.GET,
+
+        headers: null,
+      );
+
+      if (globalStatusCode == 200) {
+
+        final decoded = json.decode(response);
+
+        // Ensure it's a list
+        if (decoded is List) {
+          _notificationList = decoded.map((e) => NotificationModel.fromJson(e)).toList();
+        } else {
+          _notificationList = [];
+        }
+
+        debugPrint('======$decoded');
+        _setLoading(false);
+      } else {
+        showCommonDialog(
+          showCancel: false,
+          title: "Error",
+          context: navigatorKey.currentContext!,
+          content: errorMessage,
+        );
+      }
+      _setLoading(false);
+      notifyListeners();
+    } catch (e) {
+      _setLoading(false);
+    }
+  }
+
+  List<LeaveCountDataModel> _leaveCountData = [];
+
+  List<LeaveCountDataModel> get leaveCountData => _leaveCountData;
+  Future<void> getLeaveCountData() async {
+    _setLoading(true);
+    try {
+      final response = await callApi(
+        url: ApiConfig.leaveCountData,
+        method: HttpMethod.GET,
+        headers: null,
+      );
+
+      if (globalStatusCode == 200) {
+        final decoded = json.decode(response);
+
+        if (decoded is Map<String, dynamic>) {
+          _leaveCountData = decoded.entries
+              .map((e) => LeaveCountDataModel(
+            title: e.key,
+            count: e.value,
+          ))
+              .toList();
+        } else {
+          _leaveCountData = [];
+        }
+
+        debugPrint('======$decoded');
+      } else {
+        showCommonDialog(
+          showCancel: false,
+          title: "Error",
+          context: navigatorKey.currentContext!,
+          content: errorMessage,
+        );
+      }
+    } catch (e) {
+      debugPrint('Error: $e');
+    } finally {
+      _setLoading(false);
+      notifyListeners();
+    }
+  }
+
+
+  Future<void> updateFCMToken() async {
+    _setLoading(true);
+    try {
+
+      Map<String, dynamic> body ={
+        "fcm_token":await FirebaseMessaging.instance.getToken()
+      };
+      final response = await callApi(
+        url: ApiConfig.updateFCMToken,
+        method: HttpMethod.POST,
+
+        body: body,
+        headers: null,
+      );
+
+      if (globalStatusCode == 200) {
+        final decoded = json.decode(response);
+
+        debugPrint('======$decoded');
         _setLoading(false);
       } else {
         showCommonDialog(

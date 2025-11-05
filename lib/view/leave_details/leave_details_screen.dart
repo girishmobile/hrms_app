@@ -2,128 +2,232 @@ import 'package:flutter/material.dart';
 import 'package:hrms/core/constants/color_utils.dart';
 import 'package:hrms/core/widgets/component.dart';
 import 'package:hrms/provider/dashboard_provider.dart';
+import 'package:hrms/provider/leave_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/constants/date_utils.dart';
 
-class LeaveDetailsScreen extends StatelessWidget {
+class LeaveDetailsScreen extends StatefulWidget {
   final String? title;
   final Color? color;
 
   const LeaveDetailsScreen({super.key, this.title, this.color});
 
   @override
+  State<LeaveDetailsScreen> createState() => _LeaveDetailsScreenState();
+}
+
+class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      init();
+    });
+  }
+
+  Future<void> init() async {
+    final profile = Provider.of<LeaveProvider>(context, listen: false);
+    final Map<String, dynamic> body = {
+      "draw": 1,
+      "columns": [
+        {
+          "data": 0,
+          "name": "id",
+          "searchable": true,
+          "orderable": false,
+          "search": {
+            "value": "",
+            "regex": false,
+          },
+        },
+        {
+          "data": 1,
+          "name": "leavetype",
+          "searchable": true,
+          "orderable": true,
+          "search": {
+            "value": "",
+            "regex": false,
+          },
+        },
+        {
+          "data": 2,
+          "name": "leave_date",
+          "searchable": true,
+          "orderable": true,
+          "search": {
+            "value": widget.title=="All" ?"all":"",
+            "regex": false,
+          },
+        },
+        {
+          "data": 3,
+          "name": "leave_end_date",
+          "searchable": true,
+          "orderable": true,
+          "search": {
+            "value": "",
+            "regex": false,
+          },
+        },
+        {
+          "data": 4,
+          "name": "leave_count",
+          "searchable": true,
+          "orderable": true,
+          "search": {
+            "value": widget.title=="All" ?"all":widget.title,
+            "regex": false,
+          },
+        },
+        {
+          "data": 5,
+          "name": "status",
+          "searchable": true,
+          "orderable": true,
+          "search": {
+            "value": "",
+            "regex": false,
+          },
+        },
+      ],
+      "order": [],
+      "start": 0,
+      "length": 15,
+      "search": {
+        "value":widget.title=="All"?"":"",
+        "regex": false,
+      },
+    };
+
+    print('widget====${body}');
+    print('widget====${widget.title.toString()}');
+    await profile.getAllLeave(body: body);
+
+  }
+  @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<DashboardProvider>(context);
-    final leaves = provider.getLeavesByType(title ?? 'All');
 
-    return commonScaffold(
-      appBar: commonAppBar(
-        context: context,
-        centerTitle: true,
-        title: title ?? 'Leaves',
-      ),
-      body: leaves.isEmpty
-          ? Center(child: Text("No ${title ?? ''} available"))
-          : ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: leaves.length,
-              itemBuilder: (context, index) {
-                final data = leaves[index];
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: color ?? colorBorder),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  padding: const EdgeInsets.only(
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    top: 0,
-                  ),
-                  child: IntrinsicHeight(
-                    child: Row(
-                      spacing: 1,
-                      children: [
-                        fromToView(
-                          from: data['from'],
-                          to: data['to'],
-                          color: color ?? Colors.red,
-                        ),
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.only(
-                              left: 0,
-                              right: 16,
-                              bottom: 16,
-                              top: 16,
-                            ),
-                            color:
-                                color?.withValues(alpha: 0.03) ?? Colors.white,
-                            child: Column(
-                              spacing: 8,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+    return Consumer<LeaveProvider>(
+      builder: (context,provider,child) {
+        return commonScaffold(
+          appBar: commonAppBar(
+            context: context,
+            centerTitle: true,
+            title: widget.title ?? 'Leaves',
+          ),
+          body: Stack(
+            children: [
+              provider.allLeaveModel?.data?.isEmpty==true
+                  ? Center(child: Text("No ${widget.title ?? ''} available"))
+                  : ListView.builder(
+                      padding: const EdgeInsets.all(16),
+                      itemCount:  provider.allLeaveModel?.data?.length??0,
+                      itemBuilder: (context, index) {
+                        final data = provider.allLeaveModel?.data?[index];
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 10),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: widget.color ?? colorBorder),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.only(
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            top: 0,
+                          ),
+                          child: IntrinsicHeight(
+                            child: Row(
+                              spacing: 1,
                               children: [
-                                commonItemView(
-                                  title: "Leave Type",
-                                  value: data['type'],
+                                fromToView(
+                                  from: data?.leaveDate?.date??DateTime.now().toString(),
+                                  to: data?.leaveEndDate?.date??DateTime.now().toString(),
+                                  color: widget.color ?? Colors.red,
                                 ),
-                                commonItemView(
-                                  title: "Reason",
-                                  value: data['reason'],
-                                ),
+                                Expanded(
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                      left: 0,
+                                      right: 16,
+                                      bottom: 16,
+                                      top: 16,
+                                    ),
+                                    color:
+                                        widget.color?.withValues(alpha: 0.03) ?? Colors.white,
+                                    child: Column(
+                                      spacing: 8,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        commonItemView(
+                                          title: "Leave Type",
+                                          value: data?.leaveType?.leavetype??'',
+                                        ),
+                                        commonItemView(
+                                          title: "Reason",
+                                          value: data?.reason??'',
+                                        ),
 
-                                commonItemView(
-                                  title: "Days",
-                                  value: '${data['days']}',
-                                ),
-                                commonItemView(
-                                  title: "Applied On",
-                                  value: '${data['appliedOn']}',
-                                ),
-                                commonItemView(
-                                  title: "Status",
-                                  customView: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Container(
-                                        decoration: commonBoxDecoration(
-                                          borderRadius: 4,
-                                          borderColor: color ?? Colors.red,
-                                          color:
-                                              color?.withValues(alpha: 0.04) ??
-                                              Colors.red,
+                                        commonItemView(
+                                          title: "Days",
+                                          value: data?.leaveCount??'',
                                         ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            vertical: 5,
-                                            horizontal: 5,
-                                          ),
-                                          child: Center(
-                                            child: commonText(
-                                              text: data['status'],
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w500,
-                                            ),
+                                       /* commonItemView(
+                                          title: "Applied On",
+                                          value: '${data['appliedOn']}',
+                                        ),*/
+                                        commonItemView(
+                                          title: "Status",
+                                          customView: Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Container(
+                                                decoration: commonBoxDecoration(
+                                                  borderRadius: 4,
+                                                  borderColor: widget.color ?? Colors.red,
+                                                  color:
+                                                      widget.color?.withValues(alpha: 0.04) ??
+                                                      Colors.red,
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.symmetric(
+                                                    vertical: 5,
+                                                    horizontal: 5,
+                                                  ),
+                                                  child: Center(
+                                                    child: commonText(
+                                                      text: data?.status??'',
+                                                      fontSize: 10,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                        ),
-                      ],
+                        );
+                      },
                     ),
-                  ),
-                );
-              },
-            ),
+
+              provider.isLoading?showLoaderList():SizedBox.shrink()
+            ],
+          ),
+        );
+      }
     );
   }
 

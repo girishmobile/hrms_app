@@ -9,6 +9,7 @@ import 'package:http/http.dart';
 
 
 import '../../main.dart';
+import '../routes/app_routes.dart';
 import 'gloable_status_code.dart';
 
 enum HttpMethod { GET, POST, PUT, PATCH, DELETE }
@@ -112,7 +113,27 @@ Future getResponse(Response response) async {
     final parsedJson = jsonDecode(response.body.toString());
     errorMessage = parsedJson['message'].toString();
     return "{\"status\":\"0\",\"message\":\"$error\"}";
-  } else if (globalStatusCode == 400) {
+  }
+
+
+  else if (globalStatusCode == 401) {
+    try {
+
+
+      // redirect to login page after unauthorized
+      Future.microtask(() {
+        navigatorKey.currentState?.pushNamedAndRemoveUntil(
+          RouteName.loginScreen,
+              (route) => false,
+        );
+      });
+
+      return "{\"status\":\"false\",\"message\":\"Error\"}";
+    } catch (e) {
+      return "{\"status\":\"false\",\"message\":\"Unauthorized access\"}";
+    }
+  }
+  else if (globalStatusCode == 400) {
     final parsedJson = jsonDecode(response.body.toString());
     errorMessage = parsedJson['message'].toString();
 

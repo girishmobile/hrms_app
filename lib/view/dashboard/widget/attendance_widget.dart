@@ -9,12 +9,12 @@ import '../../../provider/dashboard_provider.dart';
 import '../../leave_details/leave_details_args.dart';
 
 Widget buildItemView({
-  required LeaveModel item,
-  required DashboardProvider provider,
+  required Map<String, dynamic> item,
+ // required DashboardProvider provider,
   required BuildContext context,
 }) {
   return commonInkWell(
-    onTap: () {
+   /* onTap: () {
       if (!item.title.toString().toLowerCase().contains('apply')) {
         provider.setSelectedLeaveType(item.title ?? '');
         Navigator.pushNamed(
@@ -28,12 +28,12 @@ Widget buildItemView({
           ),
         );
       }
-    },
+    },*/
     child: Container(
       decoration: commonBoxDecoration(
         borderRadius: 8,
         borderColor: colorBorder,
-        color: item.bgColor?.withValues(alpha: 0.04) ?? Colors.amber,
+        //color: item.bgColor?.withValues(alpha: 0.04) ?? Colors.amber,
       ),
       child: Padding(
         padding: const EdgeInsets.all(12),
@@ -42,7 +42,7 @@ Widget buildItemView({
           children: [
             const SizedBox(height: 10),
             commonText(
-              text: item.title ?? '',
+              text: item['title']??'',
               fontSize: 14,
               fontWeight: FontWeight.w500,
               color: colorProduct,
@@ -50,12 +50,12 @@ Widget buildItemView({
             const SizedBox(height: 6),
             AnimatedCounter(
               leftText: '',
-              rightText: '${item.desc?.isNotEmpty == true ? item.desc : ''}',
-              endValue: item.count ?? 0,
+              rightText:  item['desc'],
+              endValue: item['value'],
               duration: Duration(seconds: 2),
               style: commonTextStyle(
-                fontSize: 26,
-                color: item.bgColor,
+                fontSize: 24,
+               // color: item.bgColor,
                 fontWeight: FontWeight.w700,
               ),
             ),

@@ -21,6 +21,7 @@ const String icMenuUser="$iconDashboardPath/user.png";
 const String icEdit="$iconDashboardPath/edit.png";
 const String icGirl="$iconDashboardPath/ic_girl_dummy.jpg";
 const String icBoy="$iconDashboardPath/ic_boy_dummy.jpg";
+const String icErrorImage="$iconDashboardPath/icErrorImage.png";
 
 
 //==============================Product=============================

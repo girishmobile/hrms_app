@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hrms/core/constants/image_utils.dart';
 import 'package:hrms/core/constants/string_utils.dart';
+import 'package:hrms/core/routes/app_routes.dart';
+import 'package:hrms/main.dart';
 import 'package:hrms/view/dashboard/page/attendance_page.dart';
 import 'package:hrms/view/dashboard/page/calender_page.dart';
 import 'package:hrms/view/dashboard/page/home_page.dart';
@@ -50,7 +52,42 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 backgroundColor: colorProduct,
 
                 centerTitle: true,
-                actions: [],
+                actions: [
+                  Stack(
+                    children: [
+
+                      IconButton(
+                          iconSize: 30,
+                          onPressed: (){
+
+                            navigatorKey.currentState?.pushNamed(RouteName.notificationScreen);
+                          }, icon: Icon(
+
+                        Icons.notifications_none,color: Colors.white
+                        ,)),
+                      Positioned(
+                          right: 3,
+                          top: 3,
+
+                          child:  Container(
+                        width: 20,
+                        height: 20,
+                        decoration: commonBoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.red
+                        ),
+                            child: Center(
+                              child: commonText(text: "0",fontSize: 10,fontWeight: FontWeight.w800,color: Colors.white),
+                            ),
+                      )),
+
+                    ],
+                  ),
+
+                  SizedBox(width: 10,),
+                 
+
+                ],
                 title: provider.appbarTitle ?? home,
                 context: context,
                 leading: Container(

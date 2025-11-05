@@ -8,5 +8,6 @@ class RouteName {
   static const String kpiDetailsScreen = "/KpiDetailsScreen";
   static const String holidayScreen = "/HolidayScreen";
   static const String upcomingBirthdayScreen = "/UpcomingBirthdayScreen";
+  static const String notificationScreen = "/NotificationScreen";
 
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hrms/core/api/api_config.dart';
 import 'package:hrms/core/constants/image_utils.dart';
 import 'package:hrms/data/models/dashboard/leave_model.dart';
 import 'package:hrms/provider/dashboard_provider.dart';
@@ -9,15 +10,29 @@ import '../../../core/routes/app_routes.dart';
 import '../../../core/widgets/animated_counter.dart';
 import '../../../core/widgets/component.dart';
 import '../../../data/models/dashboard/HolidayBirthdayModel.dart';
+import '../../../data/models/leave/LeaveCountDataModel.dart';
 import '../../leave_details/leave_details_args.dart';
 
 Widget buildItemView({
-  required LeaveModel item,
+  required LeaveCountDataModel item,
   required DashboardProvider provider,
+  required Color  color,
   required BuildContext context,
 }) {
   return commonInkWell(
-    onTap: () {
+    onTap: (){
+      provider.setSelectedLeaveType(item.title ?? '');
+      Navigator.pushNamed(
+        context,
+
+        RouteName.leaveDetailsScreen, // define this route in app_routes.dart
+        arguments: LeaveDetailsArgs(
+          title: item.title ?? '',
+          color:color
+        ),
+      );
+    },
+  /*  onTap: () {
       if (!item.title.toString().toLowerCase().contains('apply')) {
         provider.setSelectedLeaveType(item.title ?? '');
         Navigator.pushNamed(
@@ -37,12 +52,12 @@ Widget buildItemView({
           RouteName.addLeaveScreen, // define this route in app_routes.dart
         );
       }
-    },
+    },*/
     child: Container(
       decoration: commonBoxDecoration(
         borderRadius: 8,
         borderColor: colorBorder,
-        color: item.bgColor?.withValues(alpha: 0.04) ?? Colors.amber,
+        color: color.withValues(alpha: 0.04) ?? Colors.amber,
       ),
 
       child: Column(
@@ -67,7 +82,7 @@ Widget buildItemView({
                   duration: Duration(seconds: 2),
                   style: commonTextStyle(
                     fontSize: 26,
-                    color: item.bgColor,
+                    color:color,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -90,7 +105,14 @@ double ?verticalPadding,
       onTap: () {},
       child: Container(
         decoration: commonBoxDecoration(
-          color: bgColor.withValues(alpha: 0.1),
+          image: DecorationImage(
+            opacity: 0.3,
+
+              fit: BoxFit.fill,
+              image: NetworkImage(
+
+              '${ApiConfig.imageBaseUrl}/${item?.holidayImage??''}')),
+          color: Colors.black.withValues(alpha: 0.1),
           borderRadius: 8,
           borderColor: colorBorder
         ),
@@ -99,7 +121,9 @@ double ?verticalPadding,
           child: Row(
             spacing: 10,
             children: [
-              Container(
+              
+             // commonNetworkImage('${ApiConfig.imageBaseUrl}/${item?.holidayImage??''}'),
+            Container(
                 clipBehavior: Clip.none,
                 padding: EdgeInsets.symmetric(horizontal: 20,vertical: verticalPadding??0),
                 height: double.infinity,
@@ -188,7 +212,7 @@ Widget buildBirthdayItemView({
     child: commonInkWell(
       onTap: () {},
       child: Container(
-        padding:  EdgeInsets.symmetric(horizontal: 10,vertical: verticalPadding??0),
+        padding:  EdgeInsets.symmetric(horizontal: 5,vertical: verticalPadding??0),
 
         decoration: commonBoxDecoration(
           color: bgColor.withValues(alpha: 0.1),
@@ -200,57 +224,65 @@ Widget buildBirthdayItemView({
 
           children: [
 
-            Row(
-              spacing: 10,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                commonAssetImage(icBoy,width: 50,height: 50),
-                Column(
-                  spacing: 3,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    commonText(
-                      text:'${ item?.firstname} ${ item?.lastname}',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: colorProduct,
-                    ),
+            IntrinsicHeight(
+              child: Row(
+                spacing: 10,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadiusGeometry.circular(8),
 
-                    commonText(
-                      text: '${item?.department}',
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: colorProduct,
-                    ),
-                    commonText(
-                      text: '${item?.designation}',
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: colorProduct,
-                    ),
-                    Row(
 
-                      children: [
-                        commonText(
-                          fontWeight: FontWeight.w400,
-                          text: formatDay(item?.dateOfBirth?.date??DateTime.now().toString()),
-                          fontSize: 12,
-                          color: colorText,
-                        ),
-
-                        commonText(
-                          fontWeight: FontWeight.w400,
-                          text: formatDate(item?.dateOfBirth?.date??DateTime.now().toString(),format: "MMMM yyyy"),
-                          fontSize: 12,
-                          color: colorText,
-                        ),
-                      ],
-                    )
-                  ],
-                )
-              ],
+                      child: commonAssetImage(
+                          fit: BoxFit.cover,
+                          icBoy,width: 120,height: double.infinity)),
+                  Column(
+                    spacing: 3,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      commonText(
+                        text:'${ item?.firstname} ${ item?.lastname}',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: colorProduct,
+                      ),
+              
+                   /*   commonText(
+                        text: '${item?.department}',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: colorProduct,
+                      ),*/
+                      commonText(
+                        text: '${item?.designation}',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: colorProduct,
+                      ),
+                      Row(
+              
+                        children: [
+                          commonText(
+                            fontWeight: FontWeight.w400,
+                            text: formatDay(item?.dateOfBirth?.date??DateTime.now().toString()),
+                            fontSize: 12,
+                            color: colorText,
+                          ),
+              
+                          commonText(
+                            fontWeight: FontWeight.w400,
+                            text: formatDate(item?.dateOfBirth?.date??DateTime.now().toString(),format: "MMMM yyyy"),
+                            fontSize: 12,
+                            color: colorText,
+                          ),
+                        ],
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
           ],
         ),
@@ -259,7 +291,7 @@ Widget buildBirthdayItemView({
   );
 }
 
-Widget commonTopView({String? title, int? value, String? desc}) {
+Widget commonTopView({String? title, int? value, String? desc,String ?leftText }) {
   return Expanded(
     child: Column(
       spacing: 5,
@@ -272,7 +304,7 @@ Widget commonTopView({String? title, int? value, String? desc}) {
           fontWeight: FontWeight.w700,
         ),
         AnimatedCounter(
-          leftText: '',
+          leftText:leftText!=null?leftText:'',
           rightText: ' $desc',
           endValue: value ?? 0,
           duration: Duration(seconds: 2),

@@ -689,7 +689,7 @@ Widget showLoaderList() {
     child: Container(
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [colorLogo, colorLogo],
+          colors: [colorProduct, colorProduct],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -930,9 +930,9 @@ Widget commonNetworkImage(
                   ),
               errorWidget: (context, url, error) =>
                   errorWidget ??
-                  Center(child: commonAssetImage('icErrorImage')),
+                  Center(child: commonAssetImage(icErrorImage)),
             )
-          : (errorWidget ?? Center(child: commonAssetImage('icErrorImage'))),
+          : (errorWidget ?? Center(child: commonAssetImage(icErrorImage))),
     ),
   );
 }
@@ -1062,4 +1062,10 @@ Widget commonHeadingView({String? title}) {
       ],
     ),
   );
+}
+
+
+void showToast(String message) {
+  ScaffoldMessenger.of(navigatorKey.currentContext!)
+      .showSnackBar(SnackBar(content: Text(message)));
 }

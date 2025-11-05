@@ -19,154 +19,151 @@ class _CalenderPageState extends State<CalenderPage> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => CalendarProvider(),
-      child: Container(
+      child: Consumer<CalendarProvider>(
+        builder: (context, provider, child) {
+          final selectedEvents = provider.getEventsForDay(_selectedDay);
 
-        child: Consumer<CalendarProvider>(
-          builder: (context, provider, child) {
-            final selectedEvents = provider.getEventsForDay(_selectedDay);
-
-            return Column(
-              children: [
-                TableCalendar(
-                  headerStyle:  HeaderStyle(
-                    formatButtonVisible: false,
-                    titleCentered: true,
-                    titleTextStyle: commonTextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: colorProduct,
-                    ),
+          return Column(
+            children: [
+              TableCalendar(
+                headerStyle:  HeaderStyle(
+                  formatButtonVisible: false,
+                  titleCentered: true,
+                  titleTextStyle: commonTextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: colorProduct,
                   ),
-                  focusedDay: _selectedDay,
-                  firstDay: DateTime.utc(2025, 1, 1),
-                  lastDay: DateTime.utc(2025, 12, 31),
-                  selectedDayPredicate: (day) => isSameDay(day, _selectedDay),
-                  eventLoader: provider.getEventsForDay,
-                  onDaySelected: (selectedDay, focusedDay) {
-                    setState(() {
-                      _selectedDay = selectedDay;
-                    });
+                ),
+                focusedDay: _selectedDay,
+                firstDay: DateTime.utc(2025, 1, 1),
+                lastDay: DateTime.utc(2025, 12, 31),
+                selectedDayPredicate: (day) => isSameDay(day, _selectedDay),
+                eventLoader: provider.getEventsForDay,
+                onDaySelected: (selectedDay, focusedDay) {
+                  setState(() {
+                    _selectedDay = selectedDay;
+                  });
+                },
+                calendarStyle: CalendarStyle(
+                  selectedDecoration: BoxDecoration(
+                    color: colorProduct,
+                    shape: BoxShape.circle,
+                  ),
+                  todayDecoration: BoxDecoration(
+                    color: colorProduct.withValues(alpha: 0.4),
+                    shape: BoxShape.circle,
+                  ),
+                  todayTextStyle: commonTextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                  selectedTextStyle: commonTextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                  weekendTextStyle: commonTextStyle (color: Colors.redAccent),
+                ),
+                calendarBuilders: CalendarBuilders(
+                  markerBuilder: (context, date, events) {
+                    if (events.isEmpty) return const SizedBox();
+
+                    final firstEvent = events.first;
+                    if (firstEvent is! Map<String, dynamic>) {
+                      return const SizedBox();
+                    }
+
+                    final eventType = firstEvent['type']?.toString() ?? '';
+                    Color color;
+                    if (eventType == 'leave') {
+                      color = Colors.red;
+                    } else if (eventType == 'attendance') {
+                      color = Colors.green;
+                    } else {
+                      color = Colors.blue;
+                    }
+
+                    return Container(
+                      width: 8,
+                      height: 8,
+                      margin: const EdgeInsets.only(top: 2),
+                      decoration: BoxDecoration(
+                        color: color,
+                        shape: BoxShape.circle,
+                      ),
+                    );
                   },
-                  calendarStyle: CalendarStyle(
-                    selectedDecoration: BoxDecoration(
-                      color: colorProduct,
-                      shape: BoxShape.circle,
-                    ),
-                    todayDecoration: BoxDecoration(
-                      color: colorProduct.withValues(alpha: 0.4),
-                      shape: BoxShape.circle,
-                    ),
-                    todayTextStyle: commonTextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                    selectedTextStyle: commonTextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                    weekendTextStyle: commonTextStyle (color: Colors.redAccent),
-                  ),
-                  calendarBuilders: CalendarBuilders(
-                    markerBuilder: (context, date, events) {
-                      if (events.isEmpty) return const SizedBox();
+                ),
+              ),
 
-                      final firstEvent = events.first;
-                      if (firstEvent is! Map<String, dynamic>) {
-                        return const SizedBox();
-                      }
 
-                      final eventType = firstEvent['type']?.toString() ?? '';
-                      Color color;
-                      if (eventType == 'leave') {
-                        color = Colors.red;
-                      } else if (eventType == 'attendance') {
-                        color = Colors.green;
-                      } else {
-                        color = Colors.blue;
-                      }
+              const Divider(height: 20, thickness: 0.5, color: Colors.grey),
+              const SizedBox(height: 5),
+              // Legend
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: const [
+                  _Legend(color: Colors.red, label: 'Leave'),
+                  _Legend(color: Colors.green, label: 'Attendance'),
+                  _Legend(color: Colors.blue, label: 'Holiday'),
+                ],
+              ),
+              const SizedBox(height: 5),
+              const Divider(height: 20, thickness: 0.5, color: Colors.grey),
 
-                      return Container(
-                        width: 8,
-                        height: 8,
-                        margin: const EdgeInsets.only(top: 2),
-                        decoration: BoxDecoration(
-                          color: color,
-                          shape: BoxShape.circle,
+              // Show selected date events below calendar
+              Expanded(
+                child: selectedEvents.isEmpty
+                    ? Center(
+                        child: commonText(
+                          text: "No events on this day",
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                         ),
-                      );
-                    },
-                  ),
-                ),
-
-
-                const Divider(height: 20, thickness: 0.5, color: Colors.grey),
-                const SizedBox(height: 5),
-                // Legend
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
-                    _Legend(color: Colors.red, label: 'Leave'),
-                    _Legend(color: Colors.green, label: 'Attendance'),
-                    _Legend(color: Colors.blue, label: 'Holiday'),
-                  ],
-                ),
-                const SizedBox(height: 5),
-                const Divider(height: 20, thickness: 0.5, color: Colors.grey),
-
-                // Show selected date events below calendar
-                Expanded(
-                  child: selectedEvents.isEmpty
-                      ? Center(
-                          child: commonText(
-                            text: "No events on this day",
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        )
-                      : ListView.builder(
-                          padding: EdgeInsets.zero,
-                          itemCount: selectedEvents.length,
-                          itemBuilder: (context, index) {
-                            final event = selectedEvents[index];
-                            return Container(
-                              decoration: commonBoxDecoration(
-                                borderColor: colorBorder,
+                      )
+                    : ListView.builder(
+                        padding: EdgeInsets.zero,
+                        itemCount: selectedEvents.length,
+                        itemBuilder: (context, index) {
+                          final event = selectedEvents[index];
+                          return Container(
+                            decoration: commonBoxDecoration(
+                              borderColor: colorBorder,
+                            ),
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            child: ListTile(
+                              leading: Icon(
+                                event['type'] == 'leave'
+                                    ? Icons.event_busy
+                                    : event['type'] == 'attendance'
+                                    ? Icons.check_circle
+                                    : Icons.flag,
+                                color: event['type'] == 'leave'
+                                    ? Colors.red
+                                    : event['type'] == 'attendance'
+                                    ? Colors.green
+                                    : Colors.blue,
                               ),
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 8,
+                              title: commonText(
+                                text: event['title'] ?? '',
+                                fontWeight: FontWeight.w500,
                               ),
-                              child: ListTile(
-                                leading: Icon(
-                                  event['type'] == 'leave'
-                                      ? Icons.event_busy
-                                      : event['type'] == 'attendance'
-                                      ? Icons.check_circle
-                                      : Icons.flag,
-                                  color: event['type'] == 'leave'
-                                      ? Colors.red
-                                      : event['type'] == 'attendance'
-                                      ? Colors.green
-                                      : Colors.blue,
-                                ),
-                                title: commonText(
-                                  text: event['title'] ?? '',
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                subtitle: commonText(
-                                  fontSize: 12,
-                                  text:
-                                      'Type: ${event['type'].toString().toUpperCase()}',
-                                ),
+                              subtitle: commonText(
+                                fontSize: 12,
+                                text:
+                                    'Type: ${event['type'].toString().toUpperCase()}',
                               ),
-                            );
-                          },
-                        ),
-                ),
-              ],
-            );
-          },
-        ),
+                            ),
+                          );
+                        },
+                      ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
