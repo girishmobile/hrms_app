@@ -5,7 +5,6 @@ import 'package:hrms/core/widgets/component.dart';
 
 import '../../core/constants/image_utils.dart';
 import '../../core/hive/app_config_cache.dart';
-import '../../core/hive/user_model.dart';
 import '../../core/routes/app_routes.dart';
 import '../../main.dart';
 
@@ -31,32 +30,25 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void checkStatus() async {
     try {
-      UserModel? user = await AppConfigCache.getUserModel();
+      final user = await AppConfigCache.getUserModel();
+      final isLoggedIn = user?.data?.user?.id != null;
 
-      if (user?.data?.user?.id == null) {
-        // User not logged in → go to login screen
-        Timer(const Duration(seconds: 5), () {
-          navigatorKey.currentState?.pushNamedAndRemoveUntil(
-            RouteName.loginScreen,
-                (Route<dynamic> route) => false,
-          );
-        });
-        return;
-      } else {
-        // User logged in → go to home/dashboard
-        Timer(const Duration(seconds: 3), () {
-          navigatorKey.currentState?.pushNamedAndRemoveUntil(
-            RouteName.dashboardScreen,
-                (Route<dynamic> route) => false,
-          );
-        });
-      }
+      // Delay based on login status
+      final delay = Duration(seconds: isLoggedIn ? 3 : 5);
+      final route = isLoggedIn
+          ? RouteName.dashboardScreen
+          : RouteName.loginScreen;
+
+      Timer(delay, () {
+        navigatorKey.currentState?.pushNamedAndRemoveUntil(
+          route,
+          (Route<dynamic> route) => false,
+        );
+      });
     } catch (e) {
-      print('Error loading user: $e');
+      debugPrint('Error loading user: $e');
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {

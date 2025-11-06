@@ -4,14 +4,14 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:hrms/data/models/dashboard/current_attendace_model.dart';
-import 'package:hrms/data/models/leave/LeaveCountDataModel.dart';
+import 'package:hrms/data/models/leave/leave_count_data_model.dart';
 import 'package:hrms/data/models/notification/notification_model.dart';
 
 import '../core/api/api_config.dart';
 import '../core/api/gloable_status_code.dart';
 import '../core/api/network_repository.dart';
 import '../core/widgets/component.dart';
-import '../data/models/dashboard/HolidayBirthdayModel.dart';
+import '../data/models/dashboard/holiday_birthday_model.dart';
 import '../main.dart';
 class LeaveModel {
   final String? title;
@@ -734,7 +734,7 @@ class DashboardProvider with ChangeNotifier {
     _setLoading(true);
     try {
       final response = await callApi(
-        url: ApiConfig.upcomingLeaveHoliday,
+        url: ApiConfig.upcomingLeaveHolidayUrl,
         method: HttpMethod.GET,
 
         headers: null,
@@ -747,12 +747,12 @@ class DashboardProvider with ChangeNotifier {
         debugPrint('======$decoded');
         _setLoading(false);
       } else {
-        showCommonDialog(
+       /* showCommonDialog(
           showCancel: false,
           title: "Error",
           context: navigatorKey.currentContext!,
           content: errorMessage,
-        );
+        );*/
       }
       _setLoading(false);
       notifyListeners();
@@ -767,7 +767,7 @@ class DashboardProvider with ChangeNotifier {
     _setLoading(true);
     try {
       final response = await callApi(
-        url: ApiConfig.currentAttendanceRecord,
+        url: ApiConfig.currentAttendanceRecordUrl,
         method: HttpMethod.GET,
 
         headers: null,
@@ -779,12 +779,12 @@ class DashboardProvider with ChangeNotifier {
 
         _setLoading(false);
       } else {
-        showCommonDialog(
+        /*showCommonDialog(
           showCancel: false,
           title: "Error",
           context: navigatorKey.currentContext!,
           content: errorMessage,
-        );
+        );*/
       }
       _setLoading(false);
       notifyListeners();
@@ -800,7 +800,7 @@ class DashboardProvider with ChangeNotifier {
     _setLoading(true);
     try {
       final response = await callApi(
-        url: ApiConfig.getNotification  ,
+        url: ApiConfig.getNotificationUrl,
         method: HttpMethod.GET,
 
         headers: null,
@@ -841,7 +841,7 @@ class DashboardProvider with ChangeNotifier {
     _setLoading(true);
     try {
       final response = await callApi(
-        url: ApiConfig.leaveCountData,
+        url: ApiConfig.leaveCountDataUrl,
         method: HttpMethod.GET,
         headers: null,
       );
@@ -862,12 +862,12 @@ class DashboardProvider with ChangeNotifier {
 
         debugPrint('======$decoded');
       } else {
-        showCommonDialog(
+       /* showCommonDialog(
           showCancel: false,
           title: "Error",
           context: navigatorKey.currentContext!,
           content: errorMessage,
-        );
+        );*/
       }
     } catch (e) {
       debugPrint('Error: $e');
@@ -886,7 +886,7 @@ class DashboardProvider with ChangeNotifier {
         "fcm_token":await FirebaseMessaging.instance.getToken()
       };
       final response = await callApi(
-        url: ApiConfig.updateFCMToken,
+        url: ApiConfig.updateFCMTokenUrl,
         method: HttpMethod.POST,
 
         body: body,
@@ -899,12 +899,12 @@ class DashboardProvider with ChangeNotifier {
         debugPrint('======$decoded');
         _setLoading(false);
       } else {
-        showCommonDialog(
+        /*showCommonDialog(
           showCancel: false,
           title: "Error",
           context: navigatorKey.currentContext!,
           content: errorMessage,
-        );
+        );*/
       }
       _setLoading(false);
       notifyListeners();

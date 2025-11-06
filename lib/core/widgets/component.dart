@@ -1,8 +1,6 @@
 import 'dart:async';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hrms/core/constants/image_utils.dart';
@@ -22,13 +20,10 @@ AppBar commonAppBar({
   final List<Color>? gradientColors,
 }) {
   return AppBar(
-
     surfaceTintColor: Colors.transparent,
     iconTheme: iconTheme,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(
-        bottom: Radius.circular(30),
-      ),
+      borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
     ),
     title: Text(
       title.toUpperCase(),
@@ -331,100 +326,6 @@ OutlineInputBorder commonTextFiledBorder({
   );
 }
 
-Widget commonListTile({
-  required String title,
-  String? subtitle,
-  Widget? leadingIcon,
-  Widget? subtitleView,
-  Widget? trailing,
-  Widget? titleWidget,
-  VoidCallback? onTap,
-  Color? iconColor,
-  FontWeight? titleFontWeight,
-  Color? textColor,
-  double borderRadius = 10,
-  double titleFontSize = 14,
-  Color? tileColor,
-  TextOverflow? overflow,
-  bool? isCustomer = false,
-  EdgeInsetsGeometry contentPadding = const EdgeInsets.symmetric(
-    horizontal: 16,
-    vertical: 0,
-  ),
-}) {
-  return ListTile(
-    dense: true,
-    splashColor: Colors.transparent,
-    contentPadding: contentPadding,
-    leading: leadingIcon,
-    title:
-        titleWidget ??
-        Text(
-          title,
-          style: commonTextStyle(
-            color: textColor ?? Colors.black,
-            fontSize: titleFontSize,
-            fontWeight: titleFontWeight ?? FontWeight.w600,
-          ),
-        ),
-    subtitle: subtitle != null
-        ? Text(
-            subtitle,
-            style: commonTextStyle(
-              overflow: overflow,
-
-              fontSize: 12,
-              color: colorTextDesc,
-            ),
-          )
-        : subtitleView,
-    trailing: trailing,
-    onTap: onTap,
-  );
-}
-
-Widget commonListViewBuilder<T>({
-  required List<T> items,
-  ScrollController? controller,
-  required Widget Function(BuildContext, int, T) itemBuilder,
-  Axis scrollDirection = Axis.vertical,
-  EdgeInsetsGeometry padding = const EdgeInsets.all(8),
-  bool shrinkWrap = false,
-  ScrollPhysics? physics,
-}) {
-  return ListView.builder(
-    itemCount: items.length,
-    shrinkWrap: shrinkWrap,
-    controller: controller,
-    padding: padding,
-    scrollDirection: scrollDirection,
-    physics: physics ?? const BouncingScrollPhysics(),
-    itemBuilder: (context, index) => itemBuilder(context, index, items[index]),
-  );
-}
-
-Widget commonListViewBuilderSeparated<T>({
-  required List<T> items,
-  required Widget Function(BuildContext, int, T) itemBuilder,
-  Axis scrollDirection = Axis.vertical,
-  EdgeInsetsGeometry padding = const EdgeInsets.all(0),
-  bool shrinkWrap = false,
-  ScrollPhysics? physics,
-}) {
-  return ListView.separated(
-    itemCount: items.length,
-    shrinkWrap: shrinkWrap,
-
-    padding: padding,
-    scrollDirection: scrollDirection,
-    physics: physics ?? const BouncingScrollPhysics(),
-    itemBuilder: (context, index) => itemBuilder(context, index, items[index]),
-    separatorBuilder: (BuildContext context, int index) {
-      return Divider(thickness: 0.5, height: 0);
-    },
-  );
-}
-
 Widget commonScaffold({
   required Widget body,
   String? title,
@@ -558,62 +459,6 @@ void hideKeyboard(BuildContext context) {
   FocusScope.of(context).unfocus();
 }
 
-void showCommonBottomSheet({
-  required BuildContext context,
-  required Widget content,
-
-  bool isDismissible = true,
-}) {
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    backgroundColor: Colors.white,
-    isDismissible: isDismissible,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-    ),
-    builder: (context) {
-      return Padding(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-          left: 16,
-          right: 16,
-          top: 24,
-        ),
-        child: content,
-      );
-    },
-  );
-}
-
-//24-Sept-2025 Girish
-void appBottomSheetWithSafeArea({
-  required BuildContext context,
-  required Widget child,
-}) {
-  final mediaQuery = MediaQuery.of(context);
-  final statusBarHeight = mediaQuery.padding.top + mediaQuery.viewPadding.top;
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    backgroundColor: Colors.white,
-    barrierColor: Colors.black.withValues(alpha: 0.2),
-    builder: (context) {
-      return Container(
-        constraints: BoxConstraints(
-          maxHeight:
-              MediaQuery.of(context).size.height -
-              statusBarHeight, // dynamic and safe
-        ),
-        width: double.infinity,
-        padding: const EdgeInsets.all(16),
-
-        child: child,
-      );
-    },
-  );
-}
-
 Future<bool?> showCommonDialog({
   required String title,
   required BuildContext context,
@@ -705,27 +550,6 @@ Widget showLoaderList() {
   );
 }
 
-Widget showLoaderList11() {
-  return Center(
-    child: Container(
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [colorLogo, colorLogo],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
-      padding: const EdgeInsets.all(17),
-      child: SizedBox(
-        height: 40,
-        width: 40,
-        child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
-      ),
-    ),
-  );
-}
-
 String cleanFirebaseError(String message) {
   return message.replaceAll(RegExp(r"\[.*?\]\s*"), "");
 }
@@ -745,42 +569,11 @@ Container commonAppBackground({required Widget child, Color? color}) {
   );
 }
 
-Widget commonHeadingText({
-  String? text,
-  Color? color,
-  FontWeight? fontWeight,
-  double? fontSize,
-}) {
-  return commonText(
-    text: text ?? '',
-    color: color,
-    fontWeight: fontWeight ?? FontWeight.w800,
-    fontSize: fontSize ?? 18,
-  );
-}
-
-Widget commonTitleText({String? text}) {
-  return commonText(
-    text: text ?? '',
-    fontWeight: FontWeight.w600,
-    fontSize: 16,
-  );
-}
-
 Widget commonSubTitleText({String? text}) {
   return commonText(
     text: text ?? '',
     fontWeight: FontWeight.w500,
     fontSize: 14,
-  );
-}
-
-Widget commonDescriptionText({String? text, TextAlign? textAlign}) {
-  return commonText(
-    text: text ?? '',
-    textAlign: textAlign,
-    fontWeight: FontWeight.w400,
-    fontSize: 12,
   );
 }
 
@@ -831,131 +624,6 @@ class BottomNavItems {
   ];
 }
 
-/// Helper model for filter items
-
-Widget commonCircleNetworkImage(
-  String? imageUrl, {
-  double size = 60,
-  double borderWidth = 0,
-  String? errorPath,
-  BoxShape? shape,
-  Color borderColor = Colors.white,
-  Color? color,
-  BoxFit fit = BoxFit.cover,
-  Widget? placeholder,
-  Widget? errorWidget,
-}) {
-  final isValidUrl = imageUrl != null && imageUrl.trim().isNotEmpty;
-
-  // Final URL with base path
-  final fullUrl = isValidUrl ? imageUrl : null;
-
-  return Container(
-    width: size,
-    height: size,
-    padding: EdgeInsets.all(borderWidth),
-    decoration: BoxDecoration(
-      color: color,
-      shape: shape ?? BoxShape.circle,
-      border: Border.all(color: borderColor, width: borderWidth),
-    ),
-    child: ClipOval(
-      child: isValidUrl
-          ? CachedNetworkImage(
-              height: size,
-              width: size,
-              imageUrl: fullUrl!,
-              fit: fit,
-              placeholder: (context, url) =>
-                  placeholder ??
-                  Center(child: CircularProgressIndicator(strokeWidth: 2)),
-              errorWidget: (context, url, error) =>
-                  errorWidget ??
-                  Center(child: commonAssetImage(errorPath ?? 'icDummyUser')),
-            )
-          : (errorWidget ??
-                Center(child: commonAssetImage(errorPath ?? 'icDummyUser'))),
-    ),
-  );
-}
-
-Widget commonNetworkImage(
-  String? imageUrl, {
-  double size = 60,
-  double borderWidth = 0,
-  Color borderColor = Colors.white,
-  BoxFit fit = BoxFit.cover,
-  Decoration? decoration,
-  Widget? placeholder,
-  Widget? errorWidget,
-  String? text,
-  BoxShape shape = BoxShape.circle, // 👈 Circle ya Rectangle
-  double borderRadius = 8, // 👈 Rect ke liye radius
-}) {
-  final isValidUrl = imageUrl != null && imageUrl.trim().isNotEmpty;
-
-  final fullUrl = isValidUrl ? imageUrl : null;
-
-  return Container(
-    width: size,
-    height: size,
-    padding: EdgeInsets.all(borderWidth),
-    decoration:
-        decoration ??
-        BoxDecoration(
-          shape: shape,
-          border: Border.all(color: borderColor, width: borderWidth),
-          borderRadius: shape == BoxShape.rectangle
-              ? BorderRadius.circular(borderRadius)
-              : null,
-        ),
-    child: ClipRRect(
-      borderRadius: shape == BoxShape.rectangle
-          ? BorderRadius.circular(borderRadius)
-          : BorderRadius.zero,
-      child: isValidUrl
-          ? CachedNetworkImage(
-              height: size,
-              width: size,
-              imageUrl: fullUrl!,
-              fit: fit,
-              placeholder: (context, url) =>
-                  placeholder ??
-                  Center(
-                    child: SizedBox(
-                      width: 20, // 👈 yahan size set kijiye
-                      height: 20, // 👈 yahan size set kijiye
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    ),
-                  ),
-              errorWidget: (context, url, error) =>
-                  errorWidget ??
-                  Center(child: commonAssetImage(icErrorImage)),
-            )
-          : (errorWidget ?? Center(child: commonAssetImage(icErrorImage))),
-    ),
-  );
-}
-
-Widget commonErrorBoxView({required String text, Color? colorText}) {
-  return Container(
-    decoration: commonBoxDecoration(
-      borderColor: colorBorder,
-      color: colorBorder.withValues(alpha: 0.1),
-      borderRadius: 8,
-    ),
-    margin: const EdgeInsets.all(0),
-    child: Center(
-      child: commonText(
-        text: text,
-        fontWeight: FontWeight.w700,
-        fontSize: 14,
-        color: colorText ?? colorLogo,
-      ),
-    ),
-  );
-}
-
 Widget commonRefreshIndicator({
   required final Future<void> Function() onRefresh,
   required final Widget child,
@@ -969,47 +637,19 @@ Widget commonRefreshIndicator({
   );
 }
 
-Widget commonTextRich({
-  String? text1,
-  String? text2,
-  TextAlign? textAlign,
-  TextStyle? textStyle1,
-  TextStyle? textStyle2,
-  GestureRecognizer? onTap,
-}) {
-  return Text.rich(
-    textAlign: textAlign ?? TextAlign.center,
-    TextSpan(
-      children: [
-        TextSpan(
-          text: text1 ?? 'Sign in ',
-          style:
-              textStyle1 ??
-              commonTextStyle(fontWeight: FontWeight.w700, fontSize: 36),
-        ),
-        TextSpan(
-          recognizer: onTap,
-          text: text2 ?? 'to your\nAccount ',
-          style:
-              textStyle2 ??
-              commonTextStyle(fontWeight: FontWeight.w400, fontSize: 36),
-        ),
-      ],
-    ),
-  );
-}
-
 Widget commonBoxView({required Widget contentView, required String title}) {
   return Container(
     decoration: commonBoxDecoration(
-        color: colorProduct.withValues(alpha: 0.01),
-        borderColor: colorBorder, borderRadius: 8),
+      color: colorProduct.withValues(alpha: 0.01),
+      borderColor: colorBorder,
+      borderRadius: 8,
+    ),
     margin: const EdgeInsets.all(0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Title
-        commonHeadingView(title: title,),
+        commonHeadingView(title: title),
 
         const Divider(height: 0.5, color: colorBorder),
 
@@ -1020,11 +660,14 @@ Widget commonBoxView({required Widget contentView, required String title}) {
   );
 }
 
-Widget commonRowLeftRightView({required String title,  String? value,Widget? customView}) {
+Widget commonRowLeftRightView({
+  required String title,
+  String? value,
+  Widget? customView,
+}) {
   return Row(
     children: [
       Expanded(
-
         child: commonText(
           text: title,
           fontWeight: FontWeight.w500,
@@ -1032,19 +675,20 @@ Widget commonRowLeftRightView({required String title,  String? value,Widget? cus
         ),
       ),
       Expanded(
-        child: customView??commonText(
-          text: value??'',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.right,
-          fontWeight: FontWeight.w400,
-          fontSize: 12,
-        ),
+        child:
+            customView ??
+            commonText(
+              text: value ?? '',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.right,
+              fontWeight: FontWeight.w400,
+              fontSize: 12,
+            ),
       ),
     ],
   );
 }
-
 
 Widget commonHeadingView({String? title}) {
   return Padding(
@@ -1064,8 +708,8 @@ Widget commonHeadingView({String? title}) {
   );
 }
 
-
 void showToast(String message) {
-  ScaffoldMessenger.of(navigatorKey.currentContext!)
-      .showSnackBar(SnackBar(content: Text(message)));
+  ScaffoldMessenger.of(
+    navigatorKey.currentContext!,
+  ).showSnackBar(SnackBar(content: Text(message)));
 }

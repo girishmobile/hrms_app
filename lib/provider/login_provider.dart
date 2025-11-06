@@ -50,7 +50,7 @@ class LoginProvider with ChangeNotifier {
     _setLoading(true);
     try {
       final response = await callApi(
-        url: ApiConfig.loginAPi,
+        url: ApiConfig.loginUrl,
         method: HttpMethod.POST,
         body: body,
         headers: null,

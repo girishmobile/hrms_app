@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hrms/core/widgets/component.dart';
 import 'package:hrms/provider/attendance_provider.dart';
-import 'package:hrms/provider/dashboard_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/color_utils.dart';

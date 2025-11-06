@@ -6,7 +6,7 @@ import '../core/api/api_config.dart';
 import '../core/api/gloable_status_code.dart';
 import '../core/api/network_repository.dart';
 import '../core/widgets/component.dart';
-import '../data/models/leave/LeaveModel.dart';
+import '../data/models/leave/leave_model.dart';
 import '../data/models/leave/all_leave_model.dart';
 import '../main.dart';
 
@@ -203,7 +203,7 @@ class LeaveProvider with ChangeNotifier {
     _setLoading(true);
     try {
       final response = await callApi(
-        url: ApiConfig.getLeaveData,
+        url: ApiConfig.getLeaveDataUrl,
         method: HttpMethod.POST,
         body: body,
         headers: null,
@@ -234,7 +234,7 @@ class LeaveProvider with ChangeNotifier {
     _setLoading(true);
     try {
       final response = await callApi(
-        url: ApiConfig.addLeave,
+        url: ApiConfig.addLeaveUrl,
         method: HttpMethod.POST,
         body: body,
         headers: null,
@@ -291,7 +291,7 @@ class LeaveProvider with ChangeNotifier {
     _setLoading(true);
     try {
       final response = await callApi(
-        url: ApiConfig.getAllLeave,
+        url: ApiConfig.getAllLeaveUrl,
         method: HttpMethod.POST,
         body: body,
         headers: null,

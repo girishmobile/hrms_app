@@ -8,20 +8,20 @@ class ApiConfig {
   static String get imageBaseUrl => dotenv.env['IMAGE_BASE_URL'] ?? '';
 
   //=======================user and Login Api
-  static String loginAPi = "$apiBASEURL/login";
-  static String getUserDetailsBYID = "$apiBASEURL/user/getEmployeeById";
-  static String getLeaveData = "$apiBASEURL/leave_application/getSelfLeaveRequiredData";
-  static String addLeave = "$apiBASEURL/leave_application/save_leave_application";
-  static String leaveCountData = "$apiBASEURL/leave_application/summary";
-  static String upcomingLeaveHoliday = "$apiBASEURL/user/getUpcomingBdays";
-  static String currentAttendanceRecord = "$apiBASEURL/hikattendance/currentMonthHikAttendanceRecord";
-  static String kpiList = "$apiBASEURL/kra-kpi/summary";
-  static String uploadProfileImage = "$apiBASEURL/uploadlogo";
-  static String updateProfileData = "$apiBASEURL/user/update_employee";
-  static String getNotification = "$apiBASEURL/activity_box/getEmpNotifications";
-  static String getAllLeave = "$apiBASEURL/datatable/getLeaveRequiredData";
-  static String getAttendance = "$apiBASEURL/hikattendance/getUserAttendanceByDate";
-  static String updateFCMToken = "$apiBASEURL/user/update-fcm-token";
+  static String loginUrl = "$apiBASEURL/login";
+  static String getUserDetailsByIdUrl= "$apiBASEURL/user/getEmployeeById";
+  static String getLeaveDataUrl = "$apiBASEURL/leave_application/getSelfLeaveRequiredData";
+  static String addLeaveUrl = "$apiBASEURL/leave_application/save_leave_application";
+  static String leaveCountDataUrl = "$apiBASEURL/leave_application/summary";
+  static String upcomingLeaveHolidayUrl = "$apiBASEURL/user/getUpcomingBdays";
+  static String currentAttendanceRecordUrl = "$apiBASEURL/hikattendance/currentMonthHikAttendanceRecord";
+  static String kpiListUrl = "$apiBASEURL/kra-kpi/summary";
+  static String uploadProfileImageUrl = "$apiBASEURL/uploadlogo";
+  static String updateProfileDataUrl = "$apiBASEURL/user/update_employee";
+  static String getNotificationUrl = "$apiBASEURL/activity_box/getEmpNotifications";
+  static String getAllLeaveUrl = "$apiBASEURL/datatable/getLeaveRequiredData";
+  static String getAttendanceUrl = "$apiBASEURL/hikattendance/getUserAttendanceByDate";
+  static String updateFCMTokenUrl = "$apiBASEURL/user/update-fcm-token";
 
 
   //==========================================================Shopify API=================================================================================================================

@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../routes/app_routes.dart';
-import 'local_notification.dart';
 
 
 @pragma('vm:entry-point') // 👈 Needed so native code can call it
@@ -47,19 +46,7 @@ class NotificationService {
           (key, value) => MapEntry(key.toString(), value?.toString() ?? ''),
         );
 
-        final notification = LocalNotification(
-          id:
-              message.messageId ??
-              DateTime.now().millisecondsSinceEpoch.toString(),
-          title:
-              message.notification?.title ??
-              message.data['title'] ??
-              'New Notification',
-          body: message.notification?.body ?? message.data['body'] ?? '',
-          category: safeData['category'] ?? '',
-          receivedAt: DateTime.now(),
-          data: safeData,
-        );
+
 
 
         _handlePayloadNavigation(
@@ -185,19 +172,7 @@ class NotificationService {
       final safeData = message.data.map(
         (k, v) => MapEntry(k.toString(), v?.toString() ?? ''),
       );
-      final notification1 = LocalNotification(
-        id:
-            message.messageId ??
-            DateTime.now().millisecondsSinceEpoch.toString(),
-        title:
-            message.notification?.title ??
-            message.data['title'] ??
-            'New Notification',
-        body: message.notification?.body ?? message.data['body'] ?? '',
-        category: safeData['category'] ?? '',
-        receivedAt: DateTime.now(),
-        data: safeData,
-      );
+
 
 
       await _localNotificationsPlugin.show(
@@ -240,17 +215,6 @@ class NotificationService {
       (key, value) => MapEntry(key.toString(), value?.toString() ?? ''),
     );
 
-    final notification1 = LocalNotification(
-      id: message.messageId ?? DateTime.now().millisecondsSinceEpoch.toString(),
-      title:
-          message.notification?.title ??
-          message.data['title'] ??
-          'New Notification',
-      body: message.notification?.body ?? message.data['body'] ?? '',
-      category: safeData['category'] ?? '',
-      receivedAt: DateTime.now(),
-      data: safeData,
-    );
 
     debugPrint("🌙 Background notification saved: ${message.messageId}");
     _handlePayloadNavigation(

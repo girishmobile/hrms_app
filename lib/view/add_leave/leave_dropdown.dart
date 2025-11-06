@@ -1,4 +1,4 @@
-import '../../data/models/leave/LeaveModel.dart';
+import '../../data/models/leave/leave_model.dart';
 
 class LeaveDropdownItem {
   final String code;

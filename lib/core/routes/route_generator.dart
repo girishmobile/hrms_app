@@ -62,7 +62,7 @@ class RouteGenerate {
   static PageRouteBuilder _buildPageRoute(Widget page) {
     return PageRouteBuilder(
       transitionDuration: const Duration(milliseconds: 500),
-      pageBuilder: (_, __, ___) => page,
+      pageBuilder: (_, _, _) => page,
       transitionsBuilder: (_, animation, secondaryAnimation, child) {
         // Animation starts from bottom (Offset(0, 1)) → center (Offset.zero)
         const begin = Offset(0.0, 1.0);

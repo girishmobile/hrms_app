@@ -4,7 +4,7 @@ import 'package:hrms/provider/leave_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:hrms/core/widgets/component.dart';
-import '../../data/models/dashboard/HolidayBirthdayModel.dart';
+import '../../data/models/dashboard/holiday_birthday_model.dart';
 import '../constants/image_utils.dart';
 
 

@@ -9,9 +9,9 @@ import '../../core/hive/user_model.dart';
 import '../../core/widgets/common_date_picker.dart';
 import '../../core/widgets/common_dropdown.dart';
 import '../../core/widgets/common_switch.dart';
-import '../../data/models/leave/LeaveModel.dart';
+import '../../data/models/leave/leave_model.dart';
 import '../../provider/leave_provider.dart';
-import 'LeaveTypeDropdown.dart';
+import 'leave_type_dropdown.dart';
 
 class AddLeaveScreen extends StatefulWidget {
   const AddLeaveScreen({super.key});
@@ -37,7 +37,6 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
 
     Map<String, dynamic> body = {"emp_id": user?.data?.user?.id};
 
-    print('=====bou$body');
 
     await profile.getLeaveData(body: body);
   }
@@ -176,7 +175,6 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
                           showToast("End date cannot be before start date");
                           return;
                         }
-                        print('==${provider.fromDate!}');
 
                         UserModel? user = await AppConfigCache.getUserModel();
 
@@ -198,9 +196,9 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
                           "reason": provider.tetReason.text,
                         };
 
-                        print('======Boyd$body');
 
-                       // provider.addLeaveAPI(body: body);
+
+                        provider.addLeaveAPI(body: body);
                       },
                     ),
                   ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hrms/core/constants/color_utils.dart';
 import 'package:hrms/core/widgets/component.dart';
-import 'package:hrms/provider/dashboard_provider.dart';
+
 import 'package:hrms/provider/leave_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -103,8 +103,8 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
       },
     };
 
-    print('widget====${body}');
-    print('widget====${widget.title.toString()}');
+    debugPrint('widget====$body');
+    debugPrint('widget====${widget.title.toString()}');
     await profile.getAllLeave(body: body);
 
   }

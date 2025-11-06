@@ -79,7 +79,6 @@ class MyApp extends StatelessWidget {
 
   final GlobalKey<NavigatorState> navigatorKey;
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
@@ -89,7 +88,6 @@ class MyApp extends StatelessWidget {
       scaffoldMessengerKey: rootScaffoldMessengerKey,
       navigatorKey: navigatorKey,
       initialRoute: RouteName.splashScreen,
-      // home: AdminDashboardScreen(),
       onGenerateRoute: RouteGenerate.onGenerateRoute,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.getLightTheme(),

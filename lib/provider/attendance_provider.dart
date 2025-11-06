@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
-import 'package:hrms/data/models/attendance/AttendanceModel.dart';
+import 'package:hrms/data/models/attendance/attendance_model.dart';
 
 import '../core/api/api_config.dart';
 import '../core/api/gloable_status_code.dart';
@@ -91,7 +91,7 @@ class AttendanceProvider extends ChangeNotifier {
 
     try {
       final response = await callApi(
-        url: ApiConfig.getAttendance,
+        url: ApiConfig.getAttendanceUrl,
         method: HttpMethod.POST,
         body: body,
         headers: null,

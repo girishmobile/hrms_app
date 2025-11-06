@@ -6,7 +6,7 @@ import '../core/api/api_config.dart';
 import '../core/api/gloable_status_code.dart';
 import '../core/api/network_repository.dart';
 import '../core/widgets/component.dart';
-import '../data/models/kpi/KpiModel.dart';
+import '../data/models/kpi/kpi_model.dart';
 import '../main.dart';
 
 class KpiProvider with ChangeNotifier {
@@ -43,7 +43,7 @@ class KpiProvider with ChangeNotifier {
     _setLoading(true);
     try {
       final response = await callApi(
-        url: '${ApiConfig.kpiList}?year=$date',
+        url: '${ApiConfig.kpiListUrl}?year=$date',
         method: HttpMethod.GET,
         headers: null,
       );

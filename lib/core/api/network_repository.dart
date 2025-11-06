@@ -25,7 +25,7 @@ Future callApi({
   try {
     final uri = Uri.parse(url).replace(queryParameters: queryParams);
 
-    print('====R{$url');
+    debugPrint('====R{$url');
     final requestHeaders = headers ?? await ApiConfig.getCommonHeaders();
 
     late http.Response response;
@@ -70,120 +70,117 @@ Future callApi({
   } on SocketException {
     errorMessage =
         "No Internet connection. Please check your network and try again.";
-    //_showErrorDialog(errorMessage ?? '');
     return {'status': false, 'message': errorMessage};
   } on TimeoutException {
     errorMessage = "Request timed out. Please try again later.";
-    //_showErrorDialog(errorMessage ?? '');
+
     return {'status': false, 'message': errorMessage};
   } catch (e) {
 
-    print('====R{$e');
+    debugPrint('====R{$e');
     errorMessage = "Something went wrong. Please try again.";
-    //_showErrorDialog(errorMessage ?? '');
     return {'status': false, 'message': errorMessage};
   }
 }
+bool _isRedirectingToLogin = false;
 
-Future getResponse(Response response) async {
+Future<String> getResponse(Response response) async {
   globalStatusCode = response.statusCode;
 
-  if (globalStatusCode == 500 ||
-      globalStatusCode == 502 ||
-      globalStatusCode == 503) {
-    print('${response.body.toString()}');
-    final parsedJson = jsonDecode(response.body.toString());
-    errorMessage = parsedJson['message'].toString();
-
-    return "{\"status\":\"false\",\"message\":\"Internal server issue\"}";
-  } else if (globalStatusCode == 401) {
-    final parsedJson = jsonDecode(response.body.toString());
-    final message = parsedJson['message'].toString();
-    errorMessage = parsedJson['message'].toString();
-    return "{\"status\":\"false\",\"message\":\"$message\"}";
-  } else if (globalStatusCode == 403) {
-    final parsedJson = jsonDecode(response.body.toString());
-    errorMessage = parsedJson['message'].toString();
-
-    return "{\"status\":\"false\",\"message\":\"Internal server issue\"}";
-  } else if (globalStatusCode == 405) {
-    //assolyr
-    String error = "This Method not allowed.";
-
-    final parsedJson = jsonDecode(response.body.toString());
-    errorMessage = parsedJson['message'].toString();
-    return "{\"status\":\"0\",\"message\":\"$error\"}";
+  Map<String, dynamic> parsedJson = {};
+  try {
+    parsedJson = jsonDecode(response.body.toString());
+  } catch (e) {
+    // Not JSON
   }
 
+  if (parsedJson['response'] == 'token error' &&
+      parsedJson['data']?['message']?.toString() == 'Token Expired') {
+    errorMessage =
+        parsedJson['data']?['message'] ?? 'Session expired, please login again';
+    debugPrint('Error: $errorMessage');
 
-  else if (globalStatusCode == 401) {
-    try {
-
-
-      // redirect to login page after unauthorized
+    if (!_isRedirectingToLogin) {
+      _isRedirectingToLogin = true;
       Future.microtask(() {
-        navigatorKey.currentState?.pushNamedAndRemoveUntil(
-          RouteName.loginScreen,
-              (route) => false,
-        );
+        final context = navigatorKey.currentContext;
+        if (context != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Session expired, please login again.',
+                style: const TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.redAccent,
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        }
+
+        // ✅ Redirect after short delay
+        Future.delayed(const Duration(seconds: 2), () {
+          navigatorKey.currentState?.pushNamedAndRemoveUntil(
+            RouteName.loginScreen,
+                (route) => false,
+          );
+        });
       });
-
-      return "{\"status\":\"false\",\"message\":\"Error\"}";
-    } catch (e) {
-      return "{\"status\":\"false\",\"message\":\"Unauthorized access\"}";
     }
+
+    return "{\"status\":\"false\",\"message\":\"$errorMessage\"}";
   }
-  else if (globalStatusCode == 400) {
-    final parsedJson = jsonDecode(response.body.toString());
-    errorMessage = parsedJson['message'].toString();
+  // Handle HTTP status codes
+  switch (globalStatusCode) {
+    case 401:
+      errorMessage = parsedJson['message']?.toString() ?? 'Unauthorized';
+      if (!_isRedirectingToLogin) {
+        _isRedirectingToLogin = true;
+        Future.microtask(() {
+          navigatorKey.currentState?.pushNamedAndRemoveUntil(
+            RouteName.loginScreen,
+                (route) => false,
+          );
+        });
+      }
+      return "{\"status\":\"false\",\"message\":\"$errorMessage\"}";
 
-    return response.body;
-  } else if (globalStatusCode == 404) {
-    final parsedJson = jsonDecode(response.body.toString());
-    errorMessage = parsedJson['message'].toString();
+    case 400:
+    case 422:
+      errorMessage = parsedJson['message']?.toString() ?? 'Invalid request';
+      return "{\"status\":\"false\",\"message\":\"${errorMessage?.replaceAll(
+          RegExp(r'[^\w\s]+'), '')}\"}";
 
-    return "{\"status\":\"419\",\"message\":\"${errorMessage.toString().replaceAll(RegExp(r'[^\w\s]+'), '')}\"}";
-    //return response.body;
-  } else if (globalStatusCode == 419) {
-    final parsedJson = jsonDecode(response.body.toString());
-    errorMessage = parsedJson['message'].toString();
+    case 403:
+      errorMessage = parsedJson['message']?.toString() ?? 'Forbidden';
+      return "{\"status\":\"false\",\"message\":\"$errorMessage\"}";
 
-    return "{\"status\":\"false\",\"message\":\"${errorMessage.toString().replaceAll(RegExp(r'[^\w\s]+'), '')}\"}";
-    //return response.body;
-  } else if (globalStatusCode == 422) {
-    final parsedJson = jsonDecode(response.body.toString());
-    errorMessage = parsedJson['message'].toString();
-    final message = parsedJson['message'].toString();
-    return "{\"status\":\"false\",\"message\":\"${message.replaceAll(RegExp(r'[^\w\s]+'), '')}\"}";
-  } else if (globalStatusCode == 204) {
-    final parsedJson = jsonDecode(response.body.toString());
-    final message = parsedJson['message'].toString();
-    errorMessage = parsedJson['message'].toString();
-    return "{\"status\":\"false\",\"message\":\"${message.replaceAll(RegExp(r'[^\w\s]+'), '')}\"}";
-  } else if (globalStatusCode < 200 || globalStatusCode > 404) {
-    String error = response.headers['message'].toString();
+    case 404:
+      errorMessage = parsedJson['message']?.toString() ?? 'Not Found';
+      return "{\"status\":\"419\",\"message\":\"${errorMessage?.replaceAll(
+          RegExp(r'[^\w\s]+'), '')}\"}";
 
-    final parsedJson = jsonDecode(response.body.toString());
-    errorMessage = parsedJson['message'].toString();
-    return "{\"status\":\"0\",\"message\":\"$error\"}";
+    case 405:
+      errorMessage = 'This Method not allowed.';
+      return "{\"status\":\"0\",\"message\":\"$errorMessage\"}";
+
+    case 419:
+      errorMessage = parsedJson['message']?.toString() ?? 'Session expired';
+      return "{\"status\":\"false\",\"message\":\"${errorMessage?.replaceAll(
+          RegExp(r'[^\w\s]+'), '')}\"}";
+
+    case 500:
+    case 502:
+    case 503:
+      errorMessage =
+          parsedJson['message']?.toString() ?? 'Internal server issue';
+      return "{\"status\":\"false\",\"message\":\"Internal server issue\"}";
+
+    case 204:
+      errorMessage = parsedJson['message']?.toString() ?? 'No content';
+      return "{\"status\":\"false\",\"message\":\"${errorMessage?.replaceAll(
+          RegExp(r'[^\w\s]+'), '')}\"}";
+
+    default:
+      return response.body;
   }
-  return response.body;
-}
-
-void _showErrorDialog(String message) {
-  showDialog(
-    context: navigatorKey.currentContext!,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text("Error"),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text("OK"),
-          ),
-        ],
-      );
-    },
-  );
 }

@@ -5,8 +5,7 @@ import '../../../core/constants/color_utils.dart';
 import '../../../core/routes/app_routes.dart';
 import '../../../core/widgets/animated_counter.dart';
 import '../../../core/widgets/component.dart';
-import '../../../data/models/kpi/KpiModel.dart';
-import '../../../provider/dashboard_provider.dart';
+import '../../../data/models/kpi/kpi_model.dart';
 import '../../../provider/kpi_provider.dart';
 import '../../leave_details/leave_details_args.dart';
 Widget buildMonthCard({

@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 import '../../core/widgets/common_dropdown.dart';
-import '../../data/models/leave/LeaveModel.dart';
-import 'LeaveDropdown.dart';
+import '../../data/models/leave/leave_model.dart';
+import 'leave_dropdown.dart';
 
 class LeaveTypeDropdown extends StatefulWidget {
   final LeaveModel? leaveModel;

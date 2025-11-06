@@ -52,16 +52,20 @@ class LoginScreen extends StatelessWidget {
                             commonTextFieldView(
                               text: "Email",
                               controller: provider.tetEmail,
-                              validator: (value) =>
-                                  emptyError(value, errorMessage: "Password is required"),
-                           //   validator: validateEmail,
+                              validator: (value) => emptyError(
+                                value,
+                                errorMessage: "Password is required",
+                              ),
+                              //   validator: validateEmail,
                               keyboardType: TextInputType.emailAddress,
                               prefixIcon: commonPrefixIcon(image: icEmail),
                             ),
                             const SizedBox(height: 15),
                             commonTextFieldView(
-                              validator: (value) =>
-                                  emptyError(value, errorMessage: "Password is required"),
+                              validator: (value) => emptyError(
+                                value,
+                                errorMessage: "Password is required",
+                              ),
                               text: "Password",
                               keyboardType: TextInputType.visiblePassword,
                               controller: provider.tetPassword,
@@ -94,21 +98,18 @@ class LoginScreen extends StatelessWidget {
                             commonButton(
                               text: "Login",
                               onPressed: () {
-                                if (formLoginKey.currentState?.validate() == true) {
+                                if (formLoginKey.currentState?.validate() ==
+                                    true) {
                                   Map<String, dynamic> body = {
                                     "email": provider.tetEmail.text.trim(),
-                                    "password": provider.tetPassword.text.trim(),
+                                    "password": provider.tetPassword.text
+                                        .trim(),
                                     "isLogin": "1",
-                                    "uuid":CommonUuid.generateUUID(),
+                                    "uuid": CommonUuid.generateUUID(),
                                   };
 
-                                  print('$body');
                                   provider.loginApi(body: body);
                                 }
-
-                                /*navigatorKey.currentState?.pushNamed(
-                                  RouteName.dashboardScreen,
-                                );*/
                               },
                             ),
                           ],
@@ -117,7 +118,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
 
-                  provider.isLoading?showLoaderList():SizedBox.shrink()
+                  provider.isLoading ? showLoaderList() : SizedBox.shrink(),
                 ],
               ),
             );

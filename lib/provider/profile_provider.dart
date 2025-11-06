@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:hrms/data/models/profile/ProfileModel.dart';
+import 'package:hrms/data/models/profile/profile_model.dart';
 import 'package:intl/intl.dart';
 
 import '../core/api/api_config.dart';
@@ -56,7 +56,7 @@ class ProfileProvider extends ChangeNotifier {
     debugPrint('===$body');
     try {
       final response = await callApi(
-        url: ApiConfig.getUserDetailsBYID,
+        url: ApiConfig.getUserDetailsByIdUrl,
         method: HttpMethod.POST,
         body: body,
         headers: null,
@@ -91,7 +91,7 @@ class ProfileProvider extends ChangeNotifier {
   }) async {
     _setLoading(true);
     try {
-      var uri = Uri.parse(ApiConfig.uploadProfileImage);
+      var uri = Uri.parse(ApiConfig.uploadProfileImageUrl);
 
       var request = http.MultipartRequest('POST', uri);
 
@@ -345,7 +345,7 @@ class ProfileProvider extends ChangeNotifier {
     debugPrint('===$body');
     try {
       final response = await callApi(
-        url: ApiConfig.updateProfileData,
+        url: ApiConfig.updateProfileDataUrl,
         method: HttpMethod.POST,
         body: body,
         headers: null,
