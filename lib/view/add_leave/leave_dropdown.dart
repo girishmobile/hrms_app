@@ -39,10 +39,16 @@ List<LeaveDropdownItem> getLeaveTypeDropdownItems(LeaveModel? leaveModel) {
         balance = leaveByEmp?.usedUpl ?? "0.00";
         break;
     }
-
+    // 👇 Skip if balance == 0 or 0.0
+    if (code.toUpperCase() != 'UPL' && (double.tryParse(balance) ?? 0) <= 0) {
+      continue;
+    }
+    final label = code.toUpperCase() == 'UPL'
+        ? code
+        : "$code - $balance Left";
     items.add(LeaveDropdownItem(
       code: code,
-      label: "$code - $balance Left",
+      label: label,
       type: type, // keep the full object
     ));
   }

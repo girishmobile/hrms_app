@@ -12,6 +12,7 @@ class ApiConfig {
   static String getUserDetailsByIdUrl= "$apiBASEURL/user/getEmployeeById";
   static String getLeaveDataUrl = "$apiBASEURL/leave_application/getSelfLeaveRequiredData";
   static String addLeaveUrl = "$apiBASEURL/leave_application/save_leave_application";
+  static String saveLeaveData = "$apiBASEURL/leave_application/save_leave_application";
   static String leaveCountDataUrl = "$apiBASEURL/leave_application/summary";
   static String upcomingLeaveHolidayUrl = "$apiBASEURL/user/getUpcomingBdays";
   static String currentAttendanceRecordUrl = "$apiBASEURL/hikattendance/currentMonthHikAttendanceRecord";
@@ -22,6 +23,8 @@ class ApiConfig {
   static String getAllLeaveUrl = "$apiBASEURL/datatable/getLeaveRequiredData";
   static String getAttendanceUrl = "$apiBASEURL/hikattendance/getUserAttendanceByDate";
   static String updateFCMTokenUrl = "$apiBASEURL/user/update-fcm-token";
+  static String calenderUrl = "$apiBASEURL/dashboard/getLeavesSelfDashboard";
+  static String deleteLeaveUrl = "$apiBASEURL/leave_application/delete_leave_application";
 
 
   //==========================================================Shopify API=================================================================================================================

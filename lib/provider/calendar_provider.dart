@@ -1,71 +1,111 @@
-import 'package:flutter/foundation.dart';
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 
-class CalendarEvent {
-  final String title;
-  final String type; // 'attendance', 'leave', 'holiday'
-  final DateTime date;
+import '../core/api/api_config.dart';
+import '../core/api/gloable_status_code.dart';
+import '../core/api/network_repository.dart';
 
-  CalendarEvent({required this.title, required this.type, required this.date});
-}
 class CalendarProvider extends ChangeNotifier {
-  Map<DateTime, List<Map<String, dynamic>>> _events = {};
+  final Map<DateTime, List<Map<String, dynamic>>> _events = {};
 
   Map<DateTime, List<Map<String, dynamic>>> get events => _events;
-  DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
 
+  bool _isLoading = false;
 
-  DateTime get focusedDay => _focusedDay;
-  DateTime? get selectedDay => _selectedDay;
+  bool get isLoading => _isLoading;
 
-  CalendarProvider() {
-    loadEvents();
+  void _setLoading(bool val) {
+    _isLoading = val;
+    notifyListeners();
   }
-  void loadEvents() {
-    _events = {
-      // Leaves
-      DateTime.utc(2025, 1, 10): [{'type': 'leave', 'title': 'Casual Leave'}],
-      DateTime.utc(2025, 2, 5): [{'type': 'leave', 'title': 'Medical Leave'}],
-      DateTime.utc(2025, 3, 21): [{'type': 'leave', 'title': 'Festival Leave'}],
-      DateTime.utc(2025, 5, 15): [{'type': 'leave', 'title': 'Half Day Leave'}],
-      DateTime.utc(2025, 6, 4): [{'type': 'leave', 'title': 'Sick Leave'}],
-      DateTime.utc(2025, 8, 30): [{'type': 'leave', 'title': 'Vacation Leave'}],
+  Future<void> getCalenderList(DateTime monthDate) async {
+    final monthStart = DateTime(monthDate.year, monthDate.month, 1);
 
-      // Attendance
-      DateTime.utc(2025, 1, 2): [{'type': 'attendance', 'title': 'Present'}],
-      DateTime.utc(2025, 1, 3): [{'type': 'attendance', 'title': 'Present'}],
-      DateTime.utc(2025, 1, 4): [{'type': 'attendance', 'title': 'Present'}],
-      DateTime.utc(2025, 1, 6): [{'type': 'attendance', 'title': 'Present'}],
-      DateTime.utc(2025, 1, 7): [{'type': 'attendance', 'title': 'Present'}],
-      DateTime.utc(2025, 2, 1): [{'type': 'attendance', 'title': 'Present'}],
-      DateTime.utc(2025, 2, 3): [{'type': 'attendance', 'title': 'Present'}],
-      DateTime.utc(2025, 3, 10): [{'type': 'attendance', 'title': 'Present'}],
-      DateTime.utc(2025, 4, 8): [{'type': 'attendance', 'title': 'Present'}],
-      DateTime.utc(2025, 5, 6): [{'type': 'attendance', 'title': 'Present'}],
-      DateTime.utc(2025, 6, 7): [{'type': 'attendance', 'title': 'Present'}],
-      DateTime.utc(2025, 7, 5): [{'type': 'attendance', 'title': 'Present'}],
-      DateTime.utc(2025, 8, 1): [{'type': 'attendance', 'title': 'Present'}],
-      DateTime.utc(2025, 9, 2): [{'type': 'attendance', 'title': 'Present'}],
-
-      // Holidays
-      DateTime.utc(2025, 1, 26): [{'type': 'holiday', 'title': 'Republic Day'}],
-      DateTime.utc(2025, 8, 15): [{'type': 'holiday', 'title': 'Independence Day'}],
-      DateTime.utc(2025, 10, 2): [{'type': 'holiday', 'title': 'Gandhi Jayanti'}],
-      DateTime.utc(2025, 12, 25): [{'type': 'holiday', 'title': 'Christmas Day'}],
+    final body = {
+      "date": monthStart.toIso8601String(), // ✅ valid ISO 8601 timestamp
     };
 
+    _setLoading(true);
+    try {
+      final response = await callApi(
+        url: ApiConfig.calenderUrl,
+        method: HttpMethod.POST,
+        body: body,
+        headers: null,
+      );
+
+      if (globalStatusCode == 200) {
+        final data = json.decode(response);
+
+        print('${json.decode(response)}');
+
+        _parseEvents(data, monthDate); // ✅ pass monthDate here
+        notifyListeners();
+        _setLoading(false);
+      } else {
+        notifyListeners();
+        _setLoading(false);
+        /* showCommonDialog(
+          showCancel: false,
+          title: "Error",
+          context: navigatorKey.currentContext!,
+          content: errorMessage,
+        );*/
+      }
+    } catch (e) {
+      notifyListeners();
+      _setLoading(false);
+      debugPrint('Error: $e');
+    } finally {
+      _setLoading(false);
+      notifyListeners();
+    }
+  }
+
+  /// Parse response into calendar events
+  void _parseEvents(Map<String, dynamic> data, DateTime monthDate) {
+    _events.clear();
+
+    final teamMembers = data["team_member"] ?? [];
+    for (var member in teamMembers) {
+      final leaveData = member["0"];
+      if (leaveData == null) continue;
+
+      final start = DateTime.parse(leaveData["leave_date"]["date"]);
+      final end = DateTime.parse(leaveData["leave_end_date"]["date"]);
+
+      // Add event for each date in the leave range
+      for (var d = start;
+      d.isBefore(end.add(const Duration(days: 1)));
+      d = d.add(const Duration(days: 1))) {
+        final dateKey = DateTime(d.year, d.month, d.day);
+        _events.putIfAbsent(dateKey, () => []).add({
+          "title":
+          "${member["firstname"] ?? ''} ${member["lastname"] ?? ''} (${member["leavetype"]})",
+          "type": "leave",
+          "status": leaveData["status"],
+        });
+      }
+    }
+
+    // Add birthdays (mark for same month in current year)
+    final birthdays = data["month_bday_data"] ?? [];
+    for (var person in birthdays) {
+      final dob = DateTime.parse(person["date_of_birth"]["date"]);
+      final dateKey = DateTime(monthDate.year, dob.month, dob.day); // ✅ fixed
+      _events.putIfAbsent(dateKey, () => []).add({
+        "title": "${person["firstname"]} ${person["lastname"]}",
+        "type": "holiday",
+      });
+    }
 
     notifyListeners();
   }
 
-  void onDaySelected(DateTime selected, DateTime focused) {
-    _selectedDay = selected;
-    _focusedDay = focused;
-    notifyListeners();
-  }
-
-
+  /// Return events for a specific day
   List<Map<String, dynamic>> getEventsForDay(DateTime day) {
-    return _events[DateTime.utc(day.year, day.month, day.day)] ?? [];
+    return _events[DateTime(day.year, day.month, day.day)] ?? [];
   }
 }

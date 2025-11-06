@@ -20,7 +20,7 @@ Widget buildMonthCard({
 
   final int month = item.month ?? 1;
   final int percent = item.percent ?? 0;
-
+  final Color color = _getMonthColor(month);
   return commonInkWell(
     onTap: () {
       Navigator.pushNamed(
@@ -29,13 +29,13 @@ Widget buildMonthCard({
         arguments: LeaveDetailsArgs(
           title: monthNames[month - 1],
           year: provider.selectedYear,
-          color: _getColor(percent),
+          color: color,
         ),
       );
     },
     child: Container(
       decoration: commonBoxDecoration(
-        color: _getColor(percent).withValues(alpha: 0.05),
+        color: color.withValues(alpha: 0.05),
         borderColor: colorBorder,
         borderRadius: 8,
       ),
@@ -66,7 +66,7 @@ Widget buildMonthCard({
               duration: const Duration(seconds: 2),
               style: commonTextStyle(
                 fontSize: 26,
-                color: _getColor(percent),
+                color: color,
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -78,76 +78,38 @@ Widget buildMonthCard({
 }
 
 
-Widget buildMonthCard1({
-  required Map<String, dynamic> item,
-  required KpiProvider provider,
-  required BuildContext context,
-}) {
-  return commonInkWell(
-    onTap: () {
-      Navigator.pushNamed(
-        context,
 
-        RouteName.kpiDetailsScreen, // define this route in app_routes.dart
-        arguments: LeaveDetailsArgs(
-          title: item["month"] ?? '',
-          year: provider.selectedYear,
-          color: _getColor(item["percent"]),
-        ),
-      );
-    },
-    child: Container(
-      decoration: commonBoxDecoration(
-        color: _getColor(item["percent"]).withValues(alpha: 0.04),
-        borderColor: colorBorder,
-        borderRadius: 8,
-      ),
-
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            commonAssetImage(
-              icMenuCalender,
-              width: 32,
-              height: 32,
-              color: colorProduct.withValues(alpha: 0.7),
-            ),
-            const SizedBox(height: 10),
-            commonText(
-              text: item["month"],
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: colorProduct,
-            ),
-            const SizedBox(height: 6),
-            AnimatedCounter(
-              leftText: '',
-              rightText: '%',
-              endValue: item["percent"],
-              duration: const Duration(seconds: 2),
-              style: commonTextStyle(
-                fontSize: 26,
-
-                color: _getColor(item["percent"]),
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
+Color _getMonthColor(int month) {
+  switch (month) {
+    case 1:
+      return Colors.redAccent; // January
+    case 2:
+      return Colors.pinkAccent; // February
+    case 3:
+      return Colors.orangeAccent; // March
+    case 4:
+      return Colors.amber; // April
+    case 5:
+      return Colors.lightGreen; // May
+    case 6:
+      return Colors.green; // June
+    case 7:
+      return Colors.teal; // July
+    case 8:
+      return Colors.blueAccent; // August
+    case 9:
+      return Colors.indigoAccent; // September
+    case 10:
+      return Colors.deepPurpleAccent; // October
+    case 11:
+      return Colors.purpleAccent; // November
+    case 12:
+      return Colors.cyan; // December
+    default:
+      return Colors.grey;
+  }
 }
 
-Color _getColor(int percent) {
-  if (percent >= 70) return Colors.green;
-  if (percent >= 60) return Colors.blue;
-  if (percent >= 50) return Colors.orange;
-  return Colors.red;
-}
 
 void showYearPopover({
   required BuildContext context,

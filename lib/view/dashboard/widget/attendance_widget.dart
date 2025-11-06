@@ -13,6 +13,7 @@ Widget buildItemView({
     child: Container(
       decoration: commonBoxDecoration(
         borderRadius: 8,
+        color: (item['color'] as Color).withValues(alpha: 0.05),
         borderColor: colorBorder,
       ),
       child: Padding(
@@ -34,8 +35,8 @@ Widget buildItemView({
               endValue: item['value'],
               duration: Duration(seconds: 2),
               style: commonTextStyle(
-                fontSize: 24,
-                // color: item.bgColor,
+                fontSize: 22,
+                 color: item['color'],
                 fontWeight: FontWeight.w700,
               ),
             ),

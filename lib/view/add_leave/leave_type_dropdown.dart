@@ -8,9 +8,10 @@ import 'leave_dropdown.dart';
 class LeaveTypeDropdown extends StatefulWidget {
   final LeaveModel? leaveModel;
   final Function(LeaveTypes selectedType) onLeaveSelected;
-
+  final String? initialCode; // 🟢 add this
   const LeaveTypeDropdown({
     super.key,
+    this.initialCode,
     required this.leaveModel,
     required this.onLeaveSelected,
   });
@@ -21,6 +22,56 @@ class LeaveTypeDropdown extends StatefulWidget {
 
 class _LeaveTypeDropdownState extends State<LeaveTypeDropdown> {
   String? selectedValue;
+
+  @override
+  void initState() {
+    super.initState();
+    _syncInitialSelection();
+  }
+
+  @override
+  void didUpdateWidget(covariant LeaveTypeDropdown oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // If leaveModel or initialCode changed, re-sync selection
+    if (widget.leaveModel != oldWidget.leaveModel ||
+        widget.initialCode != oldWidget.initialCode) {
+      _syncInitialSelection();
+    }
+  }
+
+  void _syncInitialSelection() {
+    final items = getLeaveTypeDropdownItems(widget.leaveModel);
+
+    if (items.isEmpty) {
+      // nothing to select
+      return;
+    }
+
+    if (widget.initialCode != null && widget.initialCode!.isNotEmpty) {
+      final codeLower = widget.initialCode!.toLowerCase();
+
+      // find match; if not found, fallback to first item
+      final matchedItem = items.firstWhere(
+            (item) => item.code.toLowerCase() == codeLower,
+        orElse: () => items.first,
+      );
+
+      setState(() {
+        selectedValue = matchedItem.label;
+      });
+
+      // Notify parent about the selected LeaveTypes object
+      // (do this after the frame so parents/providers are ready)
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        widget.onLeaveSelected(matchedItem.type);
+      });
+    } else {
+      // no initial code provided -> make sure UI shows provider value if any
+      // optional: keep selectedValue unchanged
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +87,8 @@ class _LeaveTypeDropdownState extends State<LeaveTypeDropdown> {
       initialValue: selectedValue,
       onChanged: (value) {
         setState(() => selectedValue = value);
-
         final selectedItem =
         leaveItems.firstWhere((item) => item.label == value);
-
-        // 🔹 Return the full LeaveTypes object
         widget.onLeaveSelected(selectedItem.type);
       },
     );

@@ -11,10 +11,11 @@ class CommonDropdown extends StatelessWidget {
   final ValueChanged<String?> onChanged;
   final double? borderRadius;
   final bool enabled;
+  final String? customText;
   final String? hint; // 👈 Added hint property
   const CommonDropdown({
     super.key,
-
+    this.customText,
     required this.items,
     this.initialValue,
     this.enabled = true, // default true
@@ -25,6 +26,7 @@ class CommonDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final displayText = customText ?? initialValue;
     return DropdownButtonFormField2<String>(
       value: (initialValue != null && items.contains(initialValue))
           ? initialValue
@@ -39,11 +41,12 @@ class CommonDropdown extends StatelessWidget {
       isExpanded: true,
       hint: hint != null
           ? commonText(
-        text: hint!,
-        color: Colors.grey.shade500,
+        fontSize: 12,
+        text: displayText ?? hint ?? '',
+        color: displayText!=null ?Colors.black :Colors.grey.shade500,
         overflow: TextOverflow.ellipsis,
       )
-          : null, // 👈 Hint displayed when no value is selected
+          : null,
       items: items
           .map(
             (item) => DropdownMenuItem<String>(

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hrms/core/constants/color_utils.dart';
 import 'package:hrms/core/widgets/component.dart';
-
+import 'package:hrms/main.dart';
 import 'package:hrms/provider/leave_provider.dart';
+import 'package:hrms/view/add_leave/add_leave_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/constants/date_utils.dart';
@@ -18,7 +19,6 @@ class LeaveDetailsScreen extends StatefulWidget {
 }
 
 class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -38,20 +38,14 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
           "name": "id",
           "searchable": true,
           "orderable": false,
-          "search": {
-            "value": "",
-            "regex": false,
-          },
+          "search": {"value": "", "regex": false},
         },
         {
           "data": 1,
           "name": "leavetype",
           "searchable": true,
           "orderable": true,
-          "search": {
-            "value": "",
-            "regex": false,
-          },
+          "search": {"value": "", "regex": false},
         },
         {
           "data": 2,
@@ -59,7 +53,7 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
           "searchable": true,
           "orderable": true,
           "search": {
-            "value": widget.title=="All" ?"all":"",
+            "value": widget.title == "All" ? "all" : "",
             "regex": false,
           },
         },
@@ -68,10 +62,7 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
           "name": "leave_end_date",
           "searchable": true,
           "orderable": true,
-          "search": {
-            "value": "",
-            "regex": false,
-          },
+          "search": {"value": "", "regex": false},
         },
         {
           "data": 4,
@@ -79,7 +70,7 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
           "searchable": true,
           "orderable": true,
           "search": {
-            "value": widget.title=="All" ?"all":widget.title,
+            "value": widget.title == "All" ? "all" : widget.title,
             "regex": false,
           },
         },
@@ -88,146 +79,289 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
           "name": "status",
           "searchable": true,
           "orderable": true,
-          "search": {
-            "value": "",
-            "regex": false,
-          },
+          "search": {"value": "", "regex": false},
         },
       ],
       "order": [],
       "start": 0,
       "length": 15,
-      "search": {
-        "value":widget.title=="All"?"":"",
-        "regex": false,
-      },
+      "search": {"value": widget.title == "All" ? "" : "", "regex": false},
     };
 
     debugPrint('widget====$body');
     debugPrint('widget====${widget.title.toString()}');
     await profile.getAllLeave(body: body);
-
   }
+
   @override
   Widget build(BuildContext context) {
-
     return Consumer<LeaveProvider>(
-      builder: (context,provider,child) {
+      builder: (context, provider, child) {
         return commonScaffold(
           appBar: commonAppBar(
             context: context,
             centerTitle: true,
             title: widget.title ?? 'Leaves',
           ),
-          body: Stack(
-            children: [
-              provider.allLeaveModel?.data?.isEmpty==true
-                  ? Center(child: Text("No ${widget.title ?? ''} available"))
-                  : ListView.builder(
-                      padding: const EdgeInsets.all(16),
-                      itemCount:  provider.allLeaveModel?.data?.length??0,
-                      itemBuilder: (context, index) {
-                        final data = provider.allLeaveModel?.data?[index];
-                        return Container(
-                          margin: const EdgeInsets.only(bottom: 10),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: widget.color ?? colorBorder),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          padding: const EdgeInsets.only(
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            top: 0,
-                          ),
-                          child: IntrinsicHeight(
-                            child: Row(
-                              spacing: 1,
+          body: commonRefreshIndicator(
+            onRefresh: () async {
+              init();
+            },
+            child: Stack(
+              children: [
+                provider.allLeaveModel?.data?.isEmpty == true
+                    ? Center(child: Text("No ${widget.title ?? ''} available"))
+                    : ListView.builder(
+                        padding: const EdgeInsets.all(16),
+                        itemCount: provider.allLeaveModel?.data?.length ?? 0,
+                        itemBuilder: (context, index) {
+                          final data = provider.allLeaveModel?.data?[index];
+                          return Container(
+                            margin: const EdgeInsets.only(bottom: 10),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: widget.color ?? colorBorder,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: const EdgeInsets.only(
+                              left: 0,
+                              right: 0,
+                              bottom: 0,
+                              top: 0,
+                            ),
+                            child: Column(
                               children: [
-                                fromToView(
-                                  from: data?.leaveDate?.date??DateTime.now().toString(),
-                                  to: data?.leaveEndDate?.date??DateTime.now().toString(),
-                                  color: widget.color ?? Colors.red,
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    padding: const EdgeInsets.only(
-                                      left: 0,
-                                      right: 16,
-                                      bottom: 16,
-                                      top: 16,
-                                    ),
-                                    color:
-                                        widget.color?.withValues(alpha: 0.03) ?? Colors.white,
-                                    child: Column(
-                                      spacing: 8,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        commonItemView(
-                                          title: "Leave Type",
-                                          value: data?.leaveType?.leavetype??'',
-                                        ),
-                                        commonItemView(
-                                          title: "Reason",
-                                          value: data?.reason??'',
-                                        ),
-
-                                        commonItemView(
-                                          title: "Days",
-                                          value: data?.leaveCount??'',
-                                        ),
-                                       /* commonItemView(
-                                          title: "Applied On",
-                                          value: '${data['appliedOn']}',
-                                        ),*/
-                                        commonItemView(
-                                          title: "Status",
-                                          customView: Row(
-                                            mainAxisAlignment: MainAxisAlignment.end,
-                                            crossAxisAlignment: CrossAxisAlignment.end,
-                                            mainAxisSize: MainAxisSize.min,
+                                IntrinsicHeight(
+                                  child: Row(
+                                    spacing: 1,
+                                    children: [
+                                      fromToView(
+                                        from:
+                                            data?.leaveDate?.date ??
+                                            DateTime.now().toString(),
+                                        to:
+                                            data?.leaveEndDate?.date ??
+                                            DateTime.now().toString(),
+                                        color: widget.color ?? Colors.red,
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          padding: const EdgeInsets.only(
+                                            left: 0,
+                                            right: 16,
+                                            bottom: 16,
+                                            top: 16,
+                                          ),
+                                          color:
+                                              widget.color?.withValues(
+                                                alpha: 0.03,
+                                              ) ??
+                                              Colors.white,
+                                          child: Column(
+                                            spacing: 8,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
-                                              Container(
-                                                decoration: commonBoxDecoration(
-                                                  borderRadius: 4,
-                                                  borderColor: widget.color ?? Colors.red,
-                                                  color:
-                                                      widget.color?.withValues(alpha: 0.04) ??
-                                                      Colors.red,
-                                                ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.symmetric(
-                                                    vertical: 5,
-                                                    horizontal: 5,
-                                                  ),
-                                                  child: Center(
-                                                    child: commonText(
-                                                      text: data?.status??'',
-                                                      fontSize: 10,
-                                                      fontWeight: FontWeight.w500,
+                                              commonItemView(
+                                                title: "Leave Type",
+                                                value: data?.halfDay == true
+                                                    ? '${data?.leaveType?.leavetype} - ${data?.halfDayType}'
+                                                    : '${data?.leaveType?.leavetype}',
+                                              ),
+                                              commonItemView(
+                                                title: "Reason",
+                                                value: data?.reason ?? '',
+                                              ),
+
+                                              commonItemView(
+                                                title: "Days",
+                                                value:
+                                                    '${data?.leaveCount} Days',
+                                              ),
+                                              /* commonItemView(
+                                                title: "Applied On",
+                                                value: '${data['appliedOn']}',
+                                              ),*/
+                                              commonItemView(
+                                                title: "Status",
+                                                customView: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Container(
+                                                      decoration:
+                                                          commonBoxDecoration(
+                                                            borderRadius: 4,
+                                                            borderColor:
+                                                                widget.color ??
+                                                                Colors.red,
+                                                            color:
+                                                                widget.color
+                                                                    ?.withValues(
+                                                                      alpha:
+                                                                          0.04,
+                                                                    ) ??
+                                                                Colors.red,
+                                                          ),
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets.symmetric(
+                                                              vertical: 5,
+                                                              horizontal: 5,
+                                                            ),
+                                                        child: Center(
+                                                          child: commonText(
+                                                            text:
+                                                                data?.status ??
+                                                                '',
+                                                            fontSize: 10,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                        ),
+                                                      ),
                                                     ),
-                                                  ),
+                                                  ],
                                                 ),
                                               ),
+
+                                              data?.status == "Pending"
+                                                  ? Row(
+                                                      spacing: 20,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        Expanded(
+                                                          child: commonInkWell(
+                                                            onTap: () {
+                                                              navigatorKey.currentState?.push(
+                                                                MaterialPageRoute(
+                                                                  builder:
+                                                                      (
+                                                                        context,
+                                                                      ) => AddLeaveScreen(
+                                                                        data:
+                                                                            data,
+                                                                      ),
+                                                                ),
+                                                              );
+                                                            },
+                                                            child: Container(
+                                                              alignment: Alignment
+                                                                  .centerRight,
+                                                              decoration:
+                                                                  commonBoxDecoration(
+                                                                    borderColor:
+                                                                        colorProduct,
+                                                                  ),
+                                                              padding:
+                                                                  EdgeInsets.symmetric(
+                                                                    horizontal:
+                                                                        10,
+                                                                    vertical: 5,
+                                                                  ),
+                                                              child: Center(
+                                                                child: commonText(
+                                                                  text:
+                                                                      "Edit Leave",
+                                                                  fontSize: 10,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+
+                                                        Expanded(
+                                                          child: commonInkWell(
+                                                            onTap: () async {
+                                                              showCommonDialog(
+                                                                title: "Delete",
+                                                                context:
+                                                                    context,
+                                                                content:
+                                                                    "Are you sure want to delete leave?",
+                                                                confirmText:
+                                                                    "Yes",
+                                                                cancelText:
+                                                                    "No",
+                                                                onPressed: () async {
+                                                                  Navigator.of(context).pop(); // 🔹 Pehle dialog band karo
+
+                                                                  final Map<
+                                                                    String,
+                                                                    dynamic
+                                                                  >
+                                                                  body = {
+                                                                    "id":
+                                                                        data?.id ??
+                                                                        0,
+                                                                  };
+
+                                                                  await provider
+                                                                      .deleteLeave(
+                                                                        body:
+                                                                            body,
+                                                                      );
+
+                                                                  init();
+                                                                },
+                                                              );
+                                                            },
+                                                            child: Container(
+                                                              decoration:
+                                                                  commonBoxDecoration(
+                                                                    borderColor:
+                                                                        Colors
+                                                                            .red,
+                                                                  ),
+                                                              padding:
+                                                                  EdgeInsets.symmetric(
+                                                                    horizontal:
+                                                                        10,
+                                                                    vertical: 5,
+                                                                  ),
+                                                              child: Center(
+                                                                child: commonText(
+                                                                  text:
+                                                                      "Delete",
+                                                                  fontSize: 10,
+                                                                  color: Colors
+                                                                      .red,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  : SizedBox.shrink(),
                                             ],
                                           ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
                             ),
-                          ),
-                        );
-                      },
-                    ),
+                          );
+                        },
+                      ),
 
-              provider.isLoading?showLoaderList():SizedBox.shrink()
-            ],
+                provider.isLoading ? showLoaderList() : SizedBox.shrink(),
+              ],
+            ),
           ),
         );
-      }
+      },
     );
   }
 
@@ -245,7 +379,6 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
         spacing: 3,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-
           commonText(
             text: formattedFrom,
             fontSize: 12,

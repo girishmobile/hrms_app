@@ -133,6 +133,7 @@ class AttendanceProvider extends ChangeNotifier {
         calendarType: CalendarDatePicker2Type.range,
         firstDate: DateTime(2000),
         lastDate: DateTime.now(),
+
         selectedDayHighlightColor: Colors.green,
         closeDialogOnCancelTapped: true,
         closeDialogOnOkTapped: true,
@@ -154,96 +155,23 @@ class AttendanceProvider extends ChangeNotifier {
           result[1] != null) {
         DateTime start = result[0]!;
         DateTime end = result[1]!;
+        String startDate = "${start.toIso8601String().split('T')[0]}T00:00:00+05:30";
+        String endDate = "${end.toIso8601String().split('T')[0]}T23:59:59+05:30";
 
         setCustomDateRange(DateTimeRange(start: start, end: end));
         setSelectedDateRange(
           "${start.toLocal().toString().split(' ')[0]} - ${end.toLocal().toString().split(' ')[0]}",
         );
 
-        await _fetchAttendance(start, end);
+
+        notifyListeners();
+        await _fetchAttendance(
+          DateTime.parse(startDate),
+          DateTime.parse(endDate),
+        );
       }
     }
-    /* if (value == "Custom Date") {
-      // Use CalendarDatePicker2 inside a dialog
-      final List<DateTime?>? result = await showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
 
-            contentPadding: EdgeInsets.zero,
-
-           // title: const Text('Select Date Range'),
-            content: SizedBox(
-              width: 400, // constrain width
-              height: 350, //
-              // constrain height
-              child: CalendarDatePicker2(
-                config: CalendarDatePicker2Config(
-                  calendarType: CalendarDatePicker2Type.range,
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime.now(),
-                  selectedDayHighlightColor: Colors.green,
-                ),
-                value: _customDateRange != null
-                    ? [_customDateRange!.start, _customDateRange!.end]
-                    : [],
-                onValueChanged: (dates) {
-                  // do nothing here, final value returned on "OK"
-                },
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, null),
-                child: const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () {
-
-                  // Retrieve selected dates from CalendarDatePicker2
-                  final state =
-                  context.findAncestorStateOfType<CalendarDatePicker2State>();
-                  if (state != null) {
-                    Navigator.pop(context, state.selectedDates);
-                  } else {
-                    Navigator.pop(context, null);
-                  }
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-
-      if (result != null && result.length == 2 && result[0] != null && result[1] != null) {
-        start = result[0]!;
-        end = result[1]!;
-
-        setCustomDateRange(DateTimeRange(start: start, end: end));
-        setSelectedDateRange(
-            "${start.toLocal().toString().split(' ')[0]} - ${end.toLocal().toString().split(' ')[0]}");
-        await _fetchAttendance(start, end);
-      }
-    }*/
-    /* if (value == "Custom Date") {
-      DateTimeRange? picked = await showDateRangePicker(
-        context: context,
-        firstDate: DateTime(2000),
-        lastDate: DateTime.now(),
-        initialDateRange: _customDateRange,
-      );
-
-      if (picked != null) {
-        setCustomDateRange(picked);
-        setSelectedDateRange(
-          "${picked.start.toLocal().toString().split(' ')[0]} - ${picked.end.toLocal().toString().split(' ')[0]}",
-        );
-        start = picked.start;
-        end = picked.end;
-        await _fetchAttendance(start, end);
-      }
-    }*/
     else {
       setSelectedDateRange(value);
 
@@ -304,55 +232,71 @@ class AttendanceProvider extends ChangeNotifier {
     _isLoading = val;
     notifyListeners();
   }
-
   List<Map<String, dynamic>> get attendanceGridItems {
     if (_attendanceModel?.data?.leaveData == null) return [];
 
     final leave = _attendanceModel?.data?.leaveData;
 
     return [
-      {"title": "Days", "value": leave?.presentDays ?? 0, "desc": ''},
-
-      {"title": "Absent", "value": leave?.absentDays ?? 0, "desc": ''},
+      {
+        "title": "Days",
+        "value": leave?.presentDays ?? 0,
+        "desc": '',
+        "color": const Color(0xFF4CAF50), // Green
+      },
+      {
+        "title": "Absent",
+        "value": leave?.absentDays ?? 0,
+        "desc": '',
+        "color": const Color(0xFFF44336), // Red
+      },
       {
         "title": "Late",
         "value": (leave?.lateDaysRatio ?? 0).toInt(),
         "desc": '% (0 Days)',
+        "color": const Color(0xFFFF9800), // Orange
       },
-      {"title": "Half Days", "value": leave?.halfDays ?? 0, "desc": ''},
-
+      {
+        "title": "Half Days",
+        "value": leave?.halfDays ?? 0,
+        "desc": '',
+        "color": const Color(0xFF9C27B0), // Purple
+      },
       {
         "title": "Absent Days Ratio",
         "value": (leave?.absentDaysRatio ?? 0).toInt(),
         "desc": '% (0 Days)',
+        "color": const Color(0xFF03A9F4), // Light Blue
       },
       {
         "title": "Productivity Ratio",
         "value": int.tryParse('${leave?.productivityRatio ?? 0}') ?? 0,
         "desc": '.00%',
+        "color": const Color(0xFF009688), // Teal
       },
-
       {
         "title": "Office Staffing",
         "value": leave?.officeStaffing ?? 0,
         "desc": '',
+        "color": const Color(0xFF673AB7), // Deep Purple
       },
       if (leave?.requiredStaffing != null)
         {
           "title": "Required Staffing",
-          "value":
-              ((leave?.requiredStaffing!.hours ?? 0) * 60 +
+          "value": ((leave?.requiredStaffing!.hours ?? 0) * 60 +
               (leave?.requiredStaffing!.minutes ?? 0)),
           "desc": '',
+          "color": const Color(0xFF2196F3), // Blue
         },
       if (leave?.empStaffing != null)
         {
           "title": "Employee Staffing",
-          "value":
-              ((leave?.empStaffing!.hours ?? 0) * 60 +
+          "value": ((leave?.empStaffing!.hours ?? 0) * 60 +
               (leave?.empStaffing!.minutes ?? 0)),
           "desc": '',
+          "color": const Color(0xFFE91E63), // Pink
         },
     ];
   }
+
 }
