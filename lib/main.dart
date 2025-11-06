@@ -48,11 +48,8 @@ List<SingleChildWidget> providers = [
   ),
 ];
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  await dotenv.load(fileName: ".env");
-  await Hive.initFlutter();
+/// Initialize long-running or network-backed services without blocking UI startup
+Future<void> _initializeServices() async {
   try {
     if (Firebase.apps.isEmpty) {
       await Firebase.initializeApp(
@@ -65,13 +62,23 @@ Future<void> main() async {
   } catch (e, s) {
     debugPrint('🔥 Initialization error: $e\n$s');
   }
+}
 
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await dotenv.load(fileName: ".env");
+  await Hive.initFlutter();
+  // Start the app immediately so UI can render while we initialize services
   runApp(
     MultiProvider(
       providers: providers,
       child: MyApp(navigatorKey: navigatorKey),
     ),
   );
+
+  // Initialize Firebase / Notifications in background (don't await to avoid blocking)
+  _initializeServices();
 }
 
 class MyApp extends StatelessWidget {
