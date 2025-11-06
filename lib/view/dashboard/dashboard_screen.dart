@@ -11,9 +11,13 @@ import 'package:hrms/view/dashboard/page/my_kpi_page.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/constants/color_utils.dart';
+import '../../core/hive/app_config_cache.dart';
+import '../../core/hive/user_model.dart';
+import '../../core/widgets/cached_image_widget.dart';
 import '../../core/widgets/common_bottom_navbar.dart';
 import '../../core/widgets/component.dart';
 import '../../provider/dashboard_provider.dart';
+import '../../provider/profile_provider.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -39,11 +43,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return Container();
     }
   }
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Provider.of<ProfileProvider>(context, listen: false)
+          .loadProfileFromCache();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<DashboardProvider>(
       builder: (context, provider, child) {
+
         return Stack(
           children: [
             commonScaffold(
@@ -90,16 +104,46 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ],
                 title: provider.appbarTitle ?? home,
                 context: context,
-                leading: Container(
-                  padding: const EdgeInsets.only(left: 16),
+              /*  leading: Container(
+                  padding: const EdgeInsets.only(left: 0),
 
                   child: commonInkWell(
                     onTap: () => provider.setIndex(4),
                     child: Center(
                       child: SizedBox(
-                        width: 45,
-                        height: 45,
-                        child: commonCircleAssetImage(icBoy),
+                        width: 35,
+                        height: 35,
+                        child: ClipRRect(
+                            borderRadius: BorderRadiusGeometry.circular(100),
+                            child: CachedImageWidget(
+                            height: 35,
+                            width: 35,
+                            imageUrl: profileImage)),
+                      ),
+                    ),
+                  ),
+                ),*/
+                leading: Container(
+                  padding: const EdgeInsets.only(left: 0),
+                  child: commonInkWell(
+                    onTap: () => provider.setIndex(4),
+                    child: Center(
+                      child: SizedBox(
+                        width: 35,
+                        height: 35,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: Consumer<ProfileProvider>(
+                            builder: (_, profileProvider, __) {
+                              return CachedImageWidget(
+                                height: 35,
+                                width: 35,
+                                imageUrl:
+                                '${profileProvider.profileImage}', // ⚡ cache busting
+                              );
+                            },
+                          ),
+                        ),
                       ),
                     ),
                   ),

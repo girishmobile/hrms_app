@@ -637,7 +637,7 @@ Widget commonRefreshIndicator({
   );
 }
 
-Widget commonBoxView({required Widget contentView, required String title}) {
+Widget commonBoxView({required Widget contentView, required String title,double ?fontSize}) {
   return Container(
     decoration: commonBoxDecoration(
       color: colorProduct.withValues(alpha: 0.01),
@@ -649,7 +649,7 @@ Widget commonBoxView({required Widget contentView, required String title}) {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Title
-        commonHeadingView(title: title),
+        commonHeadingView(title: title,fontSize: fontSize),
 
         const Divider(height: 0.5, color: colorBorder),
 
@@ -690,7 +690,7 @@ Widget commonRowLeftRightView({
   );
 }
 
-Widget commonHeadingView({String? title}) {
+Widget commonHeadingView({String? title,double ? fontSize}) {
   return Padding(
     padding: EdgeInsets.all(12.0),
     child: Row(
@@ -699,7 +699,7 @@ Widget commonHeadingView({String? title}) {
           child: commonText(
             color: colorProduct,
             text: title ?? "Product Information",
-            fontSize: 16,
+            fontSize:fontSize?? 16,
             fontWeight: FontWeight.w600,
           ),
         ),

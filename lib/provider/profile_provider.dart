@@ -46,7 +46,20 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  String? _profileImage;
 
+  String? get profileImage => _profileImage;
+
+  void setProfileImage(String? imageUrl) {
+    _profileImage = imageUrl;
+    notifyListeners(); // ⚡ Notifies all listeners to rebuild
+  }
+
+  Future<void> loadProfileFromCache() async {
+    UserModel? user = await AppConfigCache.getUserModel();
+    _profileImage = user?.data?.user?.profileImage;
+    notifyListeners();
+  }
   ProfileModel ? _profileModel;
 
   ProfileModel? get profileModel => _profileModel;
@@ -67,6 +80,44 @@ class ProfileProvider extends ChangeNotifier {
         _profileModel = ProfileModel.fromJson(json.decode(response));
 
         setNetworkImage('${ApiConfig.imageBaseUrl}/${_profileModel?.profileImage??''}');
+        //final decoded = jsonDecode(response);
+        final existingUserModel = await AppConfigCache.getUserModel();
+        final existingToken = existingUserModel?.data?.token;
+        final formattedJson = {
+          "response": "success",
+          "data": {
+            "token": existingToken, // ✅ keep old token if available
+            "user": {
+              "id": _profileModel?.id,
+              "firstname": _profileModel?.firstname ?? '',
+              "lastname": _profileModel?.lastname ?? '',
+              "email": _profileModel?.email ?? '',
+              "employee_id": _profileModel?.employeeId ?? '',
+              "profile_image": _profileModel?.profileImage ?? '',
+              "profile": _profileModel?.profileImage ?? '',
+              "role": _profileModel?.roles != null &&
+                  _profileModel!.roles!.isNotEmpty
+                  ? {
+                "id": _profileModel!.roles![0].id,
+                "name": _profileModel!.roles![0].name,
+              }
+                  : null,
+              "batch_data": _profileModel?.location != null
+                  ? {
+                "id": _profileModel!.location!.id,
+                "working_days": _profileModel!.location!.workingDays,
+                "alt_sat": _profileModel!.location!.altSat,
+              }
+                  : null,
+              "location_id": _profileModel?.location?.id,
+            }
+          }
+        };
+        final userModel =
+        UserModel.fromJson(Map<String, dynamic>.from(formattedJson));
+        await AppConfigCache.saveUserModel(userModel);
+
+        await  loadProfileFromCache();
         _setLoading(false);
       } else {
         showCommonDialog(
@@ -364,6 +415,7 @@ class ProfileProvider extends ChangeNotifier {
         showCommonDialog(
           showCancel: false,
           title: "Error",
+
           context: navigatorKey.currentContext!,
           content: errorMessage,
         );

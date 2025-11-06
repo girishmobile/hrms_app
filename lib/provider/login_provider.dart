@@ -58,15 +58,31 @@ class LoginProvider with ChangeNotifier {
 
       if (globalStatusCode == 200) {
         final decoded = json.decode(response);
-        final userModel = UserModel.fromJson(
-          Map<String, dynamic>.from(decoded),
-        );
-        await AppConfigCache.saveUserModel(userModel);
 
-        navigatorKey.currentState?.pushNamedAndRemoveUntil(
-          RouteName.dashboardScreen,
-          (Route<dynamic> route) => false,
-        );
+
+        if(decoded['response']=="success"){
+          final userModel = UserModel.fromJson(
+            Map<String, dynamic>.from(decoded),
+          );
+          await AppConfigCache.saveUserModel(userModel);
+
+
+          navigatorKey.currentState?.pushNamedAndRemoveUntil(
+            RouteName.dashboardScreen,
+                (Route<dynamic> route) => false,
+          );
+          resetState();
+        }
+        else
+          {
+            showCommonDialog(
+              showCancel: false,
+              title: "Error",
+              context: navigatorKey.currentContext!,
+              content: "Invalid email or password...!",
+            );
+          }
+        _setLoading(false);
       } else {
         showCommonDialog(
           showCancel: false,
@@ -76,6 +92,7 @@ class LoginProvider with ChangeNotifier {
         );
       }
       notifyListeners();
+      _setLoading(false);
     } catch (e) {
       _setLoading(false);
     }

@@ -18,7 +18,11 @@ Widget profileTopView({required ProfileProvider provider}) {
     crossAxisAlignment: CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Center(child: ProfileView(assetPath: data?.gender?.valueText =="Male"?icBoy:icGirl)),
+      Center(
+        child: ProfileView(
+          assetPath: data?.gender?.valueText == "Male" ? icBoy : icGirl,
+        ),
+      ),
 
       SizedBox(height: 15),
       commonText(
@@ -39,7 +43,6 @@ Widget profileTopView({required ProfileProvider provider}) {
 
 Widget basicInfoWidget({required ProfileProvider provider}) {
   var data = provider.profileModel;
-
 
   return commonBoxView(
     contentView: Column(
@@ -223,6 +226,122 @@ Widget companyInfoWidget({required ProfileProvider provider}) {
   );
 }
 
+Widget documentInfoWidget({required ProfileProvider provider}) {
+  var data = provider.profileModel;
+  return commonBoxView(
+    contentView: Column(
+      spacing: 12,
+      children: [
+        commonRowLeftRightView(
+          title: 'Driving License Number',
+          value: data?.drivingLicenseNumber?.name ?? "-",
+        ),
+        commonRowLeftRightView(
+          title: 'PAN Number',
+          value: data?.panNumber ?? "-",
+        ),
+        commonRowLeftRightView(
+          title: 'Aadhar Number/SSN',
+          value: data?.aadharNumber ?? "-",
+        ),
+        commonRowLeftRightView(
+          title: 'Voter ID Number',
+          value: data?.voterIdNumber?.date ?? "-",
+        ),
+      ],
+    ),
+    title: 'Document',
+  );
+}
+
+Widget immigrationInfoWidget({required ProfileProvider provider}) {
+  var data = provider.profileModel;
+  return commonBoxView(
+    contentView: Column(
+      spacing: 12,
+      children: [
+        commonBoxView(
+          fontSize: 12,
+          title: "Passport Information",
+          contentView: Column(
+            spacing: 12,
+            children: [
+              commonRowLeftRightView(
+                title: 'Number',
+                value: data?.passportNumber ?? "-",
+              ),
+              commonRowLeftRightView(
+                title: 'Issue Date',
+                value: data?.passportIssueDate ?? "-",
+              ),
+              commonRowLeftRightView(
+                title: 'Expiry Date',
+                value: data?.passportExpiryDate ?? "-",
+              ),
+              commonRowLeftRightView(
+                title: 'Scanned Copy',
+                value: data?.passportImage ?? "-",
+              ),
+            ],
+          ),
+        ),
+        commonBoxView(
+          fontSize: 12,
+          title: "Visa Information",
+          contentView: Column(
+            spacing: 12,
+            children: [
+              commonRowLeftRightView(
+                title: 'Number',
+                value: data?.voterIdNumber ?? "-",
+              ),
+              commonRowLeftRightView(
+                title: 'Issue Date',
+                value: data?.visaIssueDate ?? "-",
+              ),
+              commonRowLeftRightView(
+                title: 'Expiry Date',
+                value: data?.visaExpiryDate ?? "-",
+              ),
+              commonRowLeftRightView(
+                title: 'Scanned Copy',
+                value: data?.visaImage ?? "-",
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+    title: 'Immigration',
+  );
+}
+Widget socialInfoWidget({required ProfileProvider provider}) {
+  var data = provider.profileModel;
+  return commonBoxView(
+    contentView: Column(
+      spacing: 12,
+      children: [
+        commonRowLeftRightView(
+          title: 'Slack username',
+          value: data?.slackUsername?? "-",
+        ),
+        commonRowLeftRightView(
+          title: 'Facebook username',
+          value: data?.facebookUsername ?? "-",
+        ),
+        commonRowLeftRightView(
+          title: 'Twitter username',
+          value: data?.twitterUsername ?? "-",
+        ),
+        commonRowLeftRightView(
+          title: 'LinkedIn username',
+          value: data?.linkdinUsername?? "-",
+        ),
+      ],
+    ),
+    title: 'Social Network',
+  );
+}
 Widget logoutButton(BuildContext context) {
   return commonButton(
     color: colorRed,

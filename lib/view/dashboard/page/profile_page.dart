@@ -57,7 +57,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(height: 15),
 
                   companyInfoWidget(provider: provider),
+                  const SizedBox(height: 15),
+
+                  documentInfoWidget(provider: provider),
+                  const SizedBox(height: 15),
+                  immigrationInfoWidget(provider: provider),
+                  const SizedBox(height: 15),
+                  socialInfoWidget(provider: provider),
                   const SizedBox(height: 30),
+
 
                   logoutButton(context),
                   const SizedBox(height: 20),

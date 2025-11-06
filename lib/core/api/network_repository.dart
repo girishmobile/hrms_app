@@ -11,6 +11,7 @@ import 'package:http/http.dart';
 import '../../main.dart';
 import '../routes/app_routes.dart';
 import 'gloable_status_code.dart';
+/// HTTP methods enum (lint ignored because uppercase is fine for HTTP)
 
 enum HttpMethod { GET, POST, PUT, PATCH, DELETE }
 
