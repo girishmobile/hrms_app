@@ -27,7 +27,7 @@ class UpcomingBirthdayScreen extends StatelessWidget {
               shrinkWrap: true,
               padding: EdgeInsets.zero,
               //padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-              itemCount: provider.birthdayModel?.birthdays?.length ?? 0,
+                itemCount: provider.birthdayModel?.birthdays?.length ?? 0,
               itemBuilder: (context, index) {
                 final item = provider.birthdayModel?.birthdays?[index];
                 if (item == null) {
@@ -45,12 +45,12 @@ class UpcomingBirthdayScreen extends StatelessWidget {
                 }
 
                 final bgColor = provider.getBirthdayBgColor(birthDate);
-                // final bgColor = provider.getBirthdayBgColor(DateTime.parse(item?.dateOfBirth?.date??DateTime.now().toString()));
+
                 return commonInkWell(
                   onTap: () {},
                   child: Container(
 
-                    margin: EdgeInsets.only(bottom: 10),
+                    margin: EdgeInsets.only(bottom: 3),
 
                     decoration: commonBoxDecoration(
                       color: bgColor.withValues(alpha: 0.1),
@@ -68,7 +68,9 @@ class UpcomingBirthdayScreen extends StatelessWidget {
                             borderRadius: BorderRadiusGeometry.circular(8),
 
                             child: CachedImageWidget(
+
                               width: 120,
+
 
                               borderRadius: 8,
                               imageUrl:

@@ -76,7 +76,7 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
     return commonScaffold(
       appBar: commonAppBar(
         centerTitle: true,
-        title: "Add leave",
+        title: widget.data!=null?"Edit leave":"Add leave",
         context: context,
       ),
       body: Consumer<LeaveProvider>(

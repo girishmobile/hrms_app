@@ -15,7 +15,7 @@ class KpiProvider with ChangeNotifier {
 
   KpiProvider() {
     final currentYear = DateTime.now().year;
-    years = List.generate(30, (index) => (currentYear - index).toString());
+    years = List.generate(5, (index) => (currentYear - index).toString());
     selectedYear = currentYear.toString(); // 👈 Default to current year
   }
 

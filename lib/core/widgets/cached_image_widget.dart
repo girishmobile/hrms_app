@@ -6,6 +6,7 @@ import '../api/api_config.dart';
 
 class CachedImageWidget extends StatelessWidget {
   final String? imageUrl;
+  final String? errorImage;
   final double? width;
   final double? height;
   final BoxFit fit;
@@ -15,6 +16,7 @@ class CachedImageWidget extends StatelessWidget {
     super.key,
     this.imageUrl,
     this.width,
+    this.errorImage,
     this.height,
     this.fit = BoxFit.cover,
     this.borderRadius = 0,
@@ -39,7 +41,7 @@ class CachedImageWidget extends StatelessWidget {
         errorWidget: (context, url, error) => ClipRRect(
           borderRadius: BorderRadius.circular(borderRadius),
           child: Image.asset(
-            icBoy,
+            errorImage?? icBoy,
             width: width,
             height: height,
             fit: fit,
