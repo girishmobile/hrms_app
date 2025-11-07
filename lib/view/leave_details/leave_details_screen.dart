@@ -88,8 +88,6 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
       "search": {"value": widget.title == "All" ? "" : "", "regex": false},
     };
 
-    debugPrint('widget====$body');
-    debugPrint('widget====${widget.title.toString()}');
     await profile.getAllLeave(body: body);
   }
 
@@ -229,7 +227,7 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
                                                   ],
                                                 ),
                                               ),
-
+                                              SizedBox(height: 10),
                                               data?.status == "Pending"
                                                   ? Row(
                                                       spacing: 20,
@@ -259,20 +257,22 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
                                                                   .centerRight,
                                                               decoration:
                                                                   commonBoxDecoration(
+                                                                    borderRadius:
+                                                                        4,
                                                                     borderColor:
                                                                         colorProduct,
                                                                   ),
                                                               padding:
                                                                   EdgeInsets.symmetric(
                                                                     horizontal:
-                                                                        10,
-                                                                    vertical: 5,
+                                                                        12,
+                                                                    vertical: 8,
                                                                   ),
                                                               child: Center(
                                                                 child: commonText(
                                                                   text:
                                                                       "Edit Leave",
-                                                                  fontSize: 10,
+                                                                  fontSize: 12,
                                                                 ),
                                                               ),
                                                             ),
@@ -293,7 +293,9 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
                                                                 cancelText:
                                                                     "No",
                                                                 onPressed: () async {
-                                                                  Navigator.of(context).pop(); // 🔹 Pehle dialog band karo
+                                                                  Navigator.of(
+                                                                    context,
+                                                                  ).pop(); // 🔹 Pehle dialog band karo
 
                                                                   final Map<
                                                                     String,
@@ -318,6 +320,8 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
                                                             child: Container(
                                                               decoration:
                                                                   commonBoxDecoration(
+                                                                    borderRadius:
+                                                                        4,
                                                                     borderColor:
                                                                         Colors
                                                                             .red,
@@ -325,14 +329,14 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
                                                               padding:
                                                                   EdgeInsets.symmetric(
                                                                     horizontal:
-                                                                        10,
-                                                                    vertical: 5,
+                                                                        12,
+                                                                    vertical: 8,
                                                                   ),
                                                               child: Center(
                                                                 child: commonText(
                                                                   text:
                                                                       "Delete",
-                                                                  fontSize: 10,
+                                                                  fontSize: 12,
                                                                   color: Colors
                                                                       .red,
                                                                 ),

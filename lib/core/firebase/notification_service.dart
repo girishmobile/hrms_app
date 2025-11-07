@@ -9,7 +9,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../routes/app_routes.dart';
 
-
 @pragma('vm:entry-point') // 👈 Needed so native code can call it
 class NotificationService {
   static final FlutterLocalNotificationsPlugin _localNotificationsPlugin =
@@ -46,9 +45,6 @@ class NotificationService {
           (key, value) => MapEntry(key.toString(), value?.toString() ?? ''),
         );
 
-
-
-
         _handlePayloadNavigation(
           payload: safeData['category'] ?? '',
           data: safeData,
@@ -65,16 +61,46 @@ class NotificationService {
         badge: true,
         sound: true,
       );
+      // Try to obtain APNs token, but avoid an infinite loop (simulator won't provide one).
+      String? apnsToken;
+      int attempts = 0;
+      const int maxAttempts = 6; // ~3 seconds total
 
-      String? apnsToken = await _messaging.getAPNSToken();
-      while (apnsToken == null) {
-        await Future.delayed(const Duration(milliseconds: 500));
+      try {
         apnsToken = await _messaging.getAPNSToken();
+      } catch (e) {
+        // PlatformException thrown when APNs token hasn't been set yet.
+        debugPrint('getAPNSToken() initial attempt failed: $e');
+        apnsToken = null;
+      }
+
+      while (apnsToken == null && attempts < maxAttempts) {
+        await Future.delayed(const Duration(milliseconds: 500));
+        try {
+          apnsToken = await _messaging.getAPNSToken();
+        } catch (e) {
+          debugPrint('getAPNSToken() attempt #$attempts failed: $e');
+          apnsToken = null;
+        }
+        attempts++;
+      }
+
+      if (apnsToken == null) {
+        debugPrint(
+          'APNs token not available (simulator or not registered). Continuing without APNs token.',
+        );
+      } else {
+        debugPrint('APNs token: $apnsToken');
       }
     }
 
-    token = await FirebaseMessaging.instance.getToken();
-    debugPrint("Firebase Token by Flutter code: $token");
+    try {
+      token = await FirebaseMessaging.instance.getToken();
+      debugPrint("Firebase Token by Flutter code: $token");
+    } catch (e) {
+      debugPrint('Error getting FCM token: $e');
+      token = null;
+    }
 
     _messaging.onTokenRefresh.listen((newToken) {
       token = newToken;
@@ -173,8 +199,6 @@ class NotificationService {
         (k, v) => MapEntry(k.toString(), v?.toString() ?? ''),
       );
 
-
-
       await _localNotificationsPlugin.show(
         0,
         title,
@@ -214,7 +238,6 @@ class NotificationService {
     final safeData = message.data.map(
       (key, value) => MapEntry(key.toString(), value?.toString() ?? ''),
     );
-
 
     debugPrint("🌙 Background notification saved: ${message.messageId}");
     _handlePayloadNavigation(

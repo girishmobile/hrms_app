@@ -7,10 +7,10 @@ import 'package:hrms/core/api/api_config.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
-
 import '../../main.dart';
 import '../routes/app_routes.dart';
 import 'gloable_status_code.dart';
+
 /// HTTP methods enum (lint ignored because uppercase is fine for HTTP)
 
 enum HttpMethod { GET, POST, PUT, PATCH, DELETE }
@@ -77,12 +77,12 @@ Future callApi({
 
     return {'status': false, 'message': errorMessage};
   } catch (e) {
-
     debugPrint('====R{$e');
     errorMessage = "Something went wrong. Please try again.";
     return {'status': false, 'message': errorMessage};
   }
 }
+
 bool _isRedirectingToLogin = false;
 
 Future<String> getResponse(Response response) async {
@@ -122,7 +122,7 @@ Future<String> getResponse(Response response) async {
         Future.delayed(const Duration(seconds: 2), () {
           navigatorKey.currentState?.pushNamedAndRemoveUntil(
             RouteName.loginScreen,
-                (route) => false,
+            (route) => false,
           );
         });
       });
@@ -139,7 +139,7 @@ Future<String> getResponse(Response response) async {
         Future.microtask(() {
           navigatorKey.currentState?.pushNamedAndRemoveUntil(
             RouteName.loginScreen,
-                (route) => false,
+            (route) => false,
           );
         });
       }
@@ -148,8 +148,7 @@ Future<String> getResponse(Response response) async {
     case 400:
     case 422:
       errorMessage = parsedJson['message']?.toString() ?? 'Invalid request';
-      return "{\"status\":\"false\",\"message\":\"${errorMessage?.replaceAll(
-          RegExp(r'[^\w\s]+'), '')}\"}";
+      return "{\"status\":\"false\",\"message\":\"${errorMessage?.replaceAll(RegExp(r'[^\w\s]+'), '')}\"}";
 
     case 403:
       errorMessage = parsedJson['message']?.toString() ?? 'Forbidden';
@@ -157,8 +156,7 @@ Future<String> getResponse(Response response) async {
 
     case 404:
       errorMessage = parsedJson['message']?.toString() ?? 'Not Found';
-      return "{\"status\":\"419\",\"message\":\"${errorMessage?.replaceAll(
-          RegExp(r'[^\w\s]+'), '')}\"}";
+      return "{\"status\":\"419\",\"message\":\"${errorMessage?.replaceAll(RegExp(r'[^\w\s]+'), '')}\"}";
 
     case 405:
       errorMessage = 'This Method not allowed.';
@@ -166,8 +164,7 @@ Future<String> getResponse(Response response) async {
 
     case 419:
       errorMessage = parsedJson['message']?.toString() ?? 'Session expired';
-      return "{\"status\":\"false\",\"message\":\"${errorMessage?.replaceAll(
-          RegExp(r'[^\w\s]+'), '')}\"}";
+      return "{\"status\":\"false\",\"message\":\"${errorMessage?.replaceAll(RegExp(r'[^\w\s]+'), '')}\"}";
 
     case 500:
     case 502:
@@ -178,8 +175,7 @@ Future<String> getResponse(Response response) async {
 
     case 204:
       errorMessage = parsedJson['message']?.toString() ?? 'No content';
-      return "{\"status\":\"false\",\"message\":\"${errorMessage?.replaceAll(
-          RegExp(r'[^\w\s]+'), '')}\"}";
+      return "{\"status\":\"false\",\"message\":\"${errorMessage?.replaceAll(RegExp(r'[^\w\s]+'), '')}\"}";
 
     default:
       return response.body;

@@ -13,6 +13,7 @@ class CalenderPage extends StatefulWidget {
   @override
   State<CalenderPage> createState() => _CalenderPageState();
 }
+
 class _CalenderPageState extends State<CalenderPage> {
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
@@ -31,7 +32,6 @@ class _CalenderPageState extends State<CalenderPage> {
     provider.getCalenderList(_selectedDay);
     setState(() {}); // 🔥 Force rebuild once data is ready
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -77,15 +77,16 @@ class _CalenderPageState extends State<CalenderPage> {
                       color: colorProduct.withOpacity(0.4),
                       shape: BoxShape.circle,
                     ),
-                    weekendTextStyle:
-                    commonTextStyle(color: Colors.redAccent),
+                    weekendTextStyle: commonTextStyle(color: Colors.redAccent),
                   ),
                   calendarBuilders: CalendarBuilders(
                     markerBuilder: (context, date, events) {
-                      if (events == null || events.isEmpty) return const SizedBox();
+                      if (events == null || events.isEmpty)
+                        return const SizedBox();
 
                       final firstEvent = events.first;
-                      if (firstEvent is! Map<String, dynamic>) return const SizedBox();
+                      if (firstEvent is! Map<String, dynamic>)
+                        return const SizedBox();
 
                       final type = firstEvent['type']?.toString() ?? '';
 
@@ -123,86 +124,85 @@ class _CalenderPageState extends State<CalenderPage> {
                 Expanded(
                   child: selectedEvents.isEmpty
                       ? Center(
-                    child: commonText(
-                      text: "No events on this day",
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  )
+                          child: commonText(
+                            text: "No events on this day",
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        )
                       : ListView.builder(
-                    itemCount: selectedEvents.length,
-                    itemBuilder: (context, index) {
-                      final event = selectedEvents[index];
-                      return Container(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 8,
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 8,
-                        ),
-                        decoration: commonBoxDecoration(
-
-                          borderColor: colorBorder
-                        ),
-                        child: Row(
-                          spacing: 10,
-                          children: [
-
-                            Container(
+                          itemCount: selectedEvents.length,
+                          itemBuilder: (context, index) {
+                            final event = selectedEvents[index];
+                            return Container(
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 8,
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 8,
+                              ),
                               decoration: commonBoxDecoration(
-                                color: event['type'] == 'leave'
-                                    ? Colors.red.withValues(alpha: 0.1)
-                                    : event['type'] == 'attendance'
-                                    ? Colors.green.withValues(alpha: 0.1)
-                                    : Colors.blue.withValues(alpha: 0.1),
+                                borderColor: colorBorder,
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Icon(
-                                  event['type'] == 'leave'
-                                      ? Icons.event_busy
-                                      : event['type'] == 'attendance'
-                                      ? Icons.check_circle
-                                      : Icons.cake,
-                                  color: event['type'] == 'leave'
-                                      ? Colors.red
-                                      : event['type'] == 'attendance'
-                                      ? Colors.green
-                                      : Colors.blue,
-                                ),
+                              child: Row(
+                                spacing: 10,
+                                children: [
+                                  Container(
+                                    decoration: commonBoxDecoration(
+                                      color: event['type'] == 'leave'
+                                          ? Colors.red.withValues(alpha: 0.1)
+                                          : event['type'] == 'attendance'
+                                          ? Colors.green.withValues(alpha: 0.1)
+                                          : Colors.blue.withValues(alpha: 0.1),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Icon(
+                                        event['type'] == 'leave'
+                                            ? Icons.event_busy
+                                            : event['type'] == 'attendance'
+                                            ? Icons.check_circle
+                                            : Icons.cake,
+                                        color: event['type'] == 'leave'
+                                            ? Colors.red
+                                            : event['type'] == 'attendance'
+                                            ? Colors.green
+                                            : Colors.blue,
+                                      ),
+                                    ),
+                                  ),
+
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        commonText(
+                                          color: colorProduct,
+                                          text: event['title'] ?? '',
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        commonText(
+                                          text:
+                                              "Type: ${event['type'].toString().toUpperCase()}",
+                                          fontSize: 10,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-
-                           Expanded(
-                             child: Column(
-                               mainAxisAlignment: MainAxisAlignment.start,
-                               crossAxisAlignment: CrossAxisAlignment.start,
-                               children: [
-                                 commonText(
-                                   color: colorProduct,
-                                   text: event['title'] ?? '',
-                                   fontWeight: FontWeight.w500,
-                                 ),
-                                 commonText(
-                                   text:
-                                   "Type: ${event['type'].toString().toUpperCase()}",
-                                   fontSize: 10,
-                                 )
-                               ],
-                             ),
-                           )
-
-                          ],
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
                 ),
               ],
             ),
-            provider.isLoading?showLoaderList():SizedBox.shrink()
+            provider.isLoading ? showLoaderList() : SizedBox.shrink(),
           ],
         );
       },
@@ -227,7 +227,7 @@ class _Legend extends StatelessWidget {
           decoration: commonBoxDecoration(color: color, shape: BoxShape.circle),
         ),
 
-        commonText(text: label, fontWeight: FontWeight.w500,fontSize: 12),
+        commonText(text: label, fontWeight: FontWeight.w500, fontSize: 12),
       ],
     );
   }
