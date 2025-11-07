@@ -379,7 +379,7 @@ class LeaveProvider with ChangeNotifier {
           content: errorMessage,
         );
       }
-    } catch (e, stacktrace) {
+    } catch (e) {
       // Print full error with stacktrace for better debugging
       debugPrint("Error while fetching leave data: $e");
     } finally {
@@ -413,7 +413,7 @@ class LeaveProvider with ChangeNotifier {
         );
         _setLoading(false);
       }
-    } catch (e, stacktrace) {
+    } catch (e) {
       // Print full error with stacktrace for better debugging
       debugPrint("Error while fetching leave data: $e");
     } finally {

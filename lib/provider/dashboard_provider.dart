@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -13,15 +12,16 @@ import '../core/api/network_repository.dart';
 import '../core/widgets/component.dart';
 import '../data/models/dashboard/holiday_birthday_model.dart';
 import '../main.dart';
+
 class LeaveModel {
   final String? title;
   final String? desc;
   int? count;
   final Color? bgColor;
-  LeaveModel({this.title,  this.count, this.bgColor,this.desc});
+  LeaveModel({this.title, this.count, this.bgColor, this.desc});
 }
-class DashboardProvider with ChangeNotifier {
 
+class DashboardProvider with ChangeNotifier {
   int _currentIndex = 2;
 
   int get currentIndex => _currentIndex;
@@ -41,39 +41,48 @@ class DashboardProvider with ChangeNotifier {
   }
 
   //=================================Leave ================================
-  String _selectedLeaveType = "All";
 
   void setSelectedLeaveType(String type) {
-    _selectedLeaveType = type;
     notifyListeners();
   }
 
   final List<LeaveModel> _leaves = [
-    LeaveModel(title: 'Pending Leaves', count: 5, bgColor: Colors.orange,),
-    LeaveModel(title: 'Cancel Leaves', count: 3, bgColor: Colors.red,),
-    LeaveModel(title: 'Approved', count: 10, bgColor: Colors.green,),
-    LeaveModel(title: 'Reject Leaves', count: 4, bgColor: Colors.grey,),
-    LeaveModel(title: 'All', count: 22, bgColor: Colors.blue,),
-    LeaveModel(title: 'Apply Leave', count: 0, bgColor: Colors.redAccent,),
+    LeaveModel(title: 'Pending Leaves', count: 5, bgColor: Colors.orange),
+    LeaveModel(title: 'Cancel Leaves', count: 3, bgColor: Colors.red),
+    LeaveModel(title: 'Approved', count: 10, bgColor: Colors.green),
+    LeaveModel(title: 'Reject Leaves', count: 4, bgColor: Colors.grey),
+    LeaveModel(title: 'All', count: 22, bgColor: Colors.blue),
+    LeaveModel(title: 'Apply Leave', count: 0, bgColor: Colors.redAccent),
   ];
 
   List<LeaveModel> get leaves => _leaves;
 
-
-
   final List<LeaveModel> _attendanceList = [
-    LeaveModel(title: 'Days', count: 1, bgColor: Colors.orange,),
-    LeaveModel(title: 'Late', count: 0, bgColor: Colors.red,),
-    LeaveModel(title: 'Absent', count: 0, bgColor: Colors.green,),
-    LeaveModel(title: 'Half Days', count: 0, bgColor: Colors.grey,),
-    LeaveModel(title: 'Total Office', count: 9, bgColor: Colors.blue,desc: "hrs"),
-    LeaveModel(title: 'Total worked', count: 0, bgColor: Colors.redAccent,desc: "hrs"),
-    LeaveModel(title: 'Productivity Ratio', count: 0, bgColor: Colors.orange,desc: ".00%"),
+    LeaveModel(title: 'Days', count: 1, bgColor: Colors.orange),
+    LeaveModel(title: 'Late', count: 0, bgColor: Colors.red),
+    LeaveModel(title: 'Absent', count: 0, bgColor: Colors.green),
+    LeaveModel(title: 'Half Days', count: 0, bgColor: Colors.grey),
+    LeaveModel(
+      title: 'Total Office',
+      count: 9,
+      bgColor: Colors.blue,
+      desc: "hrs",
+    ),
+    LeaveModel(
+      title: 'Total worked',
+      count: 0,
+      bgColor: Colors.redAccent,
+      desc: "hrs",
+    ),
+    LeaveModel(
+      title: 'Productivity Ratio',
+      count: 0,
+      bgColor: Colors.orange,
+      desc: ".00%",
+    ),
   ];
 
   List<LeaveModel> get attendanceList => _attendanceList;
-
-
 
   final List<Color> colors = [
     Colors.orange,
@@ -83,7 +92,6 @@ class DashboardProvider with ChangeNotifier {
     Colors.blue,
     Colors.redAccent,
   ];
-
 
   final List<Map<String, dynamic>> allLeaveDetails = [
     {
@@ -268,7 +276,6 @@ class DashboardProvider with ChangeNotifier {
     },
   ];
 
-
   final List<Map<String, dynamic>> allKPIDetails = [
     {
       "date": "2025-10-01",
@@ -426,7 +433,8 @@ class DashboardProvider with ChangeNotifier {
       "date": "2025-10-20",
       "day": "Monday",
       "type": "Festival Holiday",
-      "description": "Festival of lights symbolizing victory of light over darkness.",
+      "description":
+          "Festival of lights symbolizing victory of light over darkness.",
       "bgColor": 0xFFFFFDE7, // light gold
     },
     {
@@ -450,7 +458,8 @@ class DashboardProvider with ChangeNotifier {
       "date": "2025-01-14",
       "day": "Tuesday",
       "type": "Festival Holiday",
-      "description": "Harvest festival marking the transition of the sun into Capricorn.",
+      "description":
+          "Harvest festival marking the transition of the sun into Capricorn.",
       "bgColor": 0xFFFFF8E1, // light yellow
     },
     {
@@ -482,7 +491,8 @@ class DashboardProvider with ChangeNotifier {
       "date": "2025-07-06",
       "day": "Sunday",
       "type": "Religious Holiday",
-      "description": "Islamic New Year and remembrance of the martyrdom of Imam Hussain.",
+      "description":
+          "Islamic New Year and remembrance of the martyrdom of Imam Hussain.",
       "bgColor": 0xFFFFEBEE, // light red
     },
     {
@@ -490,18 +500,18 @@ class DashboardProvider with ChangeNotifier {
       "date": "2025-10-22",
       "day": "Wednesday",
       "type": "Festival Holiday",
-      "description": "Celebrates the bond between brothers and sisters after Diwali.",
+      "description":
+          "Celebrates the bond between brothers and sisters after Diwali.",
       "bgColor": 0xFFFCE4EC, // light pink
     },
   ];
 
-
-
   List<Map<String, dynamic>> getLeavesByType(String title) {
     if (title == "All") return allLeaveDetails;
     return allLeaveDetails
-        .where((l) => l["status"].toString().toLowerCase() ==
-        title.toLowerCase())
+        .where(
+          (l) => l["status"].toString().toLowerCase() == title.toLowerCase(),
+        )
         .toList();
   }
 
@@ -567,7 +577,6 @@ class DashboardProvider with ChangeNotifier {
       "workingHours": "9h 10m",
     },
   ];
-
 
   final List<Map<String, dynamic>> allBirthdayDetails = [
     {
@@ -658,19 +667,32 @@ class DashboardProvider with ChangeNotifier {
 
   Color getBirthdayBgColor(DateTime date) {
     switch (date.month) {
-      case 1: return const Color(0xFFE3F2FD);
-      case 2: return const Color(0xFFFCE4EC);
-      case 3: return const Color(0xFFE8F5E9);
-      case 4: return const Color(0xFFFFF3E0);
-      case 5: return const Color(0xFFE1F5FE);
-      case 6: return const Color(0xFFF3E5F5);
-      case 7: return const Color(0xFFFFF8E1);
-      case 8: return const Color(0xFFE8EAF6);
-      case 9: return const Color(0xFFE0F2F1);
-      case 10: return const Color(0xFFFFFDE7);
-      case 11: return const Color(0xFFFFEBEE);
-      case 12: return const Color(0xFFE8F5E9);
-      default: return const Color(0xFFE0E0E0);
+      case 1:
+        return const Color(0xFFE3F2FD);
+      case 2:
+        return const Color(0xFFFCE4EC);
+      case 3:
+        return const Color(0xFFE8F5E9);
+      case 4:
+        return const Color(0xFFFFF3E0);
+      case 5:
+        return const Color(0xFFE1F5FE);
+      case 6:
+        return const Color(0xFFF3E5F5);
+      case 7:
+        return const Color(0xFFFFF8E1);
+      case 8:
+        return const Color(0xFFE8EAF6);
+      case 9:
+        return const Color(0xFFE0F2F1);
+      case 10:
+        return const Color(0xFFFFFDE7);
+      case 11:
+        return const Color(0xFFFFEBEE);
+      case 12:
+        return const Color(0xFFE8F5E9);
+      default:
+        return const Color(0xFFE0E0E0);
     }
   }
 
@@ -688,7 +710,6 @@ class DashboardProvider with ChangeNotifier {
         return const Color(0xFFE0E0E0); // Light grey fallback
     }
   }
-
 
   final List<Map<String, dynamic>> monthData = [
     {"month": "January", "icon": Icons.calendar_month_outlined, "percent": 75},
@@ -715,9 +736,9 @@ class DashboardProvider with ChangeNotifier {
     _selectedYear = year;
     notifyListeners();
   }
+
   // default selected year
   List<String> years = ["2021", "2022", "2023", "2024", "2025"];
-
 
   bool _isLoading = false;
 
@@ -727,7 +748,8 @@ class DashboardProvider with ChangeNotifier {
     _isLoading = val;
     notifyListeners();
   }
-  HolidayBirthdayModel ? _birthdayModel;
+
+  HolidayBirthdayModel? _birthdayModel;
 
   HolidayBirthdayModel? get birthdayModel => _birthdayModel;
   Future<void> getBirthdayHoliday() async {
@@ -747,7 +769,7 @@ class DashboardProvider with ChangeNotifier {
         debugPrint('======$decoded');
         _setLoading(false);
       } else {
-       /* showCommonDialog(
+        /* showCommonDialog(
           showCancel: false,
           title: "Error",
           context: navigatorKey.currentContext!,
@@ -760,7 +782,8 @@ class DashboardProvider with ChangeNotifier {
       _setLoading(false);
     }
   }
-  CurrentAttendanceModel  ? _currentAttendanceModel;
+
+  CurrentAttendanceModel? _currentAttendanceModel;
 
   CurrentAttendanceModel? get currentAttendanceModel => _currentAttendanceModel;
   Future<void> getCurrentAttendanceRecord() async {
@@ -774,8 +797,9 @@ class DashboardProvider with ChangeNotifier {
       );
       debugPrint('======$globalStatusCode');
       if (globalStatusCode == 200) {
-        _currentAttendanceModel = CurrentAttendanceModel.fromJson(json.decode(response));
-
+        _currentAttendanceModel = CurrentAttendanceModel.fromJson(
+          json.decode(response),
+        );
 
         _setLoading(false);
       } else {
@@ -807,12 +831,13 @@ class DashboardProvider with ChangeNotifier {
       );
 
       if (globalStatusCode == 200) {
-
         final decoded = json.decode(response);
 
         // Ensure it's a list
         if (decoded is List) {
-          _notificationList = decoded.map((e) => NotificationModel.fromJson(e)).toList();
+          _notificationList = decoded
+              .map((e) => NotificationModel.fromJson(e))
+              .toList();
         } else {
           _notificationList = [];
         }
@@ -851,10 +876,7 @@ class DashboardProvider with ChangeNotifier {
 
         if (decoded is Map<String, dynamic>) {
           _leaveCountData = decoded.entries
-              .map((e) => LeaveCountDataModel(
-            title: e.key,
-            count: e.value,
-          ))
+              .map((e) => LeaveCountDataModel(title: e.key, count: e.value))
               .toList();
         } else {
           _leaveCountData = [];
@@ -862,7 +884,7 @@ class DashboardProvider with ChangeNotifier {
 
         debugPrint('======$decoded');
       } else {
-       /* showCommonDialog(
+        /* showCommonDialog(
           showCancel: false,
           title: "Error",
           context: navigatorKey.currentContext!,
@@ -877,14 +899,29 @@ class DashboardProvider with ChangeNotifier {
     }
   }
 
+  void printFcmToken() async {
+    try {
+      String? token = await FirebaseMessaging.instance.getToken();
+      print('FCM Token: $token');
+    } catch (e) {
+      print('Error fetching FCM token: $e');
+    }
+  }
 
   Future<void> updateFCMToken() async {
     _setLoading(true);
-    try {
 
-      Map<String, dynamic> body ={
-        "fcm_token":await FirebaseMessaging.instance.getToken()
-      };
+    printFcmToken();
+    try {
+      String? fcmToken;
+      try {
+        fcmToken = await FirebaseMessaging.instance.getToken();
+      } catch (e) {
+        debugPrint('Error getting FCM token for update: $e');
+        fcmToken = null;
+      }
+
+      Map<String, dynamic> body = {"fcm_token": fcmToken};
       final response = await callApi(
         url: ApiConfig.updateFCMTokenUrl,
         method: HttpMethod.POST,

@@ -1,10 +1,12 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:hrms/provider/attendance_provider.dart';
 import 'package:hrms/provider/calendar_provider.dart';
 import 'package:hrms/provider/dashboard_provider.dart';
@@ -22,11 +24,9 @@ import 'core/routes/app_routes.dart';
 import 'core/routes/route_generator.dart';
 import 'core/theme/app_theme.dart';
 
-@pragma('vm:entry-point') // important for background isolate
+@pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  if (Firebase.apps.isEmpty) {
-    await Firebase.initializeApp();
-  }
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   log(
     "📩 BG Notification received: ${message.messageId}, data: ${message.data}",
   );
@@ -35,6 +35,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
+
 List<SingleChildWidget> providers = [
   ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
   ChangeNotifierProvider<LoginProvider>(create: (_) => LoginProvider()),
@@ -48,50 +49,100 @@ List<SingleChildWidget> providers = [
   ),
 ];
 
-/// Initialize long-running or network-backed services without blocking UI startup
-Future<void> _initializeServices() async {
+Future<void> _initializeHive() async {
   try {
-    if (Firebase.apps.isEmpty) {
+    try {
+      // Preferred (handles platform-specific paths)
+      await Hive.initFlutter();
+      debugPrint('Hive initialized with Hive.initFlutter()');
+    } catch (e) {
+      // If Hive.initFlutter fails (path_provider/platform channel issues),
+      // fallback to manual init with a temp directory so the app can continue running.
+      debugPrint('Hive.initFlutter() failed: $e — falling back to temp dir');
+      try {
+        final tmpDir = Directory.systemTemp.createTempSync('hrms_hive_');
+        Hive.init(tmpDir.path);
+        debugPrint('Hive initialized with temp dir: ${tmpDir.path}');
+      } catch (e2) {
+        debugPrint('Fallback Hive init also failed: $e2');
+        rethrow;
+      }
+    }
+  } catch (e) {
+    debugPrint('Error initializing Hive: $e');
+    // Don't rethrow — Hive failure shouldn't fully block UI; callers handle missing data.
+  }
+}
+
+Future<void> _initializeFirebase() async {
+  int attempts = 0;
+  const maxAttempts = 3;
+
+  while (attempts < maxAttempts) {
+    try {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
+      debugPrint('Firebase initialized successfully');
+      return;
+    } catch (e) {
+      attempts++;
+      debugPrint('Firebase init attempt $attempts failed: $e');
+      if (attempts == maxAttempts) rethrow;
+      await Future.delayed(Duration(seconds: 1));
     }
-
-    await NotificationService.initializeApp(navigatorKey: navigatorKey);
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  } catch (e, s) {
-    debugPrint('🔥 Initialization error: $e\n$s');
   }
 }
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Start with environment variables
   await dotenv.load(fileName: ".env");
-  await Hive.initFlutter();
-  // Start the app immediately so UI can render while we initialize services
+
+  bool servicesInitialized = false;
+
+  try {
+    // Initialize core services
+    await _initializeHive();
+    await _initializeFirebase();
+
+    // Initialize notifications after Firebase
+    await NotificationService.initializeApp(navigatorKey: navigatorKey);
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+    servicesInitialized = true;
+  } catch (e, s) {
+    debugPrint('🔥 Critical initialization error: $e\n$s');
+    // We'll continue to show UI even if services fail
+  }
+
   runApp(
     MultiProvider(
       providers: providers,
-      child: MyApp(navigatorKey: navigatorKey),
+      child: MyApp(
+        navigatorKey: navigatorKey,
+        servicesInitialized: servicesInitialized,
+      ),
     ),
   );
-
-  // Initialize Firebase / Notifications in background (don't await to avoid blocking)
-  _initializeServices();
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, required this.navigatorKey});
+  const MyApp({
+    super.key,
+    required this.navigatorKey,
+    required this.servicesInitialized,
+  });
 
   final GlobalKey<NavigatorState> navigatorKey;
+  final bool servicesInitialized;
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
     return MaterialApp(
       title: 'HRMS',
-
       scaffoldMessengerKey: rootScaffoldMessengerKey,
       navigatorKey: navigatorKey,
       initialRoute: RouteName.splashScreen,

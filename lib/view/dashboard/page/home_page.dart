@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               ListView(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
+                  horizontal: 16,
                   vertical: 16,
                 ),
                 physics: const BouncingScrollPhysics(),
