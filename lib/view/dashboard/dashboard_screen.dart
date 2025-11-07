@@ -6,7 +6,6 @@ import 'package:hrms/view/dashboard/page/account_page.dart';
 import 'package:hrms/view/dashboard/page/attendance_page.dart';
 import 'package:hrms/view/dashboard/page/calender_page.dart';
 import 'package:hrms/view/dashboard/page/home_page.dart';
-import 'package:hrms/view/dashboard/page/profile_page.dart';
 import 'package:hrms/view/dashboard/page/my_kpi_page.dart';
 import 'package:provider/provider.dart';
 
