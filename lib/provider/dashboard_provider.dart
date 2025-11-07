@@ -899,12 +899,37 @@ class DashboardProvider with ChangeNotifier {
         debugPrint('======$decoded');
         _setLoading(false);
       } else {
-        /*showCommonDialog(
-          showCancel: false,
-          title: "Error",
-          context: navigatorKey.currentContext!,
-          content: errorMessage,
-        );*/
+
+      }
+      _setLoading(false);
+      notifyListeners();
+    } catch (e) {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> deleteNotification({required int id}) async {
+    _setLoading(true);
+    try {
+
+      Map<String, dynamic> body ={
+        "id":id
+      };
+      final response = await callApi(
+        url: ApiConfig.deleteNotification,
+        method: HttpMethod.POST,
+
+        body: body,
+        headers: null,
+      );
+
+      if (globalStatusCode == 200) {
+        final decoded = json.decode(response);
+
+        debugPrint('======$decoded');
+        _setLoading(false);
+      } else {
+
       }
       _setLoading(false);
       notifyListeners();

@@ -35,7 +35,7 @@ Widget buildMonthCard({
     },
     child: Container(
       decoration: commonBoxDecoration(
-        color: color.withValues(alpha: 0.05),
+        color: color.withValues(alpha: 0.03),
         borderColor: colorBorder,
         borderRadius: 8,
       ),
@@ -46,15 +46,15 @@ Widget buildMonthCard({
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             commonAssetImage(
-              icMenuCalender,
-              width: 32,
-              height: 32,
-              color: colorProduct.withValues(alpha: 0.7),
+              userKPI,
+              width: 35,
+              height: 35,
+              color: color.withValues(alpha: 0.8),
             ),
             const SizedBox(height: 10),
             commonText(
               text: monthNames[month - 1],
-              fontSize: 14,
+              fontSize: 16,
               fontWeight: FontWeight.w600,
               color: colorProduct,
             ),
@@ -62,11 +62,13 @@ Widget buildMonthCard({
             AnimatedCounter(
               leftText: '',
               rightText: '%',
+
               endValue: percent,
               duration: const Duration(seconds: 2),
               style: commonTextStyle(
                 fontSize: 26,
-                color: color,
+              color: Colors.black54,
+              //  color: color,
                 fontWeight: FontWeight.w700,
               ),
             ),

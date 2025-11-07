@@ -21,3 +21,4 @@ samples, guidance on mobile development, and a full API reference.
 "uuid": null
 }
 
+flutter build appbundle --release                

@@ -68,6 +68,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
 
                   logoutButton(context),
+                  const SizedBox(height: 15),
+                  updatePasswordButton(context),
                   const SizedBox(height: 20),
                 ],
               ),

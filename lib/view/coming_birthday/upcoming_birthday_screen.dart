@@ -50,7 +50,7 @@ class UpcomingBirthdayScreen extends StatelessWidget {
                   onTap: () {},
                   child: Container(
 
-                    margin: EdgeInsets.only(bottom: 3),
+                    margin: EdgeInsets.only(bottom: 8),
 
                     decoration: commonBoxDecoration(
                       color: bgColor.withValues(alpha: 0.1),

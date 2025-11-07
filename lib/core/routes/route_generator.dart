@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hrms/view/add_leave/add_leave_screen.dart';
 import 'package:hrms/view/attendance_details/attendance_details_screen.dart';
+import 'package:hrms/view/auth/forgot_password.dart';
 import 'package:hrms/view/coming_birthday/upcoming_birthday_screen.dart';
 import 'package:hrms/view/dashboard/dashboard_screen.dart';
 import 'package:hrms/view/holiday/holiday_screen.dart';
@@ -8,6 +9,7 @@ import 'package:hrms/view/kpi_details/kpi_details_screen.dart';
 import 'package:hrms/view/leave_details/leave_details_screen.dart';
 import 'package:hrms/view/notification/notification_screen.dart';
 import 'package:hrms/view/splash/splash_screen.dart';
+import 'package:hrms/view/update_password/update_password_screen.dart';
 
 import '../../view/auth/login_screen.dart';
 import '../../view/leave_details/leave_details_args.dart';
@@ -53,7 +55,10 @@ class RouteGenerate {
             year: args.year,
           ),
         );
-
+      case RouteName.forgotPassword:
+        return _buildPageRoute(const ForgotPassword());
+      case RouteName.updatePasswordScreen:
+        return _buildPageRoute(const UpdatePasswordScreen());
       default:
         return _buildPageRoute(const SplashScreen());
     }

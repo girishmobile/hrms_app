@@ -9,6 +9,7 @@ class ApiConfig {
 
   //=======================user and Login Api
   static String loginUrl = "$apiBASEURL/login";
+  static String forgotPasswordUrl = "$apiBASEURL/forgotPassword";
   static String getUserDetailsByIdUrl= "$apiBASEURL/user/getEmployeeById";
   static String getLeaveDataUrl = "$apiBASEURL/leave_application/getSelfLeaveRequiredData";
   static String addLeaveUrl = "$apiBASEURL/leave_application/save_leave_application";
@@ -25,6 +26,8 @@ class ApiConfig {
   static String updateFCMTokenUrl = "$apiBASEURL/user/update-fcm-token";
   static String calenderUrl = "$apiBASEURL/dashboard/getLeavesSelfDashboard";
   static String deleteLeaveUrl = "$apiBASEURL/leave_application/delete_leave_application";
+  static String userUpdatePassword = "$apiBASEURL/user/update_user_password";
+  static String deleteNotification = "$apiBASEURL/activity_box/deleteNotification";
 
 
   //==========================================================Shopify API=================================================================================================================

@@ -24,7 +24,7 @@ Widget buildItemView({
             const SizedBox(height: 10),
             commonText(
               text: item['title'] ?? '',
-              fontSize: 14,
+              fontSize: 16,
               fontWeight: FontWeight.w500,
               color: colorProduct,
             ),

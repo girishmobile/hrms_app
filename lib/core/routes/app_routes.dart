@@ -9,5 +9,7 @@ class RouteName {
   static const String holidayScreen = "/HolidayScreen";
   static const String upcomingBirthdayScreen = "/UpcomingBirthdayScreen";
   static const String notificationScreen = "/NotificationScreen";
+  static const String forgotPassword = "/ForgotPassword";
+  static const String updatePasswordScreen = "/UpdatePasswordScreen";
 
 }

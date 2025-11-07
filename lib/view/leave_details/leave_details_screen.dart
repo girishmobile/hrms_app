@@ -266,7 +266,7 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
                                                                   EdgeInsets.symmetric(
                                                                     horizontal:
                                                                         10,
-                                                                    vertical: 5,
+                                                                    vertical: 8,
                                                                   ),
                                                               child: Center(
                                                                 child: commonText(
@@ -326,7 +326,7 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
                                                                   EdgeInsets.symmetric(
                                                                     horizontal:
                                                                         10,
-                                                                    vertical: 5,
+                                                                    vertical: 8,
                                                                   ),
                                                               child: Center(
                                                                 child: commonText(

@@ -409,7 +409,23 @@ class ProfileProvider extends ChangeNotifier {
           "employee_id": user?.data?.user?.id,
 
         };
+
+
         getUserDetails(body: body);
+
+        final context = navigatorKey.currentContext;
+        if (context != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                json.decode(response),
+                style: const TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.green,
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        }
         _setLoading(false);
       } else {
         showCommonDialog(

@@ -618,8 +618,8 @@ class BottomNavItems {
       label: attendance,
     ),
     BottomNavigationBarItem(
-      icon: ImageIcon(AssetImage(icMenuUser)),
-      label: profile,
+      icon: ImageIcon(AssetImage(icSetting)),
+      label: setting,
     ),
   ];
 }

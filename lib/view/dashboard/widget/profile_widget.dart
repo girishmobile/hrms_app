@@ -12,7 +12,7 @@ import '../../../core/widgets/component.dart';
 import '../../../core/widgets/profile_view.dart';
 import '../../../main.dart';
 
-Widget profileTopView({required ProfileProvider provider}) {
+Widget profileTopView({required ProfileProvider provider,Color? colorText,Color ? colorBorder}) {
   var data = provider.profileModel;
   return Column(
     crossAxisAlignment: CrossAxisAlignment.center,
@@ -20,6 +20,7 @@ Widget profileTopView({required ProfileProvider provider}) {
     children: [
       Center(
         child: ProfileView(
+          colorBorder:colorBorder ,
           assetPath: data?.gender?.valueText == "Male" ? icBoy : icGirl,
         ),
       ),
@@ -28,6 +29,7 @@ Widget profileTopView({required ProfileProvider provider}) {
       commonText(
         text: '${data?.firstname ?? ''} ${data?.lastname ?? ''}',
         textAlign: TextAlign.center,
+        color: colorText,
         fontWeight: FontWeight.w600,
         fontSize: 16,
       ),
@@ -35,6 +37,7 @@ Widget profileTopView({required ProfileProvider provider}) {
         text: data?.email ?? '',
         textAlign: TextAlign.center,
         fontWeight: FontWeight.w400,
+        color: colorText,
         fontSize: 13,
       ),
     ],
@@ -234,7 +237,7 @@ Widget documentInfoWidget({required ProfileProvider provider}) {
       children: [
         commonRowLeftRightView(
           title: 'Driving License Number',
-          value: data?.drivingLicenseNumber?.name ?? "-",
+          value: data?.drivingLicenseNumber?? "-",
         ),
         commonRowLeftRightView(
           title: 'PAN Number',
@@ -246,7 +249,7 @@ Widget documentInfoWidget({required ProfileProvider provider}) {
         ),
         commonRowLeftRightView(
           title: 'Voter ID Number',
-          value: data?.voterIdNumber?.date ?? "-",
+          value: data?.voterIdNumber?? "-",
         ),
       ],
     ),
@@ -344,7 +347,7 @@ Widget socialInfoWidget({required ProfileProvider provider}) {
 }
 Widget logoutButton(BuildContext context) {
   return commonButton(
-    color: colorRed,
+    color: colorProduct,
     radius: 8,
     text: "Logout",
     onPressed: () {
@@ -364,6 +367,19 @@ Widget logoutButton(BuildContext context) {
         title: "Logout?",
         context: context,
         content: "Are you sure want to logout",
+      );
+    },
+  );
+}
+Widget updatePasswordButton(BuildContext context) {
+  return commonButton(
+    color: colorUser,
+    radius: 8,
+    text: "Update Password",
+    onPressed: () {
+      navigatorKey.currentState?.pushNamed(
+        RouteName.updatePasswordScreen,
+
       );
     },
   );

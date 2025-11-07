@@ -100,7 +100,8 @@ class _MyKpiPageState extends State<MyKpiPage> {
                 ),
                 Expanded(
                   child: GridView.builder(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.symmetric(horizontal: 16,vertical: 0),
+                   // padding: const EdgeInsets.all(16),
                     shrinkWrap: true,
                     itemCount: provider.kpiList.length,
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

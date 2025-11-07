@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:hrms/core/constants/color_utils.dart';
+import 'package:hrms/core/constants/image_utils.dart';
 import 'package:hrms/core/routes/app_routes.dart';
 import 'package:hrms/core/widgets/component.dart';
 import 'package:hrms/main.dart';
@@ -163,11 +164,14 @@ class _HomePageState extends State<HomePage> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(
+                                  commonAssetImage(
+                                      color: Colors.blueAccent,
+                                      icAdd,height: 30,width: 30),
+                                /*  Icon(
                                     Icons.add_circle_outline,
                                     color: Colors.blueAccent,
                                     size: 36,
-                                  ),
+                                  ),*/
                                   SizedBox(height: 8),
                                   commonText(
                                     text: "Apply Leave",

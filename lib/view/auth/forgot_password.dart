@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:hrms/core/routes/app_routes.dart';
+import 'package:hrms/core/constants/color_utils.dart';
 import 'package:hrms/core/widgets/common_uuid.dart';
 import 'package:hrms/core/widgets/component.dart';
-import 'package:hrms/main.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/constants/image_utils.dart';
-import '../../core/constants/validation.dart';
-import '../../provider/login_provider.dart';
+import '../../../core/constants/image_utils.dart';
+import '../../../core/constants/validation.dart';
+import '../../../provider/login_provider.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class ForgotPassword extends StatelessWidget {
+  const ForgotPassword({super.key});
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.sizeOf(context);
     final formLoginKey = GlobalKey<FormState>();
     return commonScaffold(
-      resizeToAvoidBottomInset: true,
+
+     
       body: Container(
         width: size.width,
         height: size.height,
@@ -30,6 +30,28 @@ class LoginScreen extends StatelessWidget {
               color: Colors.transparent,
               child: Stack(
                 children: [
+                  SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: commonInkWell(
+                        onTap: (){
+                          Navigator.of(context).pop();
+                        },
+                        child: Container(
+                          width: 45,
+                          height: 45,
+
+                          decoration: commonBoxDecoration(
+                            color: colorProduct,
+                            shape: BoxShape.circle
+                          ),
+                          child: Center(
+                            child: Icon(Icons.arrow_back, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                   Center(
                     child: SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
@@ -51,57 +73,26 @@ class LoginScreen extends StatelessWidget {
                               ),
                             ),
                             SizedBox(height: size.height * 0.05),
+
+                            Align(
+                                alignment: AlignmentGeometry.center,
+                                child: commonText(text: "Enter your email to reset password",textAlign: TextAlign.center,fontSize: 16,fontWeight: FontWeight.w500)),
+
+                            SizedBox(height: 20,),
                             commonTextFieldView(
-                              text: "Email",
+                              text: "Enter",
                               controller: provider.tetEmail,
-                            /*  validator: (value) => emptyError(
+                              validator: (value) => emptyError(
                                 value,
                                 errorMessage: "Email is required",
-                              ),*/
-                               validator: validateEmail,
+                              ),
+                              //   validator: validateEmail,
                               keyboardType: TextInputType.emailAddress,
                               prefixIcon: commonPrefixIcon(image: icEmail),
                             ),
-                            const SizedBox(height: 15),
-                            commonTextFieldView(
-                              validator: (value) => emptyError(
-                                value,
-                                errorMessage: "Password is required",
-                              ),
-                              text: "Password",
-                              keyboardType: TextInputType.visiblePassword,
-                              controller: provider.tetPassword,
-                              prefixIcon: commonPrefixIcon(image: icPassword),
-                              obscureText: provider.obscurePassword,
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  color: Colors.grey,
-                                  provider.obscurePassword
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                ),
-                                onPressed: provider.togglePassword,
-                              ),
-                            ),
-
-                            SizedBox(height: 8),
-                            commonInkWell(
-                              onTap: () {
-
-                                navigatorKey.currentState?.pushNamed(RouteName.forgotPassword);
-                              },
-                              child: Align(
-                                alignment: Alignment.bottomRight,
-                                child: commonText(
-                                  fontSize: 12,
-                                  text: "Forgot Password?",
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
                             const SizedBox(height: 36),
                             commonButton(
-                              text: "Login",
+                              text: "Send reset link",
                               onPressed: () {
 
                                 hideKeyboard(context);
@@ -109,13 +100,10 @@ class LoginScreen extends StatelessWidget {
                                     true) {
                                   Map<String, dynamic> body = {
                                     "email": provider.tetEmail.text.trim(),
-                                    "password": provider.tetPassword.text
-                                        .trim(),
-                                    "isLogin": "1",
-                                    "uuid": CommonUuid.generateUUID(),
+
                                   };
 
-                                  provider.loginApi(body: body);
+                                  provider.forgotPassword(body: body);
                                 }
                               },
                             ),

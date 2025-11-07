@@ -3,6 +3,7 @@ import 'package:hrms/core/constants/image_utils.dart';
 import 'package:hrms/core/constants/string_utils.dart';
 import 'package:hrms/core/routes/app_routes.dart';
 import 'package:hrms/main.dart';
+import 'package:hrms/view/dashboard/page/account_page.dart';
 import 'package:hrms/view/dashboard/page/attendance_page.dart';
 import 'package:hrms/view/dashboard/page/calender_page.dart';
 import 'package:hrms/view/dashboard/page/home_page.dart';
@@ -38,7 +39,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case 3:
         return AttendancePage();
       case 4:
-        return ProfilePage();
+        return AccountPage();
       default:
         return Container();
     }
@@ -124,11 +125,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ),*/
                 leading: Container(
+
                   padding: const EdgeInsets.only(left: 0),
                   child: commonInkWell(
                     onTap: () => provider.setIndex(4),
                     child: Center(
-                      child: SizedBox(
+                      child: Container(
+                        decoration: commonBoxDecoration(
+                          borderColor: Colors.white,borderWidth: 1,
+                          shape: BoxShape.circle
+                        ),
                         width: 35,
                         height: 35,
                         child: ClipRRect(
@@ -164,7 +170,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   );
                 },
-                child: getPage(provider.currentIndex),
+                child: Container(
+
+                    child: getPage(provider.currentIndex)),
               ),
               // 👈 only current page
               bottomNavigationBar: CommonBottomNavBar(
@@ -205,7 +213,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   if (index == 1) provider.setAppBarTitle(calendar);
                   if (index == 2) provider.setAppBarTitle(home);
                   if (index == 3) provider.setAppBarTitle(attendance);
-                  if (index == 4) provider.setAppBarTitle(profile);
+                  if (index == 4) provider.setAppBarTitle(setting);
                 },
                 items: BottomNavItems.items,
               ),

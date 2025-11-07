@@ -9,3 +9,4 @@ const String calendar = "Calendar";
 const String home = "Home";
 const String attendance = "Attendance";
 const String profile = "Profile";
+const String setting = "Setting";

@@ -155,7 +155,7 @@ class NotificationService {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       debugPrint("📩 Notification opened (background): ${message.data}");
       _handlePayloadNavigation(
-        payload: message.data['category'],
+        payload: message.data['type'],
         data: message.data,
       );
     });
@@ -218,7 +218,7 @@ class NotificationService {
 
     debugPrint("🌙 Background notification saved: ${message.messageId}");
     _handlePayloadNavigation(
-      payload: safeData['category'] ?? '',
+      payload: safeData['type'] ?? '',
       data: safeData,
     );
   }
@@ -229,35 +229,24 @@ class NotificationService {
     required Map<String, dynamic> data,
   }) async {
     debugPrint('Handling payload: $payload');
-    debugPrint('Handling payload: ${data['id']}');
 
-    switch (data['category']) {
-      case 'join_class':
+
+    switch (data['type']) {
+      case 'leave_request':
         _navigatorKey.currentState?.pushNamed(RouteName.dashboardScreen);
         break;
-      case 'create_class':
+     /* case 'leave_request':
         _navigatorKey.currentState?.pushNamed(RouteName.dashboardScreen);
         break;
       case 'update_class':
         _navigatorKey.currentState?.pushNamed(RouteName.dashboardScreen);
-        break;
-      case 'chat':
-        /* _navigatorKey.currentState?.push(
-          MaterialPageRoute(
-            builder: (_) => ChatScreen(
-              currentUserId: user?.sId ?? '',
-              currentName: user?.displayName ?? '',
-              currentPhoto: user?.avatar ?? '',
-              otherUserId: data['otherUserId'],
-              otherName: data['otherName'],
-              otherPhoto: data['otherPhoto'],
-            ),
-          ),
-        );*/
-        _navigatorKey.currentState?.pushNamed(RouteName.loginScreen);
+        break;*/
+     /* case 'chat':
+
+        _navigatorKey.currentState?.pushNamed(RouteName.loginScreen);*/
         break;
       default:
-        _navigatorKey.currentState?.pushNamed(RouteName.loginScreen);
+        _navigatorKey.currentState?.pushNamed(RouteName.dashboardScreen);
     }
   }
 }

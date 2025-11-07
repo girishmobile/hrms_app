@@ -22,6 +22,10 @@ const String icEdit="$iconDashboardPath/edit.png";
 const String icGirl="$iconDashboardPath/ic_girl_dummy.jpg";
 const String icBoy="$iconDashboardPath/ic_boy_dummy.jpg";
 const String icErrorImage="$iconDashboardPath/icErrorImage.png";
+const String userKPI="$iconDashboardPath/user_fill.png";
+const String icDelete="$iconDashboardPath/delete.png";
+const String icAdd="$iconDashboardPath/more.png";
+const String icSetting="$iconDashboardPath/settings.png";
 
 
 //==============================Product=============================

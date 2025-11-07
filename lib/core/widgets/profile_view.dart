@@ -13,7 +13,8 @@ import 'image_pick_and_crop_widget.dart';
 class ProfileView extends StatelessWidget {
   final String? assetPath;
 
-  const ProfileView({super.key, this.assetPath});
+  final Color ?colorBorder;
+  const ProfileView({super.key, this.assetPath,this.colorBorder});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,7 @@ class ProfileView extends StatelessWidget {
           width: 120,
           height: 120,
           decoration: commonBoxDecoration(
-            borderColor: Colors.black,
+            borderColor: colorBorder??Colors.black,
             borderWidth: 2,
             shape: BoxShape.circle,
 
@@ -63,6 +64,7 @@ class ProfileView extends StatelessWidget {
               height: 40,
               decoration: commonBoxDecoration(
                 shape: BoxShape.circle,
+                borderColor: colorBorder??Colors.transparent,
                 color: colorProduct,
               ),
               child: Center(
