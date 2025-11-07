@@ -5,8 +5,6 @@ import 'package:hrms/provider/calendar_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../../provider/calendar_provider.dart';
-
 class CalenderPage extends StatefulWidget {
   const CalenderPage({super.key});
 
@@ -81,12 +79,12 @@ class _CalenderPageState extends State<CalenderPage> {
                   ),
                   calendarBuilders: CalendarBuilders(
                     markerBuilder: (context, date, events) {
-                      if (events == null || events.isEmpty)
-                        return const SizedBox();
+                      if (events.isEmpty) return const SizedBox();
 
                       final firstEvent = events.first;
-                      if (firstEvent is! Map<String, dynamic>)
+                      if (firstEvent is! Map<String, dynamic>) {
                         return const SizedBox();
+                      }
 
                       final type = firstEvent['type']?.toString() ?? '';
 

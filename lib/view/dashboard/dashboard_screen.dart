@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hrms/core/constants/image_utils.dart';
 import 'package:hrms/core/constants/string_utils.dart';
 import 'package:hrms/core/routes/app_routes.dart';
 import 'package:hrms/main.dart';
@@ -11,8 +10,6 @@ import 'package:hrms/view/dashboard/page/my_kpi_page.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/constants/color_utils.dart';
-import '../../core/hive/app_config_cache.dart';
-import '../../core/hive/user_model.dart';
 import '../../core/widgets/cached_image_widget.dart';
 import '../../core/widgets/common_bottom_navbar.dart';
 import '../../core/widgets/component.dart';
@@ -43,13 +40,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return Container();
     }
   }
+
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<ProfileProvider>(context, listen: false)
-          .loadProfileFromCache();
+      await Provider.of<ProfileProvider>(
+        context,
+        listen: false,
+      ).loadProfileFromCache();
     });
   }
 
@@ -57,7 +57,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Consumer<DashboardProvider>(
       builder: (context, provider, child) {
-
         return Stack(
           children: [
             commonScaffold(
@@ -69,42 +68,47 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 actions: [
                   Stack(
                     children: [
-
                       IconButton(
-                          iconSize: 30,
-                          onPressed: (){
-
-                            navigatorKey.currentState?.pushNamed(RouteName.notificationScreen);
-                          }, icon: Icon(
-
-                        Icons.notifications_none,color: Colors.white
-                        ,)),
-                      Positioned(
-                          right: 3,
-                          top: 3,
-
-                          child:  Container(
-                        width: 20,
-                        height: 20,
-                        decoration: commonBoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.red
+                        iconSize: 30,
+                        onPressed: () {
+                          navigatorKey.currentState?.pushNamed(
+                            RouteName.notificationScreen,
+                          );
+                        },
+                        icon: Icon(
+                          Icons.notifications_none,
+                          color: Colors.white,
                         ),
-                            child: Center(
-                              child: commonText(text: "0",fontSize: 10,fontWeight: FontWeight.w800,color: Colors.white),
-                            ),
-                      )),
+                      ),
+                      Positioned(
+                        right: 3,
+                        top: 3,
 
+                        child: Container(
+                          width: 20,
+                          height: 20,
+                          decoration: commonBoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.red,
+                          ),
+                          child: Center(
+                            child: commonText(
+                              text: "0",
+                              fontSize: 10,
+                              fontWeight: FontWeight.w800,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
 
-                  SizedBox(width: 10,),
-                 
-
+                  SizedBox(width: 10),
                 ],
                 title: provider.appbarTitle ?? home,
                 context: context,
-              /*  leading: Container(
+                /*  leading: Container(
                   padding: const EdgeInsets.only(left: 0),
 
                   child: commonInkWell(
@@ -134,12 +138,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(100),
                           child: Consumer<ProfileProvider>(
-                            builder: (_, profileProvider, __) {
+                            builder: (_, profileProvider, _) {
                               return CachedImageWidget(
                                 height: 35,
                                 width: 35,
                                 imageUrl:
-                                '${profileProvider.profileImage}', // ⚡ cache busting
+                                    '${profileProvider.profileImage}', // ⚡ cache busting
                               );
                             },
                           ),

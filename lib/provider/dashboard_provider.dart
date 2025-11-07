@@ -41,10 +41,8 @@ class DashboardProvider with ChangeNotifier {
   }
 
   //=================================Leave ================================
-  String _selectedLeaveType = "All";
 
   void setSelectedLeaveType(String type) {
-    _selectedLeaveType = type;
     notifyListeners();
   }
 
@@ -902,7 +900,6 @@ class DashboardProvider with ChangeNotifier {
   }
 
   void printFcmToken() async {
-    print('Updating FCM Token...');
     try {
       String? token = await FirebaseMessaging.instance.getToken();
       print('FCM Token: $token');

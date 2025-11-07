@@ -100,6 +100,7 @@ class LoginScreen extends StatelessWidget {
                               onPressed: () {
                                 if (formLoginKey.currentState?.validate() ==
                                     true) {
+                                  print("Login Pressed");
                                   Map<String, dynamic> body = {
                                     "email": provider.tetEmail.text.trim(),
                                     "password": provider.tetPassword.text

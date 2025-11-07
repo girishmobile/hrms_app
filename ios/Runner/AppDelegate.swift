@@ -12,47 +12,54 @@ import UserNotifications
   ) -> Bool {
 
     // Initialize Firebase
-    FirebaseApp.configure()
+   if FirebaseApp.app() == nil {
+      FirebaseApp.configure()
+    }
 
-    // Set UNUserNotificationCenter delegate so foreground notifications can be handled
-    //UNUserNotificationCenter.current().delegate = self
-    Messaging.messaging().delegate = self
-
-
-// Register for APNs
-          if #available(iOS 10.0, *) {
-            UNUserNotificationCenter.current().delegate = self
-            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-            UNUserNotificationCenter.current().requestAuthorization(
-              options: authOptions,
-              completionHandler: { _, _ in })
-          } else {
-            let settings: UIUserNotificationSettings =
-              UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-            application.registerUserNotificationSettings(settings)
-          }
-          
+    
+    // Set UNUserNotificationCenter delegate
+    UNUserNotificationCenter.current().delegate = self
+ // Request permission (you can change options per your UX)
+    let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+// Request permission (you can change options per your UX)
+    UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { granted, error in
+      if let error = error {
+        print("Notification permission error: \(error.localizedDescription)")
+      } else {
+        print("Notification permission granted: \(granted)")
+      }
+    }
     // Register for remote notifications
     application.registerForRemoteNotifications()
 
     // Set Messaging delegate to receive FCM token callbacks
     Messaging.messaging().delegate = self
 
-    GeneratedPluginRegistrant.register(with: self)
+  //  GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 
-  // Forward APNs device token to Firebase Messaging
+   // Pass APNs device token to Firebase Messaging
   override func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-    Messaging.messaging().apnsToken = deviceToken
     super.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+    // Set APNs token for FCM
+    Messaging.messaging().apnsToken = deviceToken
+    print("APNs device token set for FCM.")
+  }
+
+  // Optional: handle registration failure
+  override func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+    super.application(application, didFailToRegisterForRemoteNotificationsWithError: error)
+    print("failed to register for remote notifications: \(error.localizedDescription)")
   }
 }
 
-// MARK: - Firebase Messaging delegate
+// MARK: - MessagingDelegate (FCM token updates)
 extension AppDelegate: MessagingDelegate {
   func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-    debugPrint("FCM token (native): \(fcmToken ?? "<nil>")")
-    // You can also post a notification or save token for later use
+    guard let fcmToken = fcmToken else { return }
+    print("FCM token: \(fcmToken)")
+    // Optionally send token to app server
   }
 }
+

@@ -47,6 +47,8 @@ class LoginProvider with ChangeNotifier {
   }
 
   Future<void> loginApi({required Map<String, dynamic> body}) async {
+    print("body: $body");
+
     _setLoading(true);
     try {
       final response = await callApi(
@@ -59,29 +61,25 @@ class LoginProvider with ChangeNotifier {
       if (globalStatusCode == 200) {
         final decoded = json.decode(response);
 
-
-        if(decoded['response']=="success"){
+        if (decoded['response'] == "success") {
           final userModel = UserModel.fromJson(
             Map<String, dynamic>.from(decoded),
           );
           await AppConfigCache.saveUserModel(userModel);
 
-
           navigatorKey.currentState?.pushNamedAndRemoveUntil(
             RouteName.dashboardScreen,
-                (Route<dynamic> route) => false,
+            (Route<dynamic> route) => false,
           );
           resetState();
+        } else {
+          showCommonDialog(
+            showCancel: false,
+            title: "Error",
+            context: navigatorKey.currentContext!,
+            content: "Invalid email or password...!",
+          );
         }
-        else
-          {
-            showCommonDialog(
-              showCancel: false,
-              title: "Error",
-              context: navigatorKey.currentContext!,
-              content: "Invalid email or password...!",
-            );
-          }
         _setLoading(false);
       } else {
         showCommonDialog(

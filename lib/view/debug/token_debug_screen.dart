@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -73,9 +71,7 @@ class _TokenDebugScreenState extends State<TokenDebugScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('FCM Token Debug'),
-      ),
+      appBar: AppBar(title: const Text('FCM Token Debug')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -96,7 +92,9 @@ class _TokenDebugScreenState extends State<TokenDebugScreen> {
             const Text('Notes:'),
             const SizedBox(height: 6),
             const Text('- APNs token usually unavailable on Simulator.'),
-            const Text('- Run on a real device and accept notification permission.'),
+            const Text(
+              '- Run on a real device and accept notification permission.',
+            ),
             const SizedBox(height: 12),
             const Text('Tap the Refresh button after granting permission.'),
             const SizedBox(height: 12),

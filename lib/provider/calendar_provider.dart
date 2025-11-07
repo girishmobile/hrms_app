@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
 
 import '../core/api/api_config.dart';
 import '../core/api/gloable_status_code.dart';
@@ -20,6 +18,7 @@ class CalendarProvider extends ChangeNotifier {
     _isLoading = val;
     notifyListeners();
   }
+
   Future<void> getCalenderList(DateTime monthDate) async {
     final monthStart = DateTime(monthDate.year, monthDate.month, 1);
 
@@ -38,8 +37,6 @@ class CalendarProvider extends ChangeNotifier {
 
       if (globalStatusCode == 200) {
         final data = json.decode(response);
-
-        print('${json.decode(response)}');
 
         _parseEvents(data, monthDate); // ✅ pass monthDate here
         notifyListeners();
@@ -77,13 +74,15 @@ class CalendarProvider extends ChangeNotifier {
       final end = DateTime.parse(leaveData["leave_end_date"]["date"]);
 
       // Add event for each date in the leave range
-      for (var d = start;
-      d.isBefore(end.add(const Duration(days: 1)));
-      d = d.add(const Duration(days: 1))) {
+      for (
+        var d = start;
+        d.isBefore(end.add(const Duration(days: 1)));
+        d = d.add(const Duration(days: 1))
+      ) {
         final dateKey = DateTime(d.year, d.month, d.day);
         _events.putIfAbsent(dateKey, () => []).add({
           "title":
-          "${member["firstname"] ?? ''} ${member["lastname"] ?? ''} (${member["leavetype"]})",
+              "${member["firstname"] ?? ''} ${member["lastname"] ?? ''} (${member["leavetype"]})",
           "type": "leave",
           "status": leaveData["status"],
         });

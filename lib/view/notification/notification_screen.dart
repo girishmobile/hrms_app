@@ -1,6 +1,4 @@
-
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hrms/core/constants/color_utils.dart';
 import 'package:hrms/core/constants/date_utils.dart';
 import 'package:hrms/core/constants/string_utils.dart';
@@ -35,9 +33,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return commonScaffold(
-      appBar: commonAppBar(title: "Notification", context: context,centerTitle: true),
+      appBar: commonAppBar(
+        title: "Notification",
+        context: context,
+        centerTitle: true,
+      ),
       body: Consumer<DashboardProvider>(
-        builder: (context,provider,child) {
+        builder: (context, provider, child) {
           return Column(
             children: [
               ListView.builder(
@@ -53,19 +55,21 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   return Container(
                     margin: const EdgeInsets.only(bottom: 5),
                     decoration: BoxDecoration(
-                      border: Border.all(color:colorBg),
+                      border: Border.all(color: colorBg),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: IntrinsicHeight(
                       child: Row(
                         spacing: 5,
                         children: [
-
                           Container(
                             width: 100,
                             decoration: BoxDecoration(
                               color: colorSale.withValues(alpha: 0.05),
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(8),bottomLeft: Radius.circular(8))
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(8),
+                                bottomLeft: Radius.circular(8),
+                              ),
                             ),
                             height: double.infinity,
                             child: Column(
@@ -73,20 +77,35 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 commonText(
-                                    fontSize: 12,
-                                    color: colorSale,
-                                    fontWeight: FontWeight.w600,
-                                    text: formatDate(data.createdAt?.date??DateTime.now().toString(),format: "dd")),
+                                  fontSize: 12,
+                                  color: colorSale,
+                                  fontWeight: FontWeight.w600,
+                                  text: formatDate(
+                                    data.createdAt?.date ??
+                                        DateTime.now().toString(),
+                                    format: "dd",
+                                  ),
+                                ),
                                 commonText(
-                                    fontSize: 14,
-                                    color: colorSale,
-                                    fontWeight: FontWeight.w700,
-                                    text: formatDate(data.createdAt?.date??DateTime.now().toString(),format: "MMM")),
+                                  fontSize: 14,
+                                  color: colorSale,
+                                  fontWeight: FontWeight.w700,
+                                  text: formatDate(
+                                    data.createdAt?.date ??
+                                        DateTime.now().toString(),
+                                    format: "MMM",
+                                  ),
+                                ),
                                 commonText(
-                                    fontSize: 12,
-                                    color: colorSale,
-                                    fontWeight: FontWeight.w600,
-                                    text: formatDate(data.createdAt?.date??DateTime.now().toString(),format: "yyyy")),
+                                  fontSize: 12,
+                                  color: colorSale,
+                                  fontWeight: FontWeight.w600,
+                                  text: formatDate(
+                                    data.createdAt?.date ??
+                                        DateTime.now().toString(),
+                                    format: "yyyy",
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -99,12 +118,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-
                                   Html(
-
                                     data: data.title ?? '',
                                     style: {
-                                      "body": Style(margin: Margins.zero, padding: HtmlPaddings.zero),
+                                      "body": Style(
+                                        margin: Margins.zero,
+                                        padding: HtmlPaddings.zero,
+                                      ),
                                       "span": Style(
                                         fontSize: FontSize(14),
                                         fontFamily: fontRoboto,
@@ -117,7 +137,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   Html(
                                     data: data.details ?? '',
                                     style: {
-                                      "body": Style(margin: Margins.zero, padding: HtmlPaddings.zero),
+                                      "body": Style(
+                                        margin: Margins.zero,
+                                        padding: HtmlPaddings.zero,
+                                      ),
                                       "span": Style(
                                         fontSize: FontSize(12),
                                         fontFamily: fontRoboto,
@@ -127,21 +150,20 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                       ),
                                     },
                                   ),
-
                                 ],
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
                   );
                 },
               ),
-              provider.isLoading?showLoaderList():SizedBox.shrink()
+              provider.isLoading ? showLoaderList() : SizedBox.shrink(),
             ],
           );
-        }
+        },
       ),
     );
   }
