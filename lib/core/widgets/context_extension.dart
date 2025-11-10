@@ -16,4 +16,12 @@ extension StringCasingExtension on String {
     }
     return result;
   }
+  String toTitleCase() {
+    return replaceAll("_", " ") // remove underscores and replace with space
+        .split(" ")
+        .map((word) => word.isNotEmpty
+        ? word[0].toUpperCase() + word.substring(1).toLowerCase()
+        : "")
+        .join(" ");
+  }
 }

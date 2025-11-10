@@ -15,5 +15,6 @@ class RouteName {
   static const String hubStaffLogScreen = "/HubStaffLogScreen";
   static const String myWorkScreen = "/MyWorkScreen";
   static const String changePasswordScreen = "/ChangePasswordScreen";
+  static const String hotlineScreen = "/HotlineScreen";
 
 }

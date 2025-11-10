@@ -13,7 +13,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return commonScaffold(
-        appBar: commonAppBar(title: " Edit Profile", context: context,centerTitle: true),
-        body: ProfilePage());
+      appBar: commonAppBar(
+        title: " Edit Profile",
+        context: context,
+        centerTitle: true,
+      ),
+      body: ProfilePage(),
+    );
   }
 }

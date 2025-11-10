@@ -44,7 +44,7 @@ class KpiProvider with ChangeNotifier {
     try {
       final response = await callApi(
         url: '${ApiConfig.kpiListUrl}?year=$date',
-        method: HttpMethod.GET,
+        method: HttpMethod.get,
         headers: null,
       );
 
@@ -66,7 +66,6 @@ class KpiProvider with ChangeNotifier {
         );
       }
     } catch (e) {
-      print("❌ Error loading KPI list: $e");
     } finally {
       _setLoading(false);
       notifyListeners();

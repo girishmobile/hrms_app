@@ -718,7 +718,7 @@ class DashboardProvider with ChangeNotifier {
     try {
       final response = await callApi(
         url: ApiConfig.upcomingLeaveHolidayUrl,
-        method: HttpMethod.GET,
+        method: HttpMethod.get,
 
         headers: null,
       );
@@ -752,7 +752,7 @@ class DashboardProvider with ChangeNotifier {
     try {
       final response = await callApi(
         url: ApiConfig.currentAttendanceRecordUrl,
-        method: HttpMethod.GET,
+        method: HttpMethod.get,
 
         headers: null,
       );
@@ -786,7 +786,7 @@ class DashboardProvider with ChangeNotifier {
     try {
       final response = await callApi(
         url: ApiConfig.getNotificationUrl,
-        method: HttpMethod.GET,
+        method: HttpMethod.get,
 
         headers: null,
       );
@@ -828,7 +828,7 @@ class DashboardProvider with ChangeNotifier {
     try {
       final response = await callApi(
         url: ApiConfig.leaveCountDataUrl,
-        method: HttpMethod.GET,
+        method: HttpMethod.get,
         headers: null,
       );
 
@@ -861,12 +861,7 @@ class DashboardProvider with ChangeNotifier {
   }
 
   void printFcmToken() async {
-    try {
-      String? token = await FirebaseMessaging.instance.getToken();
-      print('FCM Token: $token');
-    } catch (e) {
-      print('Error fetching FCM token: $e');
-    }
+   await FirebaseMessaging.instance.getToken();
   }
 
   Future<void> updateFCMToken() async {
@@ -885,7 +880,7 @@ class DashboardProvider with ChangeNotifier {
       Map<String, dynamic> body = {"fcm_token": fcmToken};
       final response = await callApi(
         url: ApiConfig.updateFCMTokenUrl,
-        method: HttpMethod.POST,
+        method: HttpMethod.post,
 
         body: body,
         headers: null,
@@ -915,7 +910,7 @@ class DashboardProvider with ChangeNotifier {
       };
       final response = await callApi(
         url: ApiConfig.deleteNotificationUrl,
-        method: HttpMethod.POST,
+        method: HttpMethod.post,
 
         body: body,
         headers: null,
@@ -943,7 +938,7 @@ class DashboardProvider with ChangeNotifier {
     try {
       final response = await callApi(
         url: ApiConfig.hubStaffLogURL,
-        method: HttpMethod.GET,
+        method: HttpMethod.get,
         headers: null,
       );
 
@@ -980,7 +975,7 @@ class DashboardProvider with ChangeNotifier {
       };
       final response = await callApi(
         url: ApiConfig.getMyHoursURL,
-        method: HttpMethod.POST,
+        method: HttpMethod.post,
 
         body: body,
         headers: null,

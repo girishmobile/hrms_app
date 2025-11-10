@@ -13,11 +13,11 @@ import 'gloable_status_code.dart';
 
 /// HTTP methods enum (lint ignored because uppercase is fine for HTTP)
 
-enum HttpMethod { GET, POST, PUT, PATCH, DELETE }
+enum HttpMethod { get, post, put, patch, delete }
 
 Future callApi({
   required String url,
-  HttpMethod method = HttpMethod.GET,
+  HttpMethod method = HttpMethod.get,
   Map<String, dynamic>? body,
   Map<String, String>? headers,
   Map<String, String>? queryParams,
@@ -32,27 +32,27 @@ Future callApi({
     late http.Response response;
 
     switch (method) {
-      case HttpMethod.GET:
+      case HttpMethod.get:
         response = await http
             .get(uri, headers: requestHeaders)
             .timeout(timeout);
         break;
-      case HttpMethod.POST:
+      case HttpMethod.post:
         response = await http
             .post(uri, headers: requestHeaders, body: jsonEncode(body ?? {}))
             .timeout(timeout);
         break;
-      case HttpMethod.PUT:
+      case HttpMethod.put:
         response = await http
             .put(uri, headers: requestHeaders, body: jsonEncode(body ?? {}))
             .timeout(timeout);
         break;
-      case HttpMethod.PATCH:
+      case HttpMethod.patch:
         response = await http
             .patch(uri, headers: requestHeaders, body: jsonEncode(body ?? {}))
             .timeout(timeout);
         break;
-      case HttpMethod.DELETE:
+      case HttpMethod.delete:
         if (body != null) {
           final request = http.Request("DELETE", uri);
           request.headers.addAll(requestHeaders);

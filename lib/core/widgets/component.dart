@@ -713,3 +713,65 @@ void showToast(String message) {
     navigatorKey.currentContext!,
   ).showSnackBar(SnackBar(content: Text(message)));
 }
+
+Widget commonPasswordFieldView({
+  required String text,
+  required TextEditingController controller,
+  required bool obscureText,
+  required VoidCallback onToggle,
+  FormFieldValidator<String>? validator,
+  Widget? prefixIcon,
+}) {
+  return commonTextField(
+    controller: controller,
+    maxLines: 1,
+    hintText: text,
+    obscureText: obscureText,
+    keyboardType: TextInputType.visiblePassword,
+    validator: validator,
+/*    decoration: InputDecoration(
+      labelText: text,
+      prefixIcon: prefixIcon,
+      suffixIcon: IconButton(
+        icon: Icon(
+          obscureText ? Icons.visibility_off : Icons.visibility,
+          color: Colors.grey,
+        ),
+        onPressed: onToggle,
+      ),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+    ),*/
+  );
+}
+
+void showCommonBottomSheet({
+  required BuildContext context,
+  required Widget content,
+
+  bool isDismissible = true,
+}) {
+
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor:  Colors.white,
+    isDismissible: isDismissible,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (context) {
+      return Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+          left: 16,
+          right: 16,
+          top: 24,
+        ),
+        child: content,
+      );
+    },
+  );
+}

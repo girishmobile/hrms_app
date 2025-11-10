@@ -208,7 +208,7 @@ class LeaveProvider with ChangeNotifier {
     try {
       final response = await callApi(
         url: ApiConfig.getLeaveDataUrl,
-        method: HttpMethod.POST,
+        method: HttpMethod.post,
         body: body,
         headers: null,
       );
@@ -239,7 +239,7 @@ class LeaveProvider with ChangeNotifier {
     try {
       final response = await callApi(
         url: ApiConfig.addLeaveUrl,
-        method: HttpMethod.POST,
+        method: HttpMethod.post,
         body: body,
         headers: null,
       );
@@ -285,7 +285,7 @@ class LeaveProvider with ChangeNotifier {
     try {
       final response = await callApi(
         url: ApiConfig.saveLeaveData,
-        method: HttpMethod.POST,
+        method: HttpMethod.post,
         body: body,
         headers: null,
       );
@@ -344,7 +344,7 @@ class LeaveProvider with ChangeNotifier {
     try {
       final response = await callApi(
         url: ApiConfig.getAllLeaveUrl,
-        method: HttpMethod.POST,
+        method: HttpMethod.post,
         body: body,
         headers: null,
       );
@@ -393,7 +393,7 @@ class LeaveProvider with ChangeNotifier {
     try {
       final response = await callApi(
         url: ApiConfig.deleteLeaveUrl,
-        method: HttpMethod.POST,
+        method: HttpMethod.post,
         body: body,
         headers: null,
       );

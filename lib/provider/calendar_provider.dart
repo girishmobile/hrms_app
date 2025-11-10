@@ -30,7 +30,7 @@ class CalendarProvider extends ChangeNotifier {
     try {
       final response = await callApi(
         url: ApiConfig.calenderUrl,
-        method: HttpMethod.POST,
+        method: HttpMethod.post,
         body: body,
         headers: null,
       );

@@ -60,7 +60,6 @@ class ProfileProvider extends ChangeNotifier {
     UserModel? user = await AppConfigCache.getUserModel();
     _profileImage = user?.data?.user?.profileImage;
 
-    print('Loaded profile image from cache: $_profileImage');
     notifyListeners();
   }
 
@@ -74,7 +73,7 @@ class ProfileProvider extends ChangeNotifier {
     try {
       final response = await callApi(
         url: ApiConfig.getUserDetailsByIdUrl,
-        method: HttpMethod.POST,
+        method: HttpMethod.post,
         body: body,
         headers: null,
       );
@@ -401,7 +400,7 @@ class ProfileProvider extends ChangeNotifier {
     try {
       final response = await callApi(
         url: ApiConfig.updateProfileDataUrl,
-        method: HttpMethod.POST,
+        method: HttpMethod.post,
         body: body,
         headers: null,
       );

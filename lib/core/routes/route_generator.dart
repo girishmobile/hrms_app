@@ -6,6 +6,7 @@ import 'package:hrms/view/auth/forgot_password.dart';
 import 'package:hrms/view/coming_birthday/upcoming_birthday_screen.dart';
 import 'package:hrms/view/dashboard/dashboard_screen.dart';
 import 'package:hrms/view/holiday/holiday_screen.dart';
+import 'package:hrms/view/hotline/hotline_screen.dart';
 import 'package:hrms/view/hubstaff_log/hub_staff_log_screen.dart';
 import 'package:hrms/view/kpi_details/kpi_details_screen.dart';
 import 'package:hrms/view/leave_details/leave_details_screen.dart';
@@ -69,6 +70,8 @@ class RouteGenerate {
         return _buildPageRoute(const HubStaffLogScreen());
       case RouteName.myWorkScreen:
         return _buildPageRoute(const MyWorkScreen());
+      case RouteName.hotlineScreen:
+        return _buildPageRoute(const HotlineScreen());
 
       default:
         return _buildPageRoute(const SplashScreen());

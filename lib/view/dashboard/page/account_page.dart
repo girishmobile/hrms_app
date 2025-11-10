@@ -106,6 +106,17 @@ class _ProfilePageState extends State<AccountPage> {
                         ),
                         const SizedBox(height: 15),
                         commonView(
+                          title: "Hotline",
+                          onTap: () {
+                            navigatorKey.currentState?.pushNamed(
+                              RouteName.hotlineScreen,
+                            );
+                          },
+                          bgColor: Colors.pink.shade50,
+                          image: icMenuProfile,
+                        ),
+                        const SizedBox(height: 15),
+                        commonView(
                           title: "Hubstaff Logs ",
                           onTap: () {
                             navigatorKey.currentState?.pushNamed(

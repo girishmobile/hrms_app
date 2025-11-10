@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-
+import 'package:hrms/core/hive/user_model.dart';
 import 'package:hrms/core/widgets/component.dart';
 
 import '../../core/constants/image_utils.dart';
@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
       await Future.delayed(const Duration(milliseconds: 500));
 
       // Try to read cached user; if Hive isn't initialized or box missing this may throw
-      var user;
+      UserModel? user;
       try {
         user = await AppConfigCache.getUserModel();
       } catch (e) {
@@ -96,10 +96,7 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             commonAssetImage(icAppLogo, width: size.width * 0.7),
-            if (_isLoading) ...[
-              const SizedBox(height: 32),
-              showLoaderList(),
-            ],
+            if (_isLoading) ...[const SizedBox(height: 32), showLoaderList()],
             if (_errorMessage != null) ...[
               const SizedBox(height: 16),
               Padding(

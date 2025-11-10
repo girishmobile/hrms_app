@@ -87,7 +87,7 @@ class LoginProvider with ChangeNotifier {
     try {
       final response = await callApi(
         url: ApiConfig.loginUrl,
-        method: HttpMethod.POST,
+        method: HttpMethod.post,
         body: body,
         headers: null,
       );
@@ -135,7 +135,7 @@ class LoginProvider with ChangeNotifier {
     try {
       final response = await callApi(
         url: ApiConfig.forgotPasswordUrl,
-        method: HttpMethod.POST,
+        method: HttpMethod.post,
         body: body,
         headers: null,
       );
@@ -203,7 +203,7 @@ class LoginProvider with ChangeNotifier {
     try {
       final response = await callApi(
         url: ApiConfig.userUpdatePasswordURL,
-        method: HttpMethod.POST,
+        method: HttpMethod.post,
         body: body,
         headers: null,
       );

@@ -53,13 +53,11 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
       }
 
       if (widget.data?.reason != null) {
-        print('====${widget.data?.reason}');
         setState(() {
           leaveProvider.tetReason.text = widget.data?.reason ?? '';
         });
       }
 
-      print('==${widget.data?.halfDay}');
       leaveProvider.setHalfDay(true);
       leaveProvider.setSelectedHalfType(widget.data?.halfDayType ?? '');
     } else {

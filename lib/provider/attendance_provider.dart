@@ -90,7 +90,7 @@ class AttendanceProvider extends ChangeNotifier {
     try {
       final response = await callApi(
         url: ApiConfig.getAttendanceUrl,
-        method: HttpMethod.POST,
+        method: HttpMethod.post,
         body: body,
         headers: null,
       );

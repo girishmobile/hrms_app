@@ -6,7 +6,6 @@ import '../../core/constants/image_utils.dart';
 import '../../core/constants/validation.dart';
 import '../../core/hive/app_config_cache.dart';
 import '../../core/hive/user_model.dart';
-import '../../provider/dashboard_provider.dart';
 import '../../provider/login_provider.dart';
 
 class UpdatePasswordScreen extends StatelessWidget {
@@ -137,8 +136,8 @@ class UpdatePasswordScreen extends StatelessWidget {
                           commonButton(
                             text: "Update",
                             onPressed: () async {
-                              UserModel? user = await AppConfigCache.getUserModel();
-
+                              UserModel? user =
+                                  await AppConfigCache.getUserModel();
 
                               hideKeyboard(context);
                               if (formKey.currentState?.validate() ?? false) {
@@ -154,11 +153,7 @@ class UpdatePasswordScreen extends StatelessWidget {
                                       .trim(),
                                 };
 
-                                await  provider.updatePassword(body: body);
-                                final dashboardProvider = context.read<DashboardProvider>();
-                                dashboardProvider.setIndex(2);
-
-                                await AppConfigCache.clearUserData();
+                                await provider.updatePassword(body: body);
                               }
                             },
                           ),

@@ -30,6 +30,10 @@ class ApiConfig {
   static String deleteNotificationUrl = "$apiBASEURL/activity_box/deleteNotification";
   static String hubStaffLogURL = "$apiBASEURL/user/getHubstaffLogs";
   static String getMyHoursURL = "$apiBASEURL/project-manage/getSelfProjects";
+  static String hotlineCountUrl = "$apiBASEURL/attendance/hotline-count";
+  static String departmentUrl = "$apiBASEURL/department/get_all_department";
+  static String getAllDesignationUrl = "$apiBASEURL/designation/get_all_designation";
+  static String hotlineUrl = "$apiBASEURL/attendance/hotline";
 
 
   //==========================================================Shopify API=================================================================================================================
