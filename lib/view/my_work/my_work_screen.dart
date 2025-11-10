@@ -26,10 +26,6 @@ class _MyWorkScreenState extends State<MyWorkScreen> {
     }
   }
 
-  double _calculateTotalHours(List<Timelogs>? timelogs) {
-    if (timelogs == null) return 0;
-    return timelogs.fold(0, (sum, log) => sum + (log.hours ?? 0));
-  }
 
   @override
   void initState() {

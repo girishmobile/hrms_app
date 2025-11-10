@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:hrms/core/hive/user_model.dart';
+
 import 'package:hrms/core/widgets/component.dart';
 
 import '../../core/constants/image_utils.dart';
