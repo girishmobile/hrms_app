@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 import '../../core/hive/app_config_cache.dart';
 import '../../core/hive/user_model.dart';
-import '../../data/models/work/my_work_model.dart';
 import '../../provider/dashboard_provider.dart';
 
 class MyWorkScreen extends StatefulWidget {
