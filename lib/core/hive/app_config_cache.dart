@@ -1,29 +1,28 @@
-import 'package:hive/hive.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hrms/core/hive/user_model.dart';
 
 class AppConfigCache {
-  static const String _boxName = 'app_config_box';
   static const String _userModelKey = 'user_model';
 
-  static Box get _box => Hive.box(_boxName);
-
-  /// Save UserModel to Hive
+  /// Save UserModel to SharedPreferences
   static Future<void> saveUserModel(UserModel user) async {
-    final box = await Hive.openBox(_boxName);
-    await box.put(_userModelKey, user.toJson());
+    final prefs = await SharedPreferences.getInstance();
+    final jsonString = jsonEncode(user.toJson());
+    await prefs.setString(_userModelKey, jsonString);
   }
 
-  /// Get UserModel from Hive
+  /// Get UserModel from SharedPreferences
   static Future<UserModel?> getUserModel() async {
     try {
-      final box = await Hive.openBox(_boxName);
-      final data = box.get(_userModelKey);
-      if (data == null) return null;
+      final prefs = await SharedPreferences.getInstance();
+      final jsonString = prefs.getString(_userModelKey);
 
-      // ✅ Safely cast nested map
-      return UserModel.fromJson(Map<String, dynamic>.from(data));
+      if (jsonString == null) return null;
+
+      final Map<String, dynamic> data = jsonDecode(jsonString);
+      return UserModel.fromJson(data);
     } catch (e) {
-      // If Hive isn't initialized or opening the box fails, treat as no user cached
       print('AppConfigCache.getUserModel error: $e');
       return null;
     }
@@ -31,7 +30,7 @@ class AppConfigCache {
 
   /// Clear all saved user data
   static Future<void> clearUserData() async {
-    final box = await Hive.openBox(_boxName);
-    await box.delete(_userModelKey);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_userModelKey);
   }
 }

@@ -5,8 +5,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:hrms/provider/attendance_provider.dart';
 import 'package:hrms/provider/calendar_provider.dart';
 import 'package:hrms/provider/dashboard_provider.dart';
@@ -49,32 +47,9 @@ List<SingleChildWidget> providers = [
   ),
 ];
 
-Future<void> _initializeHive() async {
-  try {
-    try {
-      // Preferred (handles platform-specific paths)
-      await Hive.initFlutter();
-      debugPrint('Hive initialized with Hive.initFlutter()');
-    } catch (e) {
-      // If Hive.initFlutter fails (path_provider/platform channel issues),
-      // fallback to manual init with a temp directory so the app can continue running.
-      debugPrint('Hive.initFlutter() failed: $e — falling back to temp dir');
-      try {
-        final tmpDir = Directory.systemTemp.createTempSync('hrms_hive_');
-        Hive.init(tmpDir.path);
-        debugPrint('Hive initialized with temp dir: ${tmpDir.path}');
-      } catch (e2) {
-        debugPrint('Fallback Hive init also failed: $e2');
-        rethrow;
-      }
-    }
-  } catch (e) {
-    debugPrint('Error initializing Hive: $e');
-    // Don't rethrow — Hive failure shouldn't fully block UI; callers handle missing data.
-  }
-}
 
-Future<void> _initializeFirebase() async {
+
+Future<void>  _initializeFirebase() async {
   int attempts = 0;
   const maxAttempts = 3;
 
@@ -104,7 +79,7 @@ Future<void> main() async {
 
   try {
     // Initialize core services
-    await _initializeHive();
+
     await _initializeFirebase();
 
     // Initialize notifications after Firebase
