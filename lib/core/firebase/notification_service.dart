@@ -258,16 +258,7 @@ class NotificationService {
       case 'leave_request':
         _navigatorKey.currentState?.pushNamed(RouteName.dashboardScreen);
         break;
-     /* case 'leave_request':
-        _navigatorKey.currentState?.pushNamed(RouteName.dashboardScreen);
-        break;
-      case 'update_class':
-        _navigatorKey.currentState?.pushNamed(RouteName.dashboardScreen);
-        break;*/
-     /* case 'chat':
 
-        _navigatorKey.currentState?.pushNamed(RouteName.loginScreen);*/
-        break;
       default:
         _navigatorKey.currentState?.pushNamed(RouteName.dashboardScreen);
     }
