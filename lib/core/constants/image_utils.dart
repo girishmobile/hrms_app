@@ -26,6 +26,8 @@ const String userKPI="$iconDashboardPath/user_fill.png";
 const String icDelete="$iconDashboardPath/delete.png";
 const String icAdd="$iconDashboardPath/more.png";
 const String icSetting="$iconDashboardPath/settings.png";
+const String icTime="$iconDashboardPath/ic_time.png";
+const String icHubStaff="$iconDashboardPath/ic_hubstaff.png";
 
 
 //==============================Product=============================

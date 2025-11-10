@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:hrms/data/models/dashboard/current_attendace_model.dart';
 import 'package:hrms/data/models/leave/leave_count_data_model.dart';
 import 'package:hrms/data/models/notification/notification_model.dart';
+import 'package:hrms/data/models/work/my_work_model.dart';
 
 import '../core/api/api_config.dart';
 import '../core/api/gloable_status_code.dart';
 import '../core/api/network_repository.dart';
 import '../core/widgets/component.dart';
 import '../data/models/dashboard/holiday_birthday_model.dart';
+import '../data/models/hub_staff_model/hun_staff_model.dart';
 import '../main.dart';
 
 class LeaveModel {
@@ -46,49 +48,15 @@ class DashboardProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  final List<LeaveModel> _leaves = [
-    LeaveModel(title: 'Pending Leaves', count: 5, bgColor: Colors.orange),
-    LeaveModel(title: 'Cancel Leaves', count: 3, bgColor: Colors.red),
-    LeaveModel(title: 'Approved', count: 10, bgColor: Colors.green),
-    LeaveModel(title: 'Reject Leaves', count: 4, bgColor: Colors.grey),
-    LeaveModel(title: 'All', count: 22, bgColor: Colors.blue),
-    LeaveModel(title: 'Apply Leave', count: 0, bgColor: Colors.redAccent),
-  ];
 
-  List<LeaveModel> get leaves => _leaves;
 
-  final List<LeaveModel> _attendanceList = [
-    LeaveModel(title: 'Days', count: 1, bgColor: Colors.orange),
-    LeaveModel(title: 'Late', count: 0, bgColor: Colors.red),
-    LeaveModel(title: 'Absent', count: 0, bgColor: Colors.green),
-    LeaveModel(title: 'Half Days', count: 0, bgColor: Colors.grey),
-    LeaveModel(
-      title: 'Total Office',
-      count: 9,
-      bgColor: Colors.blue,
-      desc: "hrs",
-    ),
-    LeaveModel(
-      title: 'Total worked',
-      count: 0,
-      bgColor: Colors.redAccent,
-      desc: "hrs",
-    ),
-    LeaveModel(
-      title: 'Productivity Ratio',
-      count: 0,
-      bgColor: Colors.orange,
-      desc: ".00%",
-    ),
-  ];
 
-  List<LeaveModel> get attendanceList => _attendanceList;
 
   final List<Color> colors = [
     Colors.orange,
     Colors.red,
     Colors.green,
-    Colors.grey,
+    Colors.indigo,
     Colors.blue,
     Colors.redAccent,
   ];
@@ -506,14 +474,7 @@ class DashboardProvider with ChangeNotifier {
     },
   ];
 
-  List<Map<String, dynamic>> getLeavesByType(String title) {
-    if (title == "All") return allLeaveDetails;
-    return allLeaveDetails
-        .where(
-          (l) => l["status"].toString().toLowerCase() == title.toLowerCase(),
-        )
-        .toList();
-  }
+
 
   final List<Map<String, dynamic>> allAttendanceDetails = [
     {
@@ -953,7 +914,7 @@ class DashboardProvider with ChangeNotifier {
         "id":id
       };
       final response = await callApi(
-        url: ApiConfig.deleteNotification,
+        url: ApiConfig.deleteNotificationUrl,
         method: HttpMethod.POST,
 
         body: body,
@@ -971,6 +932,73 @@ class DashboardProvider with ChangeNotifier {
       _setLoading(false);
       notifyListeners();
     } catch (e) {
+      _setLoading(false);
+    }
+  }
+  HubStaffModel ?_hubStaffModel;
+
+  HubStaffModel?  get hubStaffModel => _hubStaffModel;
+  Future<void> getHubStaffLog() async {
+    _setLoading(true);
+    try {
+      final response = await callApi(
+        url: ApiConfig.hubStaffLogURL,
+        method: HttpMethod.GET,
+        headers: null,
+      );
+
+      if (globalStatusCode == 200) {
+        final decoded = json.decode(response);
+
+
+        _hubStaffModel = HubStaffModel.fromJson(
+          json.decode(response),
+        );
+
+        _setLoading(false);
+        debugPrint('=ddsdds=====$decoded');
+      } else {
+
+      }
+    } catch (e) {
+      debugPrint('Error: $e');
+    } finally {
+      _setLoading(false);
+      notifyListeners();
+    }
+  }
+
+  MyWorkModel ?_myWorkModel;
+
+  MyWorkModel?  get myWorkModel => _myWorkModel;
+  Future<void> getMYHours({required int id}) async {
+    _setLoading(true);
+    try {
+
+      Map<String, dynamic> body ={
+        "id":id
+      };
+      final response = await callApi(
+        url: ApiConfig.getMyHoursURL,
+        method: HttpMethod.POST,
+
+        body: body,
+        headers: null,
+      );
+
+      if (globalStatusCode == 200) {
+
+        _myWorkModel = MyWorkModel.fromJson(  json.decode(response),);
+
+
+        _setLoading(false);
+      } else {
+
+      }
+      _setLoading(false);
+      notifyListeners();
+    } catch (e) {
+      debugPrint('=====e=$e');
       _setLoading(false);
     }
   }

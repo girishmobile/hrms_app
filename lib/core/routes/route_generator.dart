@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:hrms/view/add_leave/add_leave_screen.dart';
 import 'package:hrms/view/attendance_details/attendance_details_screen.dart';
 import 'package:hrms/view/auth/forgot_password.dart';
+
 import 'package:hrms/view/coming_birthday/upcoming_birthday_screen.dart';
 import 'package:hrms/view/dashboard/dashboard_screen.dart';
 import 'package:hrms/view/holiday/holiday_screen.dart';
+import 'package:hrms/view/hubstaff_log/hub_staff_log_screen.dart';
 import 'package:hrms/view/kpi_details/kpi_details_screen.dart';
 import 'package:hrms/view/leave_details/leave_details_screen.dart';
+import 'package:hrms/view/my_work/my_work_screen.dart';
 import 'package:hrms/view/notification/notification_screen.dart';
+import 'package:hrms/view/profile/profile_screen.dart';
 import 'package:hrms/view/splash/splash_screen.dart';
 import 'package:hrms/view/update_password/update_password_screen.dart';
 
@@ -59,6 +63,13 @@ class RouteGenerate {
         return _buildPageRoute(const ForgotPassword());
       case RouteName.updatePasswordScreen:
         return _buildPageRoute(const UpdatePasswordScreen());
+      case RouteName.profileScreen:
+        return _buildPageRoute(const ProfileScreen());
+      case RouteName.hubStaffLogScreen:
+        return _buildPageRoute(const HubStaffLogScreen());
+      case RouteName.myWorkScreen:
+        return _buildPageRoute(const MyWorkScreen());
+
       default:
         return _buildPageRoute(const SplashScreen());
     }

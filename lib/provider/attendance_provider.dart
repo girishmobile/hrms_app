@@ -86,8 +86,6 @@ class AttendanceProvider extends ChangeNotifier {
       },
     };
 
-    print('==start====${start.toIso8601String()}');
-    print('==end====${end.toIso8601String()}');
 
     try {
       final response = await callApi(
@@ -98,7 +96,6 @@ class AttendanceProvider extends ChangeNotifier {
       );
 
       if (globalStatusCode == 200) {
-        print('=====${json.decode(response)}');
 
         _attendanceModel = AttendanceModel.fromJson(json.decode(response));
       } else {

@@ -56,7 +56,6 @@ class ProfileView extends StatelessWidget {
               if (path != null) {
                 provider.setPickedFile(File(path));
                 provider.uploadProfileImage( filePath: path,);
-                print('✅ Image updated: $path');
               }
             },
             child: Container(

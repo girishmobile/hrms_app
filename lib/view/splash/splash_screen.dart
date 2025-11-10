@@ -98,7 +98,7 @@ class _SplashScreenState extends State<SplashScreen> {
             commonAssetImage(icAppLogo, width: size.width * 0.7),
             if (_isLoading) ...[
               const SizedBox(height: 32),
-              const CircularProgressIndicator(),
+              showLoaderList(),
             ],
             if (_errorMessage != null) ...[
               const SizedBox(height: 16),

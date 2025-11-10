@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../core/api/api_config.dart';
@@ -83,7 +82,6 @@ class LoginProvider with ChangeNotifier {
   }
 
   Future<void> loginApi({required Map<String, dynamic> body}) async {
-    print("body: $body");
 
     _setLoading(true);
     try {
@@ -204,15 +202,13 @@ class LoginProvider with ChangeNotifier {
     _setLoading(true);
     try {
       final response = await callApi(
-        url: ApiConfig.userUpdatePassword,
+        url: ApiConfig.userUpdatePasswordURL,
         method: HttpMethod.POST,
         body: body,
         headers: null,
       );
 
 
-      print('${ json.decode(response)}');
-      print('${ body}');
       if (globalStatusCode == 200) {
         final decoded = json.decode(response);
 
@@ -222,6 +218,8 @@ class LoginProvider with ChangeNotifier {
           Future.microtask(() {
             final context = navigatorKey.currentContext;
             if (context != null) {
+
+
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(

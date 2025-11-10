@@ -26,8 +26,10 @@ class ApiConfig {
   static String updateFCMTokenUrl = "$apiBASEURL/user/update-fcm-token";
   static String calenderUrl = "$apiBASEURL/dashboard/getLeavesSelfDashboard";
   static String deleteLeaveUrl = "$apiBASEURL/leave_application/delete_leave_application";
-  static String userUpdatePassword = "$apiBASEURL/user/update_user_password";
-  static String deleteNotification = "$apiBASEURL/activity_box/deleteNotification";
+  static String userUpdatePasswordURL = "$apiBASEURL/user/update_user_password";
+  static String deleteNotificationUrl = "$apiBASEURL/activity_box/deleteNotification";
+  static String hubStaffLogURL = "$apiBASEURL/user/getHubstaffLogs";
+  static String getMyHoursURL = "$apiBASEURL/project-manage/getSelfProjects";
 
 
   //==========================================================Shopify API=================================================================================================================

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hrms/core/hive/user_model.dart';
 
@@ -23,7 +24,7 @@ class AppConfigCache {
       final Map<String, dynamic> data = jsonDecode(jsonString);
       return UserModel.fromJson(data);
     } catch (e) {
-      print('AppConfigCache.getUserModel error: $e');
+      debugPrint('AppConfigCache.getUserModel error: $e');
       return null;
     }
   }

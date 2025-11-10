@@ -6,6 +6,7 @@ import '../../core/constants/image_utils.dart';
 import '../../core/constants/validation.dart';
 import '../../core/hive/app_config_cache.dart';
 import '../../core/hive/user_model.dart';
+import '../../provider/dashboard_provider.dart';
 import '../../provider/login_provider.dart';
 
 class UpdatePasswordScreen extends StatelessWidget {
@@ -153,7 +154,11 @@ class UpdatePasswordScreen extends StatelessWidget {
                                       .trim(),
                                 };
 
-                                  provider.updatePassword(body: body);
+                                await  provider.updatePassword(body: body);
+                                final dashboardProvider = context.read<DashboardProvider>();
+                                dashboardProvider.setIndex(2);
+
+                                await AppConfigCache.clearUserData();
                               }
                             },
                           ),
