@@ -13,6 +13,7 @@ import '../core/hive/user_model.dart';
 import '../core/widgets/component.dart';
 import '../main.dart';
 import 'package:http/http.dart' as http;
+
 class ProfileProvider extends ChangeNotifier {
   File? _pickedFile;
   String? _imageUrl;
@@ -58,9 +59,12 @@ class ProfileProvider extends ChangeNotifier {
   Future<void> loadProfileFromCache() async {
     UserModel? user = await AppConfigCache.getUserModel();
     _profileImage = user?.data?.user?.profileImage;
+
+    print('Loaded profile image from cache: $_profileImage');
     notifyListeners();
   }
-  ProfileModel ? _profileModel;
+
+  ProfileModel? _profileModel;
 
   ProfileModel? get profileModel => _profileModel;
   Future<void> getUserDetails({required Map<String, dynamic> body}) async {
@@ -76,10 +80,11 @@ class ProfileProvider extends ChangeNotifier {
       );
 
       if (globalStatusCode == 200) {
-
         _profileModel = ProfileModel.fromJson(json.decode(response));
 
-        setNetworkImage('${ApiConfig.imageBaseUrl}/${_profileModel?.profileImage??''}');
+        setNetworkImage(
+          '${ApiConfig.imageBaseUrl}/${_profileModel?.profileImage ?? ''}',
+        );
         //final decoded = jsonDecode(response);
         final existingUserModel = await AppConfigCache.getUserModel();
         final existingToken = existingUserModel?.data?.token;
@@ -95,29 +100,31 @@ class ProfileProvider extends ChangeNotifier {
               "employee_id": _profileModel?.employeeId ?? '',
               "profile_image": _profileModel?.profileImage ?? '',
               "profile": _profileModel?.profileImage ?? '',
-              "role": _profileModel?.roles != null &&
-                  _profileModel!.roles!.isNotEmpty
+              "role":
+                  _profileModel?.roles != null &&
+                      _profileModel!.roles!.isNotEmpty
                   ? {
-                "id": _profileModel!.roles![0].id,
-                "name": _profileModel!.roles![0].name,
-              }
+                      "id": _profileModel!.roles![0].id,
+                      "name": _profileModel!.roles![0].name,
+                    }
                   : null,
               "batch_data": _profileModel?.location != null
                   ? {
-                "id": _profileModel!.location!.id,
-                "working_days": _profileModel!.location!.workingDays,
-                "alt_sat": _profileModel!.location!.altSat,
-              }
+                      "id": _profileModel!.location!.id,
+                      "working_days": _profileModel!.location!.workingDays,
+                      "alt_sat": _profileModel!.location!.altSat,
+                    }
                   : null,
               "location_id": _profileModel?.location?.id,
-            }
-          }
+            },
+          },
         };
-        final userModel =
-        UserModel.fromJson(Map<String, dynamic>.from(formattedJson));
+        final userModel = UserModel.fromJson(
+          Map<String, dynamic>.from(formattedJson),
+        );
         await AppConfigCache.saveUserModel(userModel);
 
-        await  loadProfileFromCache();
+        await loadProfileFromCache();
         _setLoading(false);
       } else {
         showCommonDialog(
@@ -134,12 +141,7 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
-
-
-  Future<void> uploadProfileImage({
-    required String filePath,
-
-  }) async {
+  Future<void> uploadProfileImage({required String filePath}) async {
     _setLoading(true);
     try {
       var uri = Uri.parse(ApiConfig.uploadProfileImageUrl);
@@ -147,7 +149,6 @@ class ProfileProvider extends ChangeNotifier {
       var request = http.MultipartRequest('POST', uri);
 
       // 🔹 Add text fields
-
 
       // 🔹 Add image file
       var file = await http.MultipartFile.fromPath('file', filePath);
@@ -163,15 +164,14 @@ class ProfileProvider extends ChangeNotifier {
       debugPrint('Response: ${response.statusCode}');
 
       if (response.statusCode == 200) {
-
         final jsonResponse = jsonDecode(response.body);
         final fileName = jsonResponse['filename'];
 
-       /* Map<String, dynamic> body = {
+        /* Map<String, dynamic> body = {
           "profile_image": fileName,
 
         };*/
-      /*  Map<String, dynamic> body(ProfileModel profile) {
+        /*  Map<String, dynamic> body(ProfileModel profile) {
           return {
             "id": profile.id,
             "firstname": profile.firstname,
@@ -268,7 +268,6 @@ class ProfileProvider extends ChangeNotifier {
         );
         await updateProfileData(body: requestBody);
 
-
         _setLoading(false);
       } else {
         showCommonDialog(
@@ -285,6 +284,7 @@ class ProfileProvider extends ChangeNotifier {
       _setLoading(false);
     }
   }
+
   String? _formatDate(dynamic date) {
     if (date == null) return null;
     if (date is String) return date; // already formatted
@@ -293,7 +293,11 @@ class ProfileProvider extends ChangeNotifier {
     }
     return null;
   }
-  Map<String, dynamic> _buildProfileUpdateBody(ProfileModel profile, String fileName) {
+
+  Map<String, dynamic> _buildProfileUpdateBody(
+    ProfileModel profile,
+    String fileName,
+  ) {
     return {
       "id": profile.id,
       "spouse_dob": _formatDate(profile.spouseDob),
@@ -405,11 +409,7 @@ class ProfileProvider extends ChangeNotifier {
       if (globalStatusCode == 200) {
         debugPrint('json.decode(response)${json.decode(response)}');
         UserModel? user = await AppConfigCache.getUserModel();
-        Map<String, dynamic> body = {
-          "employee_id": user?.data?.user?.id,
-
-        };
-
+        Map<String, dynamic> body = {"employee_id": user?.data?.user?.id};
 
         getUserDetails(body: body);
 
@@ -442,5 +442,4 @@ class ProfileProvider extends ChangeNotifier {
       _setLoading(false);
     }
   }
-
 }

@@ -51,6 +51,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         listen: false,
       ).loadProfileFromCache();
     });
+    setState(() {});
   }
 
   @override
@@ -128,15 +129,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ),*/
                 leading: Container(
-
                   padding: const EdgeInsets.only(left: 0),
                   child: commonInkWell(
                     onTap: () => provider.setIndex(4),
                     child: Center(
                       child: Container(
                         decoration: commonBoxDecoration(
-                          borderColor: Colors.white,borderWidth: 1,
-                          shape: BoxShape.circle
+                          borderColor: Colors.white,
+                          borderWidth: 1,
+                          shape: BoxShape.circle,
                         ),
                         width: 35,
                         height: 35,
@@ -173,9 +174,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   );
                 },
-                child: Container(
-
-                    child: getPage(provider.currentIndex)),
+                child: Container(child: getPage(provider.currentIndex)),
               ),
               // 👈 only current page
               bottomNavigationBar: CommonBottomNavBar(
