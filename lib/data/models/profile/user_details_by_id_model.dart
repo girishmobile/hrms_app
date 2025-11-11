@@ -14,25 +14,26 @@ class UserDetailsBYIDModel {
   Designation? designation;
   /*List<Null>? userCommitteeList;
   List<Null>? userTagList;*/
-  int? impId;
+  dynamic impId;
 
-  UserDetailsBYIDModel(
-      {this.id,
-        this.firstname,
-        this.lastname,
-        this.employeeId,
-        this.about,
-        this.companyEmail,
-        this.isWfhAllowed,
-        this.joiningDate,
-        this.userExitStatus,
-        this.dateOfBirth,
-        this.emergencyContactNo,
-        this.profileImage,
-        this.designation,
-      /*  this.userCommitteeList,
+  UserDetailsBYIDModel({
+    this.id,
+    this.firstname,
+    this.lastname,
+    this.employeeId,
+    this.about,
+    this.companyEmail,
+    this.isWfhAllowed,
+    this.joiningDate,
+    this.userExitStatus,
+    this.dateOfBirth,
+    this.emergencyContactNo,
+    this.profileImage,
+    this.designation,
+    /*  this.userCommitteeList,
         this.userTagList,*/
-        this.impId});
+    this.impId,
+  });
 
   UserDetailsBYIDModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -54,7 +55,7 @@ class UserDetailsBYIDModel {
     designation = json['designation'] != null
         ? Designation.fromJson(json['designation'])
         : null;
-  /*  if (json['user_committee_list'] != null) {
+    /*  if (json['user_committee_list'] != null) {
       userCommitteeList = <Null>[];
       json['user_committee_list'].forEach((v) {
         userCommitteeList!.add(new Null.fromJson(v));
@@ -90,7 +91,7 @@ class UserDetailsBYIDModel {
     if (designation != null) {
       data['designation'] = designation!.toJson();
     }
-  /*  if (this.userCommitteeList != null) {
+    /*  if (this.userCommitteeList != null) {
       data['user_committee_list'] =
           this.userCommitteeList!.map((v) => v.toJson()).toList();
     }
