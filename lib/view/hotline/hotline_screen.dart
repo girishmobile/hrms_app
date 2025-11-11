@@ -293,7 +293,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
                               onTap: () {
                                 showCommonBottomSheet(
                                   context: context,
-                                  content: Container(
+                                  content: SizedBox(
                                     height: size.height * 0.8,
                                     child: Column(
                                       children: [

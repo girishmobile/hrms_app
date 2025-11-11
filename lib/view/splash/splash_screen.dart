@@ -86,12 +86,12 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     var size = MediaQuery.sizeOf(context);
     return commonScaffold(
-      body: Container(
+      body: SizedBox(
         width: size.width,
         height: size.height,
-        decoration: commonBoxDecoration(
+       /* decoration: commonBoxDecoration(
           image: DecorationImage(fit: BoxFit.fill, image: AssetImage(icImg1)),
-        ),
+        ),*/
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
