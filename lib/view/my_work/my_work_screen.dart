@@ -25,7 +25,6 @@ class _MyWorkScreenState extends State<MyWorkScreen> {
     }
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -59,9 +58,9 @@ class _MyWorkScreenState extends State<MyWorkScreen> {
         child: Consumer<DashboardProvider>(
           builder: (context, provider, child) {
             if (provider.isLoading) {
-              return  Center(child: showLoaderList());
+              return Center(child: showLoaderList());
             }
-            
+
             if (provider.myWorkModel == null) {
               return Center(
                 child: Column(
@@ -81,7 +80,9 @@ class _MyWorkScreenState extends State<MyWorkScreen> {
                     ElevatedButton(
                       onPressed: () async {
                         UserModel? user = await AppConfigCache.getUserModel();
-                        await provider.getMYHours(id: user?.data?.user?.id ?? 0);
+                        await provider.getMYHours(
+                          id: user?.data?.user?.id ?? 0,
+                        );
                       },
                       child: const Text('Retry'),
                     ),
@@ -104,12 +105,14 @@ class _MyWorkScreenState extends State<MyWorkScreen> {
                       if (log.billingType == "Billable") {
                         totalBillableHours += log.hours ?? 0;
                         if (task.effortAllocation?.totalEffort != null) {
-                          totalBillableEffort += task.effortAllocation!.totalEffort!;
+                          totalBillableEffort +=
+                              task.effortAllocation!.totalEffort!;
                         }
                       } else if (log.billingType == "NonBillable") {
                         totalNonBillableHours += log.hours ?? 0;
                         if (task.effortAllocation?.totalEffort != null) {
-                          totalNonBillableEffort += task.effortAllocation!.totalEffort!;
+                          totalNonBillableEffort +=
+                              task.effortAllocation!.totalEffort!;
                         }
                       }
                     }
@@ -128,54 +131,66 @@ class _MyWorkScreenState extends State<MyWorkScreen> {
                   Column(
                     children: [
                       commonView(
-                        spentValue: "${totalBillableHours.toStringAsFixed(2)} hr",
-                        allocationHours: "${totalBillableEffort.toStringAsFixed(0)} hr"
+                        spentValue:
+                            "${totalBillableHours.toStringAsFixed(2)} hr",
+                        allocationHours:
+                            "${totalBillableEffort.toStringAsFixed(0)} hr",
                       ),
-                      SizedBox(height: 15,),
+                      SizedBox(height: 15),
                       commonView(
                         color: Colors.amber,
                         title: "Non-Billable",
-                        spentValue: "${totalNonBillableHours.toStringAsFixed(2)} hr",
-                        allocationHours: "${totalNonBillableEffort.toStringAsFixed(0)} hr"
+                        spentValue:
+                            "${totalNonBillableHours.toStringAsFixed(2)} hr",
+                        allocationHours:
+                            "${totalNonBillableEffort.toStringAsFixed(0)} hr",
                       ),
-                      SizedBox(height: 15,),
+                      SizedBox(height: 15),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          commonText(text:"Projects - ${ provider.myWorkModel?.data?.length??0}",fontSize: 16,fontWeight: FontWeight.w600),
-
+                          commonText(
+                            text:
+                                "Projects - ${provider.myWorkModel?.data?.length ?? 0}",
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ],
                       ),
                       Expanded(
-                        child: provider.isLoading 
-                            ?  Center(
-                                child: showLoaderList(),
-                              )
+                        child: provider.isLoading
+                            ? Center(child: showLoaderList())
                             : provider.myWorkModel?.data == null
-                                ? const Center(
-                                    child: Text('Error loading data. Please try again.'),
-                                  )
-                                : provider.myWorkModel?.data?.isEmpty==true
-                                    ? Center(
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Icon(Icons.work_off, size: 50, color: Colors.grey[400]),
-                                            const SizedBox(height: 16),
-                                            const Text(
-                                              'No work data available',
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    : ListView.builder(
-                          padding: EdgeInsets.zero,
+                            ? const Center(
+                                child: Text(
+                                  'Error loading data. Please try again.',
+                                ),
+                              )
+                            : provider.myWorkModel?.data?.isEmpty == true
+                            ? Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.work_off,
+                                      size: 50,
+                                      color: Colors.grey[400],
+                                    ),
+                                    const SizedBox(height: 16),
+                                    const Text(
+                                      'No work data available',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : ListView.builder(
+                                padding: EdgeInsets.zero,
                                 physics: const AlwaysScrollableScrollPhysics(),
                                 itemCount:
                                     provider.myWorkModel?.data?.length ?? 0,
@@ -183,8 +198,10 @@ class _MyWorkScreenState extends State<MyWorkScreen> {
                                   final project =
                                       provider.myWorkModel?.data?[index];
                                   final color =
-                                  provider.colors[index %
-                                      provider.colors.length]; // pick color cyclically
+                                      provider.colors[index %
+                                          provider
+                                              .colors
+                                              .length]; // pick color cyclically
                                   if (project == null) {
                                     return const SizedBox.shrink();
                                   }
@@ -192,7 +209,7 @@ class _MyWorkScreenState extends State<MyWorkScreen> {
                                   return Container(
                                     decoration: commonBoxDecoration(
                                       borderColor: colorBorder,
-                                      color: color.withValues(alpha: 0.05)
+                                      color: color.withValues(alpha: 0.05),
                                     ),
                                     margin: const EdgeInsets.symmetric(
                                       horizontal: 0,
@@ -220,7 +237,9 @@ class _MyWorkScreenState extends State<MyWorkScreen> {
                                             children: [
                                               Container(
                                                 decoration: commonBoxDecoration(
-                                                  color: color.withValues(alpha: 0.2),
+                                                  color: color.withValues(
+                                                    alpha: 0.2,
+                                                  ),
                                                   borderColor: colorBorder,
                                                 ),
                                                 padding: EdgeInsets.symmetric(
@@ -228,7 +247,6 @@ class _MyWorkScreenState extends State<MyWorkScreen> {
                                                   vertical: 3,
                                                 ),
                                                 child: commonText(
-
                                                   fontWeight: FontWeight.w500,
                                                   text:
                                                       'Tasks: ${project.tasks?.length ?? 0}',
@@ -237,7 +255,9 @@ class _MyWorkScreenState extends State<MyWorkScreen> {
                                               ),
                                               Container(
                                                 decoration: commonBoxDecoration(
-                                                  color: color.withValues(alpha: 0.2),
+                                                  color: color.withValues(
+                                                    alpha: 0.2,
+                                                  ),
                                                   borderColor: colorBorder,
                                                 ),
                                                 padding: EdgeInsets.symmetric(
@@ -261,16 +281,20 @@ class _MyWorkScreenState extends State<MyWorkScreen> {
                                             ...project.tasks!
                                                 .map(
                                                   (task) => Container(
-                                                    decoration: commonBoxDecoration(
-                                                      borderColor: colorBorder,color: Colors.white
-                                                    ),
+                                                    decoration:
+                                                        commonBoxDecoration(
+                                                          borderColor:
+                                                              colorBorder,
+                                                          color: Colors.white,
+                                                        ),
                                                     margin:
                                                         const EdgeInsets.symmetric(
                                                           horizontal: 8,
                                                           vertical: 4,
                                                         ),
                                                     child: ExpansionTile(
-                                                      trailing: const SizedBox.shrink(), // hides the arrow
+                                                      trailing:
+                                                          const SizedBox.shrink(), // hides the arrow
                                                       title: commonText(
                                                         text:
                                                             task.title ??
@@ -343,35 +367,53 @@ class _MyWorkScreenState extends State<MyWorkScreen> {
     );
   }
 
-  Widget commonView({Color ?color,String? title,String ?spentValue,String ? allocationHours }){
-    return
-      Container(
-        decoration: commonBoxDecoration(
-            borderColor: colorBorder,
-            color: color?.withValues(alpha: 0.1)??Colors.green.withValues(alpha: 0.1)
-        ),
-        padding: EdgeInsets.symmetric(vertical: 8,horizontal: 10),
-        child: Column(
-          spacing: 8,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            commonText(text: title??"Billable",fontWeight: FontWeight.w700,fontSize: 14),
-            Row(
-              children: [
-                commonText(text: "Total Time Spent: ",fontWeight: FontWeight.w600,fontSize: 12),
-                commonText(text: spentValue??"128.02 hr",fontSize: 12),
-              ],
-            ),
+  Widget commonView({
+    Color? color,
+    String? title,
+    String? spentValue,
+    String? allocationHours,
+  }) {
+    return Container(
+      decoration: commonBoxDecoration(
+        borderColor: colorBorder,
+        color:
+            color?.withValues(alpha: 0.1) ??
+            Colors.green.withValues(alpha: 0.1),
+      ),
+      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+      child: Column(
+        spacing: 8,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          commonText(
+            text: title ?? "Billable",
+            fontWeight: FontWeight.w700,
+            fontSize: 14,
+          ),
+          Row(
+            children: [
+              commonText(
+                text: "Total Time Spent: ",
+                fontWeight: FontWeight.w600,
+                fontSize: 12,
+              ),
+              commonText(text: spentValue ?? "128.02 hr", fontSize: 12),
+            ],
+          ),
 
-            Row(
-              children: [
-                commonText(text: "Total Allocation Effort: ",fontWeight: FontWeight.w600,fontSize: 12),
-                commonText(text: allocationHours??"123 hr",fontSize: 12),
-              ],
-            ),
-          ],
-        ),
-      );
+          Row(
+            children: [
+              commonText(
+                text: "Total Allocation Effort: ",
+                fontWeight: FontWeight.w600,
+                fontSize: 12,
+              ),
+              commonText(text: allocationHours ?? "123 hr", fontSize: 12),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
