@@ -112,10 +112,10 @@ class _ProfilePageState extends State<AccountPage> {
                               RouteName.hotlineScreen,
                             );
                           },
-                          bgColor: Colors.pink.shade50,
+                          bgColor: Colors.orange.shade50,
                           image: icMenuProfile,
                         ),
-                        const SizedBox(height: 15),
+                     /*   const SizedBox(height: 15),
                         commonView(
                           title: "Hubstaff Logs ",
                           onTap: () {
@@ -125,7 +125,7 @@ class _ProfilePageState extends State<AccountPage> {
                           },
                           bgColor: Colors.orange.shade50,
                           image: icHubStaff,
-                        ),
+                        ),*/
 
                         const SizedBox(height: 70),
 

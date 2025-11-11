@@ -28,6 +28,10 @@ const String icAdd="$iconDashboardPath/more.png";
 const String icSetting="$iconDashboardPath/settings.png";
 const String icTime="$iconDashboardPath/ic_time.png";
 const String icHubStaff="$iconDashboardPath/ic_hubstaff.png";
+const String icFacebook="$iconDashboardPath/facebook.png";
+const String icLinkedin="$iconDashboardPath/linkedin.png";
+const String icCall="$iconDashboardPath/telephone.png";
+const String icTwitter="$iconDashboardPath/twitter.png";
 
 
 //==============================Product=============================

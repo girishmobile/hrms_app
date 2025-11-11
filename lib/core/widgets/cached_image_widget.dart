@@ -44,7 +44,6 @@ class CachedImageWidget extends StatelessWidget {
     final path = imageUrl!.replaceAll(RegExp(r'^/+'), '');
     final String fullUrl = '$base/$path';
 
-    print('Loading image from URL: $fullUrl');
     return ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius),
       child: CachedNetworkImage(
@@ -61,7 +60,7 @@ class CachedImageWidget extends StatelessWidget {
             errorImage ?? icBoy,
             width: width,
             height: height,
-            fit: fit,
+            fit: BoxFit.cover,
           ),
         ),
       ),

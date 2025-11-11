@@ -8,6 +8,7 @@ import '../../core/constants/color_utils.dart';
 import '../../core/widgets/animated_counter.dart';
 import '../../core/widgets/cached_image_widget.dart';
 import '../../core/widgets/common_dropdown.dart';
+import '../../core/widgets/user_details_by_id_view.dart';
 import '../../data/models/hotline/hotline_count_model.dart';
 
 class HotlineScreen extends StatefulWidget {
@@ -21,30 +22,23 @@ class _HotlineScreenState extends State<HotlineScreen> {
   @override
   void initState() {
     super.initState();
-    print("HotlineScreen initState called ✅");
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await init();
     });
   }
 
   Future<void> init() async {
-    try {
-      final provider = Provider.of<HotlineProvider>(context, listen: false);
-      print("Fetching data...");
-      await provider.getLeaveCountData();
-      await provider.getAllDepartment();
-      await provider.getAllDesignation();
-      await provider.getAllHotline();
-      print("✅ Data fetched successfully");
-    } catch (e, st) {
-      print("❌ Error in init: $e");
-      print(st);
-    }
+    final provider = Provider.of<HotlineProvider>(context, listen: false);
+    await provider.getLeaveCountData();
+    await provider.getAllDepartment();
+    await provider.getAllDesignation();
+    await provider.getAllHotline(status: provider.title);
   }
 
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<HotlineProvider>();
+    var size=MediaQuery.sizeOf(context);
 
     final departmentNames = provider.departments
         .map((e) => e.name ?? '')
@@ -126,13 +120,6 @@ class _HotlineScreenState extends State<HotlineScreen> {
                                   provider.selectDepartment(selected);
 
                                   //        provider.getAllHotline(depId: selected.id);
-                                  print(
-                                    "Selected Department ID: ${selected.id}",
-                                  );
-                                  print(
-                                    "Selected Department Name: ${selected.name}",
-                                  );
-                                  Navigator.of(context).pop();
                                 }
                               },
                             ),
@@ -162,14 +149,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
                                   final selected = provider.designationList
                                       .firstWhere((d) => d.name == value);
                                   provider.selectDesignationData(selected);
-
-                                  print(
-                                    "Selected Designation ID: ${selected.id}",
-                                  );
-                                  print(
-                                    "Selected Designation Name: ${selected.name}",
-                                  );
-                                  Navigator.of(context).pop();
+                                  provider.getAllHotline(desId: selected.id);
                                 }
                               },
                             ),
@@ -185,12 +165,6 @@ class _HotlineScreenState extends State<HotlineScreen> {
                             ),
                             SizedBox(height: 8),
                             commonTextField(
-                              onChanged: (value){
-                                if (value.length >= 3) {
-                                  provider.getAllHotline(search: value);
-                                  Navigator.of(context).pop();
-                                }
-                              },
                               hintText: "Search Employee",
                               suffixIcon: IconButton(
                                 onPressed: () {},
@@ -211,36 +185,72 @@ class _HotlineScreenState extends State<HotlineScreen> {
           ),
         ],
       ),
-      body: commonPopScope(
-        onBack: (){
-          Provider.of<HotlineProvider>(context, listen: false).clearData();
-        },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: Stack(
-            children: [
-              ListView(
-                physics: const BouncingScrollPhysics(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+
                 children: [
+                  commonText(
+                    text: "HotLine",
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
+                  SizedBox(height: 5),
                   GridView.builder(
                     shrinkWrap: true,
 
-                    physics: const NeverScrollableScrollPhysics(), // ✅ Prevent scroll conflict
-                    padding: const EdgeInsets.only(left: 0, right: 0, bottom: 16),
-                    itemCount: provider.hotlineCount.length,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3, // 2 columns
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
-                      childAspectRatio: 1.0, // ✅ Adjust ratio to prevent overflow
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.only(
+                      left: 0,
+                      right: 0,
+                      bottom: 16,
                     ),
+                    itemCount: provider.hotlineCount.length,
+
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3, // 2 columns
+                          crossAxisSpacing: 8,
+                          mainAxisSpacing: 8,
+                          childAspectRatio: 1.1,
+                        ),
                     itemBuilder: (context, index) {
                       final item = provider.hotlineCount[index];
                       final color =
                           provider.colors[index %
-                              provider.colors.length]; // pick color cyclically*/
+                              provider
+                                  .colors
+                                  .length]; // pick color cyclically*/
+                      final isSelected = provider.selectedHotlineIndex == index;
                       return buildItemView(
                         item: item,
+                        isSelected: isSelected,
+                        onTap: () async {
+                          /// Update selection in provider
+                          provider.selectHotline(index);
+                          provider.setHeaderTitle(item.title);
+
+                          /// Call your API with selected value
+
+                          if (item.title == "on_wfh") {
+                            await provider.getAllHotline(status: "wfh");
+                          } else if (item.title == "on_break") {
+                            await provider.getAllHotline(status: "on-break");
+                          } else if (item.title == "on_leave") {
+                            await provider.getAllHotline(status: "on-leave");
+                          } else if (item.title == "online") {
+                            await provider.getAllHotline(status: item.title);
+                          } else if (item.title == "offline") {
+                            await provider.getAllHotline(status: item.title);
+                          } else {
+                            await provider.getAllHotline();
+                          }
+                        },
                         color: color,
 
                         context: context,
@@ -249,26 +259,24 @@ class _HotlineScreenState extends State<HotlineScreen> {
                   ),
 
                   commonText(
-                    text: provider.selectDesignation != null
-                        ? 'All ${provider.selectDesignation?.name}'
-                        : provider.selectedDepartment != null
-                        ? 'All ${provider.selectedDepartment?.name}'
-                        : "All Employees",
+                    // text:provider.title.toString().toTitleCase()?? "All Employees",
+                    text:
+                        'Employees - ${provider.title.toString().toTitleCase()}' ??
+                        "All Employees",
+                    fontWeight: FontWeight.w600,
                     fontSize: 16,
-                    fontWeight: FontWeight.w800,
                   ),
+                  SizedBox(height: 5),
 
-                  SizedBox(height: 8),
                   provider.hotlineListModel?.data?.data?.isNotEmpty == true
                       ? GridView.builder(
                           shrinkWrap: true,
-
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2, // 2 columns
                                 crossAxisSpacing: 8,
                                 mainAxisSpacing: 8,
-                                childAspectRatio: 1.5,
+                                childAspectRatio: 1.4,
                               ),
                           physics: BouncingScrollPhysics(),
                           itemCount:
@@ -281,56 +289,111 @@ class _HotlineScreenState extends State<HotlineScreen> {
                                     provider
                                         .colors
                                         .length]; // pick color cyclically*/
-                            return Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 5,
-                                vertical: 0,
-                              ),
+                            return commonInkWell(
+                              onTap: () {
+                                showCommonBottomSheet(
+                                  context: context,
+                                  content: Container(
+                                    height: size.height*0.8,
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: commonText(
+                                                text: "",
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            Container(
+                                              width: 35,
+                                              height: 35,
+                                              decoration: commonBoxDecoration(
+                                                shape: BoxShape.circle,
 
-                              decoration: commonBoxDecoration(
-                                color: color.withValues(alpha: 0.05),
-                                borderColor: colorBorder,
-                                borderRadius: 8,
-                              ),
+                                                color: colorProduct,
+                                              ),
+                                              child: Center(
+                                                child: IconButton(
+                                                  padding: EdgeInsets.zero,
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  icon: Icon(
+                                                    size: 14,
+                                                    Icons.close,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
 
-                              child: Column(
-                                spacing: 10,
-
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: CachedImageWidget(
-                                      borderRadius: 10,
-                                      imageUrl: data?.profileImage,
-                                      width: 60,
-                                      height: 60,
-                                      fit: BoxFit
-                                          .cover, // <-- Ensures image fills the height nicely
+                                        Expanded(
+                                          child: UserDetailsByIdView(
+                                            id: '${data?.id ?? 0}',
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  Column(
-                                    spacing: 3,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      commonText(
-                                        text:
-                                            '${data?.firstname} ${data?.lastname}',
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
-                                        color: colorProduct,
-                                      ),
+                                );
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 5,
+                                  vertical: 0,
+                                ),
 
-                                      commonText(
-                                        text: '${data?.designation}',
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
-                                        color: colorProduct,
+                                decoration: commonBoxDecoration(
+                                  color: color.withValues(alpha: 0.04),
+                                  borderColor: colorBorder,
+                                  borderRadius: 8,
+                                ),
+
+                                child: Column(
+                                  spacing: 10,
+
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: CachedImageWidget(
+                                        borderRadius: 10,
+                                        imageUrl: data?.profileImage,
+                                        width: 60,
+                                        height: 60,
+                                        fit: BoxFit
+                                            .cover, // <-- Ensures image fills the height nicely
                                       ),
-                                    ],
-                                  ),
-                                ],
+                                    ),
+                                    Column(
+                                      spacing: 1,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        commonText(
+                                          text:
+                                              '${data?.firstname} ${data?.lastname}',
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          color: color,
+                                        ),
+
+                                        commonText(
+                                          text: '${data?.designation}',
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w400,
+                                          color: colorProduct,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             );
                           },
@@ -338,9 +401,9 @@ class _HotlineScreenState extends State<HotlineScreen> {
                       : SizedBox.shrink(),
                 ],
               ),
-              provider.isLoading ? showLoaderList() : SizedBox.shrink(),
-            ],
-          ),
+            ),
+            provider.isLoading ? showLoaderList() : SizedBox.shrink(),
+          ],
         ),
       ),
     );
@@ -348,19 +411,23 @@ class _HotlineScreenState extends State<HotlineScreen> {
 
   Widget buildItemView({
     required HotlineCountModel item,
-
+    required bool isSelected,
     required Color color,
+    required VoidCallback onTap,
     required BuildContext context,
   }) {
     return commonInkWell(
-      onTap: () {},
+      onTap: onTap,
 
       child: Container(
-        constraints: const BoxConstraints.expand(), // ✅ Constrain child
         decoration: commonBoxDecoration(
           borderRadius: 8,
-          borderColor: colorBorder,
-          color: color.withValues(alpha: 0.04),
+          borderColor: isSelected ? color : colorBorder,
+          color: isSelected
+              ? color.withValues(alpha: 0.2)
+              : color.withValues(alpha: 0.04),
+          //  borderColor: colorBorder,
+          //  color: color.withValues(alpha: 0.04),
         ),
 
         child: Column(

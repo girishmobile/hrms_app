@@ -34,6 +34,9 @@ class ApiConfig {
   static String departmentUrl = "$apiBASEURL/department/get_all_department";
   static String getAllDesignationUrl = "$apiBASEURL/designation/get_all_designation";
   static String hotlineUrl = "$apiBASEURL/attendance/hotline";
+  static String kpiDetailsUrl = "$apiBASEURL/kra-kpi/month-details";
+  static String getUserDetailsBYIDUrl = "$apiBASEURL/user/getEmpDetailsById";
+  static String getUserImpressionsUrl = "$apiBASEURL/impressions/update-profile-view";
 
 
   //==========================================================Shopify API=================================================================================================================

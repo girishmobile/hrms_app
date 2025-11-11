@@ -20,7 +20,7 @@ Future callApi({
   HttpMethod method = HttpMethod.get,
   Map<String, dynamic>? body,
   Map<String, String>? headers,
-  Map<String, String>? queryParams,
+  Map<String, dynamic>? queryParams,
   Duration timeout = const Duration(seconds: 30),
 }) async {
   try {

@@ -34,7 +34,7 @@ class _MyKpiPageState extends State<MyKpiPage> {
     if (provider.selectedYear.isEmpty) {
       provider.selectedYear = currentYear;
     }
-    await provider.getAPIList(date:  provider.selectedYear);
+    await provider.getKPIList(date:  provider.selectedYear);
   }
 
   @override

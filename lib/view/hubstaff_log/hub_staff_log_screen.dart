@@ -32,7 +32,7 @@ class _HubStaffLogScreenState extends State<HubStaffLogScreen> {
   @override
   Widget build(BuildContext context) {
     return commonScaffold(
-      appBar: commonAppBar(title: "HubStaff Logs", context: context),
+      appBar: commonAppBar(title: "HubStaff Logs", context: context,centerTitle: true),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Consumer<DashboardProvider>(

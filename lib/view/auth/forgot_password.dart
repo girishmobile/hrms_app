@@ -17,12 +17,12 @@ class ForgotPassword extends StatelessWidget {
     return commonScaffold(
 
      
-      body: Container(
+      body: SizedBox(
         width: size.width,
         height: size.height,
-        decoration: commonBoxDecoration(
+       /* decoration: commonBoxDecoration(
           image: DecorationImage(fit: BoxFit.fill, image: AssetImage(icImg1)),
-        ),
+        ),*/
         child: Consumer<LoginProvider>(
           builder: (context, provider, child) {
             return commonAppBackground(

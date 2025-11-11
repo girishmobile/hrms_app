@@ -51,11 +51,6 @@ String formatDay(String dateString) {
   try {
     final date = DateTime.parse(dateString);
     final day = date.day;
-  //  final month = DateFormat('MMM').format(date); // e.g. December
-    // final year = DateFormat('yyyy').format(date);  // e.g. 2025
-    //final weekday = DateFormat('EEE').format(date); // e.g. Thu
-
-    // Get suffix like 1st, 2nd, 3rd, 4th...
     String suffix;
     if (day >= 11 && day <= 13) {
       suffix = 'th';

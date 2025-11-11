@@ -61,6 +61,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return Stack(
           children: [
             commonScaffold(
+
               backgroundColor: Colors.white,
               appBar: commonAppBar(
                 backgroundColor: colorProduct,

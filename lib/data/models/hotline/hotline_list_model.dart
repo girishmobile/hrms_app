@@ -3,7 +3,7 @@ class HotlineListModel {
 
   HotlineListModel({this.data});
   HotlineListModel.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? new Item.fromJson(json['data']) : null;
+    data = json['data'] != null ? Item.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -50,7 +50,7 @@ class Item {
     if (json['data'] != null) {
       data = <HotLineData>[];
       json['data'].forEach((v) {
-        data!.add(new HotLineData.fromJson(v));
+        data!.add(HotLineData.fromJson(v));
       });
     }
     firstPageUrl = json['first_page_url'];
@@ -60,7 +60,7 @@ class Item {
     if (json['links'] != null) {
       links = <Links>[];
       json['links'].forEach((v) {
-        links!.add(new Links.fromJson(v));
+        links!.add(Links.fromJson(v));
       });
     }
     nextPageUrl = json['next_page_url'];
@@ -145,7 +145,7 @@ class HotLineData {
       });
     }*/
     department = json['department'] != null
-        ? new Department.fromJson(json['department'])
+        ? Department.fromJson(json['department'])
         : null;
     workStatus = json['work_status'];
   }

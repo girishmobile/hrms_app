@@ -62,220 +62,12 @@ class DashboardProvider with ChangeNotifier {
   ];
 
 
-  final List<Map<String, dynamic>> allKPIDetails = [
-    {
-      "date": "2025-10-01",
-      "targetPoints": 80,
-      "actualPoints": 78,
-      "remarks": "Slightly below target",
-    },
-    {
-      "date": "2025-10-02",
-      "targetPoints": 85,
-      "actualPoints": 90,
-      "remarks": "Exceeded expectations",
-    },
-    {
-      "date": "2025-10-03",
-      "targetPoints": 75,
-      "actualPoints": 74,
-      "remarks": "Met most goals",
-    },
-    {
-      "date": "2025-09-30",
-      "targetPoints": 80,
-      "actualPoints": 82,
-      "remarks": "Good performance",
-    },
-    {
-      "date": "2025-09-29",
-      "targetPoints": 85,
-      "actualPoints": 88,
-      "remarks": "Achieved above target",
-    },
-    {
-      "date": "2025-08-15",
-      "targetPoints": 70,
-      "actualPoints": 68,
-      "remarks": "Slight shortfall",
-    },
-    {
-      "date": "2025-08-16",
-      "targetPoints": 75,
-      "actualPoints": 80,
-      "remarks": "Improved performance",
-    },
-    {
-      "date": "2025-07-10",
-      "targetPoints": 90,
-      "actualPoints": 92,
-      "remarks": "Excellent work",
-    },
-    {
-      "date": "2025-07-11",
-      "targetPoints": 85,
-      "actualPoints": 84,
-      "remarks": "On track",
-    },
-    {
-      "date": "2025-07-12",
-      "targetPoints": 80,
-      "actualPoints": 83,
-      "remarks": "Good consistency",
-    },
-  ];
-
 
 
   final List<Map<String, dynamic>> allAttendanceDetails = [
-    {
-      "date": "2025-10-01",
-      "entryTime": "09:15 AM",
-      "exitTime": "06:05 PM",
-      "workingHours": "8h 50m",
-    },
-    {
-      "date": "2025-10-02",
-      "entryTime": "09:10 AM",
-      "exitTime": "06:00 PM",
-      "workingHours": "8h 50m",
-    },
-    {
-      "date": "2025-10-03",
-      "entryTime": "09:05 AM",
-      "exitTime": "06:15 PM",
-      "workingHours": "9h 10m",
-    },
-    {
-      "date": "2025-09-30",
-      "entryTime": "09:20 AM",
-      "exitTime": "06:10 PM",
-      "workingHours": "8h 50m",
-    },
-    {
-      "date": "2025-09-29",
-      "entryTime": "09:30 AM",
-      "exitTime": "06:30 PM",
-      "workingHours": "9h 00m",
-    },
-    {
-      "date": "2025-08-15",
-      "entryTime": "09:45 AM",
-      "exitTime": "06:35 PM",
-      "workingHours": "8h 50m",
-    },
-    {
-      "date": "2025-08-16",
-      "entryTime": "09:00 AM",
-      "exitTime": "06:00 PM",
-      "workingHours": "9h 00m",
-    },
-    {
-      "date": "2025-07-10",
-      "entryTime": "09:10 AM",
-      "exitTime": "06:20 PM",
-      "workingHours": "9h 10m",
-    },
-    {
-      "date": "2025-07-11",
-      "entryTime": "09:05 AM",
-      "exitTime": "06:00 PM",
-      "workingHours": "8h 55m",
-    },
-    {
-      "date": "2025-07-12",
-      "entryTime": "09:00 AM",
-      "exitTime": "06:10 PM",
-      "workingHours": "9h 10m",
-    },
+
   ];
 
-  final List<Map<String, dynamic>> allBirthdayDetails = [
-    {
-      "name": "Aarav Sharma",
-      "date": "2025-01-05",
-      "day": "Sunday",
-      "department": "Design",
-      "bgColor": 0xFFE3F2FD, // Light Blue (January)
-    },
-    {
-      "name": "Priya Verma",
-      "date": "2025-02-18",
-      "day": "Tuesday",
-      "department": "HR",
-      "bgColor": 0xFFFCE4EC, // Pink (February)
-    },
-    {
-      "name": "Rohan Gupta",
-      "date": "2025-03-12",
-      "day": "Wednesday",
-      "department": "Marketing",
-      "bgColor": 0xFFE8F5E9, // Green (March)
-    },
-    {
-      "name": "Neha Singh",
-      "date": "2025-04-25",
-      "day": "Friday",
-      "department": "Finance",
-      "bgColor": 0xFFFFF3E0, // Orange (April)
-    },
-    {
-      "name": "Karan Patel",
-      "date": "2025-05-30",
-      "day": "Friday",
-      "department": "Sales",
-      "bgColor": 0xFFE1F5FE, // Cyan (May)
-    },
-    {
-      "name": "Isha Nair",
-      "date": "2025-06-10",
-      "day": "Tuesday",
-      "department": "IT",
-      "bgColor": 0xFFF3E5F5, // Purple (June)
-    },
-    {
-      "name": "Aditya Mehta",
-      "date": "2025-07-08",
-      "day": "Tuesday",
-      "department": "Development",
-      "bgColor": 0xFFFFF8E1, // Yellow (July)
-    },
-    {
-      "name": "Sneha Rao",
-      "date": "2025-08-20",
-      "day": "Wednesday",
-      "department": "Support",
-      "bgColor": 0xFFE8EAF6, // Indigo (August)
-    },
-    {
-      "name": "Rahul Das",
-      "date": "2025-09-03",
-      "day": "Wednesday",
-      "department": "Operations",
-      "bgColor": 0xFFE0F2F1, // Teal (September)
-    },
-    {
-      "name": "Anjali Sharma",
-      "date": "2025-10-15",
-      "day": "Wednesday",
-      "department": "Admin",
-      "bgColor": 0xFFFFFDE7, // Light Gold (October)
-    },
-    {
-      "name": "Vikram Singh",
-      "date": "2025-11-11",
-      "day": "Tuesday",
-      "department": "Legal",
-      "bgColor": 0xFFFFEBEE, // Light Red (November)
-    },
-    {
-      "name": "Divya Joshi",
-      "date": "2025-12-22",
-      "day": "Monday",
-      "department": "Research",
-      "bgColor": 0xFFE8F5E9, // Light Green (December)
-    },
-  ];
 
   Color getBirthdayBgColor(DateTime date) {
     switch (date.month) {
@@ -323,24 +115,7 @@ class DashboardProvider with ChangeNotifier {
     }
   }
 
-  final List<Map<String, dynamic>> monthData = [
-    {"month": "January", "icon": Icons.calendar_month_outlined, "percent": 75},
-    {"month": "February", "icon": Icons.calendar_month_outlined, "percent": 60},
-    {"month": "March", "icon": Icons.calendar_month_outlined, "percent": 82},
-    {"month": "April", "icon": Icons.calendar_month_outlined, "percent": 90},
-    {"month": "May", "icon": Icons.calendar_month_outlined, "percent": 40},
-    {"month": "June", "icon": Icons.calendar_month_outlined, "percent": 55},
-    {"month": "July", "icon": Icons.calendar_month_outlined, "percent": 68},
-    {"month": "August", "icon": Icons.calendar_month_outlined, "percent": 77},
-    {
-      "month": "September",
-      "icon": Icons.calendar_month_outlined,
-      "percent": 84,
-    },
-    {"month": "October", "icon": Icons.calendar_month_outlined, "percent": 92},
-    {"month": "November", "icon": Icons.calendar_month_outlined, "percent": 63},
-    {"month": "December", "icon": Icons.calendar_month_outlined, "percent": 88},
-  ];
+
 
   String _selectedYear = "2025";
   String get selectedYear => _selectedYear;
@@ -380,13 +155,6 @@ class DashboardProvider with ChangeNotifier {
 
         debugPrint('======$decoded');
         _setLoading(false);
-      } else {
-        /* showCommonDialog(
-          showCancel: false,
-          title: "Error",
-          context: navigatorKey.currentContext!,
-          content: errorMessage,
-        );*/
       }
       _setLoading(false);
       notifyListeners();
@@ -415,12 +183,7 @@ class DashboardProvider with ChangeNotifier {
 
         _setLoading(false);
       } else {
-        /*showCommonDialog(
-          showCancel: false,
-          title: "Error",
-          context: navigatorKey.currentContext!,
-          content: errorMessage,
-        );*/
+
       }
       _setLoading(false);
       notifyListeners();
@@ -496,12 +259,7 @@ class DashboardProvider with ChangeNotifier {
 
         debugPrint('======$decoded');
       } else {
-        /* showCommonDialog(
-          showCancel: false,
-          title: "Error",
-          context: navigatorKey.currentContext!,
-          content: errorMessage,
-        );*/
+
       }
     } catch (e) {
       debugPrint('Error: $e');

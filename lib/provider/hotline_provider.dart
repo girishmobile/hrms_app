@@ -1,16 +1,14 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../core/api/api_config.dart';
 import '../core/api/gloable_status_code.dart';
 import '../core/api/network_repository.dart';
-import '../data/models/hotline/DepartmentModel.dart';
-import '../data/models/hotline/DesignationModel.dart';
-import '../data/models/hotline/HotlineListModel.dart';
+import '../data/models/hotline/department_model.dart';
+import '../data/models/hotline/designation_model.dart';
+import '../data/models/hotline/hotline_list_model.dart';
 import '../data/models/hotline/hotline_count_model.dart';
-import '../data/models/leave/leave_count_data_model.dart';
 
 class HotlineProvider with ChangeNotifier {
   bool _isLoading = false;
@@ -25,7 +23,27 @@ class HotlineProvider with ChangeNotifier {
   List<HotlineCountModel> _hotlineCount = [];
 
   List<HotlineCountModel> get hotlineCount => _hotlineCount;
+  int ? _selectedHotlineIndex=0;
 
+
+  int? get selectedHotlineIndex => _selectedHotlineIndex;
+
+  void selectHotline(int index, ) {
+    _selectedHotlineIndex = index;
+
+    notifyListeners();
+  }
+
+  String ? _title="online";
+
+
+  String? get title => _title;
+
+  void setHeaderTitle(String title, ) {
+    _title = title;
+
+    notifyListeners();
+  }
   Future<void> getLeaveCountData() async {
     _setLoading(true);
     try {
@@ -171,15 +189,16 @@ class HotlineProvider with ChangeNotifier {
   Future<void> getAllHotline({
     String? search,
     int ? depId,
+    String ? status,
     int? desId,
   }) async {
     final Map<String, dynamic> body = {
-      "status": "",
+      "status":status?.isEmpty==true ?"":status,
       "start": 1,
-      "length": 100,
-      "search": search,
-      "dep_id": depId,
-      "des_id": desId,
+        "length": 500,
+      "search": search?.isEmpty==true ?"":search,
+      "dep_id":  depId ?? "",
+      "des_id": desId?? ""
     };
 
     _setLoading(true);

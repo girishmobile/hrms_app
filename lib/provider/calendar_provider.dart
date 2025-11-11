@@ -44,12 +44,7 @@ class CalendarProvider extends ChangeNotifier {
       } else {
         notifyListeners();
         _setLoading(false);
-        /* showCommonDialog(
-          showCancel: false,
-          title: "Error",
-          context: navigatorKey.currentContext!,
-          content: errorMessage,
-        );*/
+
       }
     } catch (e) {
       notifyListeners();

@@ -5,8 +5,9 @@ import 'package:hrms/provider/dashboard_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/constants/date_utils.dart';
+import '../../provider/kpi_provider.dart';
 
-class KpiDetailsScreen extends StatelessWidget {
+class KpiDetailsScreen extends StatefulWidget {
   final String? title;
   final Color? color;
   final String? year;
@@ -14,97 +15,128 @@ class KpiDetailsScreen extends StatelessWidget {
   const KpiDetailsScreen({super.key, this.title, this.color, this.year});
 
   @override
+  State<KpiDetailsScreen> createState() => _KpiDetailsScreenState();
+}
+
+class _KpiDetailsScreenState extends State<KpiDetailsScreen> {
+
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      init();
+    });
+  }
+
+  Future<void> init() async {
+    final provider = Provider.of<KpiProvider>(context, listen: false);
+    // Get current year dynamically
+    int monthNumber = getMonthNumber(widget.title??'');
+
+    await provider.getKPIDetails(month: '$monthNumber',year: widget.year);
+
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<DashboardProvider>(context);
-    final kpiList = provider.allKPIDetails;
+    final provider = Provider.of<KpiProvider>(context);
+    final kpiList = provider.kpiDetailsModel?.data??[];
 
     return commonScaffold(
       appBar: commonAppBar(
         context: context,
         centerTitle: true,
-        title: 'KPI - $title $year',
+        title: 'KPI - ${widget.title} ${widget.year}',
       ),
-      body: Padding(
-        padding: const EdgeInsetsGeometry.symmetric(
-          horizontal: 16,
-          vertical: 16,
-        ),
-        child: Column(
-          children: [
-            Expanded(
-              child: kpiList.isEmpty
-                  ? Center(child: Text("No ${title ?? ''} available"))
-                  : ListView.builder(
-                      padding: const EdgeInsets.all(0),
-
-                      shrinkWrap: true,
-                      itemCount: kpiList.length,
-                      itemBuilder: (context, index) {
-                        final data = kpiList[index];
-                        return Container(
-                          margin: const EdgeInsets.only(bottom: 10),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: color ?? colorBorder),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          padding: const EdgeInsets.only(
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            top: 0,
-                          ),
-                          child: IntrinsicHeight(
-                            child: Row(
-                              spacing: 1,
-                              children: [
-                                fromToView(
-                                  date: data['date'],
-
-                                  color: color ?? Colors.red,
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    padding: const EdgeInsets.only(
-                                      left: 0,
-                                      right: 16,
-                                      bottom: 16,
-                                      top: 16,
-                                    ),
-                                    color:
-                                        color?.withValues(alpha: 0.03) ??
-                                        Colors.white,
-                                    child: Column(
-                                      spacing: 8,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        commonItemView(
-                                          title: "Target Points",
-                                          value: '${data['targetPoints']}',
-                                        ),
-                                        commonItemView(
-                                          title: "Actual Points",
-                                          value: '${data['actualPoints']}',
-                                        ),
-
-                                        commonItemView(
-                                          title: "Remarks",
-
-                                          value: '${data['remarks']}',
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsetsGeometry.symmetric(
+              horizontal: 16,
+              vertical: 16,
             ),
-          ],
-        ),
+            child: Column(
+              children: [
+                Expanded(
+                  child: kpiList.isEmpty
+                      ? Center(child: commonText(text: "No ${widget.title ?? ''} available",fontWeight: FontWeight.w600))
+                      : ListView.builder(
+                          padding: const EdgeInsets.all(0),
+
+                          shrinkWrap: true,
+                          itemCount: kpiList.length,
+                          itemBuilder: (context, index) {
+                            final data = kpiList[index];
+                            return Container(
+                              margin: const EdgeInsets.only(bottom: 10),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: widget.color ?? colorBorder),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              padding: const EdgeInsets.only(
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                top: 0,
+                              ),
+                              child: IntrinsicHeight(
+                                child: Row(
+                                  spacing: 1,
+                                  children: [
+                                    fromToView(
+                                      date:'${data.kraKpi?.date??0}',
+
+                                      color: widget.color ?? Colors.red,
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        padding: const EdgeInsets.only(
+                                          left: 0,
+                                          right: 16,
+                                          bottom: 16,
+                                          top: 16,
+                                        ),
+                                        color:
+                                            widget.color?.withValues(alpha: 0.03) ??
+                                            Colors.white,
+                                        child: Column(
+                                          spacing: 8,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            commonItemView(
+                                              title: "Target Points",
+                                              value: '${data.kraKpi?.targetValue??0}',
+                                            ),
+                                            commonItemView(
+                                              title: "Actual Points",
+                                              value: '${data.kraKpi?.actualValue??0}',
+                                            ),
+
+                                            commonItemView(
+                                              title: "Remarks",
+
+                                              value: '${data.kraKpi?.remarks??0}',
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                ),
+              ],
+            ),
+          ),
+          provider.isLoading?showLoaderList():SizedBox.shrink()
+        ],
       ),
     );
   }

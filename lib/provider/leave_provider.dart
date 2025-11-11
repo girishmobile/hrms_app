@@ -33,38 +33,9 @@ class Leave {
 }
 
 class LeaveProvider with ChangeNotifier {
-  final List<Leave> _leaves = [
-    Leave(
-      type: "Sick Leave",
-      reason: "Fever",
-      fromDate: DateTime(2025, 10, 1),
-      toDate: DateTime(2025, 10, 3),
-      days: 3,
-      appliedOn: DateTime(2025, 9, 28),
-      status: LeaveStatus.pending,
-    ),
-    Leave(
-      type: "Casual Leave",
-      reason: "Family function",
-      fromDate: DateTime(2025, 9, 10),
-      toDate: DateTime(2025, 9, 12),
-      days: 3,
-      appliedOn: DateTime(2025, 9, 1),
-      status: LeaveStatus.approved,
-    ),
-  ];
 
-  LeaveStatus? _filterStatus;
 
-  List<Leave> get leaves {
-    if (_filterStatus == null) return _leaves;
-    return _leaves.where((l) => l.status == _filterStatus).toList();
-  }
 
-  void setFilterStatus(LeaveStatus? status) {
-    _filterStatus = status;
-    notifyListeners();
-  }
 
   bool _isHalfDay = false;
   double leaveDays = 0; // change from int to double
@@ -90,24 +61,6 @@ class LeaveProvider with ChangeNotifier {
 
   var tetReason = TextEditingController();
 
-  /* void setFromDate(DateTime date) {
-    _fromDate = date;
-
-    // Reset toDate if it's before fromDate
-    if (toDate != null && toDate!.isBefore(fromDate!)) {
-      _toDate = null;
-      leaveDays = 0;
-    }
-
-    _calculateDays();
-    notifyListeners();
-  }
-
-  void setToDate(DateTime date) {
-    _toDate = date;
-    _calculateDays();
-    notifyListeners();
-  }*/
   void setFromDate(DateTime date) {
     _fromDate = date;
 
@@ -160,11 +113,6 @@ class LeaveProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  /*void setHalfDay(bool value) {
-   _isHalfDay = value;
-    _calculateDays(); // Recalculate leave days when half-day changes
-    notifyListeners();
-  }*/
   void clearDates() {
     _fromDate = null;
     _toDate = null;
