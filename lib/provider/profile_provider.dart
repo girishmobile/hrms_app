@@ -367,11 +367,11 @@ class ProfileProvider extends ChangeNotifier {
       );
 
       if (globalStatusCode == 200) {
-        _userDetailsBYIDModel = UserDetailsBYIDModel.fromJson(json.decode(response),
+        _userDetailsBYIDModel = UserDetailsBYIDModel.fromJson(
+          json.decode(response),
         );
 
-
-        getUserImpressions(id: id,impId: '${_userDetailsBYIDModel?.impId}');
+        getUserImpressions(id: id, impId: '${_userDetailsBYIDModel?.impId}');
 
         _setLoading(false);
       } else {
@@ -388,15 +388,16 @@ class ProfileProvider extends ChangeNotifier {
       _setLoading(false);
     }
   }
+
   UserContactViewModel? _userContactViewModel;
 
   UserContactViewModel? get userContactViewModel => _userContactViewModel;
 
-  Future<void> getUserImpressions({required String id,String ?impId}) async {
+  Future<void> getUserImpressions({required String id, String? impId}) async {
     _setLoading(true);
 
     try {
-      Map<String, dynamic> body = {"id": id, "imp_id":impId};
+      Map<String, dynamic> body = {"id": id, "imp_id": impId};
 
       print('====${body}');
       final response = await callApi(
