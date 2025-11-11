@@ -38,7 +38,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<HotlineProvider>();
-    var size=MediaQuery.sizeOf(context);
+    var size = MediaQuery.sizeOf(context);
 
     final departmentNames = provider.departments
         .map((e) => e.name ?? '')
@@ -217,7 +217,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
                           crossAxisCount: 3, // 2 columns
                           crossAxisSpacing: 8,
                           mainAxisSpacing: 8,
-                          childAspectRatio: 1.1,
+                          childAspectRatio: 2.6,
                         ),
                     itemBuilder: (context, index) {
                       final item = provider.hotlineCount[index];
@@ -276,7 +276,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
                                 crossAxisCount: 2, // 2 columns
                                 crossAxisSpacing: 8,
                                 mainAxisSpacing: 8,
-                                childAspectRatio: 1.4,
+                                childAspectRatio: 1.1,
                               ),
                           physics: BouncingScrollPhysics(),
                           itemCount:
@@ -294,7 +294,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
                                 showCommonBottomSheet(
                                   context: context,
                                   content: Container(
-                                    height: size.height*0.8,
+                                    height: size.height * 0.8,
                                     child: Column(
                                       children: [
                                         Row(
@@ -380,8 +380,9 @@ class _HotlineScreenState extends State<HotlineScreen> {
                                           text:
                                               '${data?.firstname} ${data?.lastname}',
                                           fontSize: 14,
-                                          fontWeight: FontWeight.w600,
+                                          fontWeight: FontWeight.w500,
                                           color: color,
+                                          textAlign: TextAlign.center,
                                         ),
 
                                         commonText(
@@ -409,6 +410,10 @@ class _HotlineScreenState extends State<HotlineScreen> {
     );
   }
 
+  Widget buildHotLineItem() {
+    return Container(height: 60, width: double.infinity, color: Colors.amber);
+  }
+
   Widget buildItemView({
     required HotlineCountModel item,
     required bool isSelected,
@@ -430,7 +435,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
           //  color: color.withValues(alpha: 0.04),
         ),
 
-        child: Column(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(height: 10),
@@ -440,16 +445,16 @@ class _HotlineScreenState extends State<HotlineScreen> {
               fontWeight: FontWeight.w500,
               color: colorProduct,
             ),
-            const SizedBox(height: 6),
+            const SizedBox(width: 6),
             AnimatedCounter(
               leftText: '',
               rightText: '',
               endValue: item.count,
               duration: Duration(seconds: 2),
               style: commonTextStyle(
-                fontSize: 20,
+                fontSize: 16,
                 color: color,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ],

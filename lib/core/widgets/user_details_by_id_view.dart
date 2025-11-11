@@ -11,9 +11,9 @@ import '../constants/string_utils.dart';
 import 'cached_image_widget.dart';
 
 class UserDetailsByIdView extends StatefulWidget {
-  const UserDetailsByIdView({super.key,this.id});
+  const UserDetailsByIdView({super.key, this.id});
 
-  final String ? id;
+  final String? id;
   @override
   State<UserDetailsByIdView> createState() => _UserDetailsByIdViewState();
 }
@@ -31,13 +31,14 @@ class _UserDetailsByIdViewState extends State<UserDetailsByIdView> {
   Future<void> init() async {
     final profile = Provider.of<ProfileProvider>(context, listen: false);
 
-    await profile.getUserDetailsBYID(id: widget.id??"0");
+    print('User ID: ${widget.id}');
+    await profile.getUserDetailsBYID(id: widget.id ?? "0");
   }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ProfileProvider>(
-      builder: (context,provider,child) {
-
+      builder: (context, provider, child) {
         return Stack(
           children: [
             SingleChildScrollView(
@@ -46,41 +47,46 @@ class _UserDetailsByIdViewState extends State<UserDetailsByIdView> {
 
                 children: [
                   Column(
-
                     mainAxisSize: MainAxisSize.min,
                     children: [
-
                       CachedImageWidget(
                         height: 120,
                         width: 120,
                         borderRadius: 100,
 
                         fit: BoxFit.cover,
-                        imageUrl: provider.userDetailsBYIDModel?.profileImage??'',
-
+                        imageUrl:
+                            provider.userDetailsBYIDModel?.profileImage ?? '',
                       ),
-                      SizedBox(height: 10,),
-                      commonText(text: '${provider.userDetailsBYIDModel?.firstname} ${provider.userDetailsBYIDModel?.lastname}',fontSize: 16,fontWeight: FontWeight.w700),
-                      commonText(text: '${provider.userDetailsBYIDModel?.companyEmail}',fontSize: 12,fontWeight: FontWeight.w400),
-                      SizedBox(height: 20,),
+                      SizedBox(height: 10),
+                      commonText(
+                        text:
+                            '${provider.userDetailsBYIDModel?.firstname} ${provider.userDetailsBYIDModel?.lastname}',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      commonText(
+                        text: '${provider.userDetailsBYIDModel?.companyEmail}',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      SizedBox(height: 20),
 
                       bioInfoWidget(provider: provider),
-                      SizedBox(height: 10,),
+                      SizedBox(height: 10),
                       basicInfoWidget(provider: provider),
-                      SizedBox(height: 10,),
+                      SizedBox(height: 10),
                       showContactInfoWidget(provider: provider),
-                      SizedBox(height: 40,),
-
+                      SizedBox(height: 40),
                     ],
-                  )
+                  ),
                 ],
-
               ),
             ),
-            provider.isLoading?showLoaderList():SizedBox.shrink()
+            provider.isLoading ? showLoaderList() : SizedBox.shrink(),
           ],
         );
-      }
+      },
     );
   }
 
@@ -92,7 +98,6 @@ class _UserDetailsByIdViewState extends State<UserDetailsByIdView> {
         spacing: 12,
 
         children: [
-
           commonRowLeftRightView(
             title: 'Employee ID',
             customView: commonText(
@@ -145,7 +150,7 @@ class _UserDetailsByIdViewState extends State<UserDetailsByIdView> {
 
           commonRowLeftRightView(
             title: 'External System Access',
-            value: data?.userExitStatus==true?"Yes":"NO",
+            value: data?.userExitStatus == true ? "Yes" : "NO",
           ),
 
           commonRowLeftRightView(
@@ -161,28 +166,22 @@ class _UserDetailsByIdViewState extends State<UserDetailsByIdView> {
             title: 'Emergency Contact',
             value: data?.emergencyContactNo ?? '',
           ),
-
-
         ],
       ),
       title: 'Basic Information',
     );
   }
+
   Widget bioInfoWidget({required ProfileProvider provider}) {
     var data = provider.userDetailsBYIDModel;
 
     return commonBoxView(
       contentView: Column(
-
         children: [
-
           Html(
-            data: data?.about??'',
+            data: data?.about ?? '',
             style: {
-              "body": Style(
-                margin: Margins.zero,
-                padding: HtmlPaddings.zero,
-              ),
+              "body": Style(margin: Margins.zero, padding: HtmlPaddings.zero),
               "span": Style(
                 fontSize: FontSize(12),
                 fontFamily: fontRoboto,
@@ -192,8 +191,6 @@ class _UserDetailsByIdViewState extends State<UserDetailsByIdView> {
               ),
             },
           ),
-
-
         ],
       ),
       title: 'Bio Information',
@@ -208,7 +205,6 @@ class _UserDetailsByIdViewState extends State<UserDetailsByIdView> {
         spacing: 8,
 
         children: [
-
           commContactView(
             image: icCall,
 
@@ -220,26 +216,20 @@ class _UserDetailsByIdViewState extends State<UserDetailsByIdView> {
             ),
           ),
 
+          commContactView(image: icEmail, value: data?.data?.email ?? "-"),
           commContactView(
-            image: icEmail,
-           value: data?.data?.email ?? "-"
-          ),
-          commContactView(
-              image: icLinkedin,
-              value: data?.data?.linkdinUsername ?? "-"
+            image: icLinkedin,
+            value: data?.data?.linkdinUsername ?? "-",
           ),
 
           commContactView(
-              image: icTwitter,
-              value: data?.data?.twitterUsername ?? "-"
+            image: icTwitter,
+            value: data?.data?.twitterUsername ?? "-",
           ),
           commContactView(
-              image:icFacebook,
-              value: data?.data?.facebookUsername ?? "-"
+            image: icFacebook,
+            value: data?.data?.facebookUsername ?? "-",
           ),
-
-
-
         ],
       ),
       title: 'Show Contact Info',
@@ -256,15 +246,23 @@ class _UserDetailsByIdViewState extends State<UserDetailsByIdView> {
       children: [
         Container(
           width: 35,
-            height: 35,
-            decoration: commonBoxDecoration(
-              shape: BoxShape.circle,
+          height: 35,
+          decoration: commonBoxDecoration(
+            shape: BoxShape.circle,
             // /  color: colorProduct.withValues(alpha: 0.2)
+          ),
+          child: Center(
+            child: commonAssetImage(
+              image,
+              width: 15,
+              height: 15,
+              color: colorProduct,
             ),
-            child: Center(child: commonAssetImage(image,width: 15,height: 15,color: colorProduct))),
+          ),
+        ),
         Expanded(
           child:
-          customView ??
+              customView ??
               commonText(
                 text: value ?? '',
                 maxLines: 1,
