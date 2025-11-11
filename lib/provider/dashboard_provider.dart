@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:hrms/core/constants/string_utils.dart';
 import 'package:hrms/data/models/dashboard/current_attendace_model.dart';
 import 'package:hrms/data/models/leave/leave_count_data_model.dart';
 import 'package:hrms/data/models/notification/notification_model.dart';
@@ -28,7 +29,7 @@ class DashboardProvider with ChangeNotifier {
 
   int get currentIndex => _currentIndex;
 
-  String? _appbarTitle;
+  String? _appbarTitle=home;
 
   String? get appbarTitle => _appbarTitle;
 

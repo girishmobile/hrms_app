@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hrms/core/constants/string_utils.dart';
 import 'package:hrms/provider/dashboard_provider.dart';
 import 'package:hrms/provider/profile_provider.dart';
 import 'package:provider/provider.dart';
@@ -356,6 +357,7 @@ Widget logoutButton(BuildContext context) {
         confirmText: "Yes",
         onPressed: () async {
           dashboardProvider.setIndex(2);
+          dashboardProvider.setAppBarTitle(home);
 
           await AppConfigCache.clearUserData();
           navigatorKey.currentState?.pushNamedAndRemoveUntil(
