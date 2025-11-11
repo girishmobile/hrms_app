@@ -38,7 +38,7 @@ class UserDetailsBYIDModel {
     id = json['id'];
     firstname = json['firstname'];
     lastname = json['lastname'];
-    employeeId = json['employee_id'];
+    employeeId = json['employee_id']?.toString(); // 🔥 FIXED HERE
     about = json['about'];
     companyEmail = json['company_email'];
     isWfhAllowed = json['is_wfh_allowed'];
