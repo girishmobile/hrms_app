@@ -31,13 +31,13 @@ class _UserDetailsByIdViewState extends State<UserDetailsByIdView> {
   Future<void> init() async {
     final profile = Provider.of<ProfileProvider>(context, listen: false);
 
-    print('User ID: ${widget.id}');
     await profile.getUserDetailsBYID(id: widget.id ?? "0");
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<ProfileProvider>(
+
       builder: (context, provider, child) {
         return Stack(
           children: [
@@ -72,7 +72,7 @@ class _UserDetailsByIdViewState extends State<UserDetailsByIdView> {
                       ),
                       SizedBox(height: 20),
 
-                      bioInfoWidget(provider: provider),
+                      provider.userDetailsBYIDModel?.about==null?SizedBox.shrink():bioInfoWidget(provider: provider),
                       SizedBox(height: 10),
                       basicInfoWidget(provider: provider),
                       SizedBox(height: 10),
@@ -181,11 +181,26 @@ class _UserDetailsByIdViewState extends State<UserDetailsByIdView> {
           Html(
             data: data?.about ?? '',
             style: {
-              "body": Style(margin: Margins.zero, padding: HtmlPaddings.zero),
+              "html": Style(
+                margin: Margins.zero,
+                padding: HtmlPaddings.zero,
+              ),
+              "body": Style(
+                margin: Margins.zero,
+                padding: HtmlPaddings.zero,
+              ),
+              "p": Style(
+                margin: Margins.zero,
+                padding: HtmlPaddings.zero,
+              ),
               "span": Style(
                 fontSize: FontSize(12),
                 fontFamily: fontRoboto,
                 color: Colors.black,
+                margin: Margins.zero,
+                padding: HtmlPaddings.zero,
+              ),
+              "div": Style(
                 margin: Margins.zero,
                 padding: HtmlPaddings.zero,
               ),
@@ -212,7 +227,7 @@ class _UserDetailsByIdViewState extends State<UserDetailsByIdView> {
               text: data?.data?.contactNo ?? "-",
               textAlign: TextAlign.left,
               fontSize: 12,
-              fontWeight: FontWeight.w600,
+
             ),
           ),
 

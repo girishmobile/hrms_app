@@ -34,6 +34,7 @@ Widget buildMonthCard({
       );
     },
     child: Container(
+      margin: EdgeInsets.only(bottom: 8),
       decoration: commonBoxDecoration(
         color: color.withValues(alpha: 0.03),
         borderColor: colorBorder,

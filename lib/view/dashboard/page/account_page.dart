@@ -29,13 +29,13 @@ class _ProfilePageState extends State<AccountPage> {
   }
 
   Future<void> init() async {
-    final profile = Provider.of<ProfileProvider>(context, listen: false);
+    final provider = Provider.of<ProfileProvider>(context, listen: false);
 
     UserModel? user = await AppConfigCache.getUserModel();
 
     Map<String, dynamic> body = {"employee_id": user?.data?.user?.id};
 
-    await profile.getUserDetails(body: body);
+    await provider.getUserDetails(body: body);
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hrms/core/constants/image_utils.dart';
 import 'package:hrms/core/widgets/component.dart';
 import 'package:hrms/core/widgets/context_extension.dart';
 import 'package:hrms/provider/hotline_provider.dart';
@@ -26,12 +27,13 @@ class _HotlineScreenState extends State<HotlineScreen> {
       await init();
     });
   }
-
   Future<void> init() async {
     final provider = Provider.of<HotlineProvider>(context, listen: false);
-    await provider.getLeaveCountData();
-    await provider.getAllDepartment();
-    await provider.getAllDesignation();
+    await Future.wait([
+      provider.getLeaveCountData(),
+      provider.getAllDepartment(),
+      provider.getAllDesignation(),
+    ]);
     await provider.getAllHotline(status: provider.title);
   }
 
@@ -181,8 +183,9 @@ class _HotlineScreenState extends State<HotlineScreen> {
                 context: context,
               );
             },
-            icon: Icon(Icons.filter_alt_outlined, color: Colors.white),
+            icon: commonAssetImage(icFitter, color: Colors.white, width: 24,height: 24),
           ),
+          SizedBox(width: 8,)
         ],
       ),
       body: Padding(
@@ -399,7 +402,10 @@ class _HotlineScreenState extends State<HotlineScreen> {
                             );
                           },
                         )
-                      : SizedBox.shrink(),
+                      : Container(
+                      width: size.width,
+                      height: size.height*0.6,
+                      child: commonErrorView(text: "No data found")),
                 ],
               ),
             ),

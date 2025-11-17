@@ -446,9 +446,9 @@ Center commonErrorView({String? text}) {
         commonText(
           textAlign: TextAlign.center,
           text: text ?? '',
-          fontSize: 14,
+          fontSize: 16,
           fontWeight: FontWeight.w500,
-          color: Colors.black.withValues(alpha: 0.5),
+          color: Colors.black.withValues(alpha: 0.8),
         ),
       ],
     ),

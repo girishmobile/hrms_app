@@ -32,6 +32,9 @@ const String icFacebook="$iconDashboardPath/facebook.png";
 const String icLinkedin="$iconDashboardPath/linkedin.png";
 const String icCall="$iconDashboardPath/telephone.png";
 const String icTwitter="$iconDashboardPath/twitter.png";
+const String icFitter="$iconDashboardPath/filter.png";
+const String icBan="$iconDashboardPath/ban.png";
+const String icWallet="$iconDashboardPath/wallet.png";
 
 
 //==============================Product=============================

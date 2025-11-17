@@ -18,7 +18,7 @@ class UpdatePasswordScreen extends StatelessWidget {
 
     return commonScaffold(
       appBar: commonAppBar(
-        backgroundColor: Colors.white,
+
         title: "Change Password",
         context: context,
 

@@ -29,12 +29,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> init() async {
-    final profile = Provider.of<DashboardProvider>(context, listen: false);
+    final provider = Provider.of<DashboardProvider>(context, listen: false);
+    await Future.wait([
+      provider.getBirthdayHoliday(),
+      provider.getCurrentAttendanceRecord(),
+      provider.getLeaveCountData(),
+      provider.updateFCMToken(),
+    ]);
 
-    await profile.getBirthdayHoliday();
-    await profile.getCurrentAttendanceRecord();
-    await profile.getLeaveCountData();
-    await profile.updateFCMToken();
   }
 
   @override

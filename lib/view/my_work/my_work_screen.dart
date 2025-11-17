@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hrms/core/constants/color_utils.dart';
+import 'package:hrms/core/constants/image_utils.dart';
 import 'package:hrms/core/widgets/component.dart';
 import 'package:provider/provider.dart';
 
@@ -131,6 +132,7 @@ class _MyWorkScreenState extends State<MyWorkScreen> {
                   Column(
                     children: [
                       commonView(
+                        colorIcon: Colors.green,
                         spentValue:
                             "${totalBillableHours.toStringAsFixed(2)} hr",
                         allocationHours:
@@ -138,6 +140,8 @@ class _MyWorkScreenState extends State<MyWorkScreen> {
                       ),
                       SizedBox(height: 15),
                       commonView(
+                        image: icBan,
+                        colorIcon: Colors.red,
                         color: Colors.amber,
                         title: "Non-Billable",
                         spentValue:
@@ -369,7 +373,9 @@ class _MyWorkScreenState extends State<MyWorkScreen> {
 
   Widget commonView({
     Color? color,
+    Color? colorIcon,
     String? title,
+    String? image,
     String? spentValue,
     String? allocationHours,
   }) {
@@ -380,38 +386,59 @@ class _MyWorkScreenState extends State<MyWorkScreen> {
             color?.withValues(alpha: 0.1) ??
             Colors.green.withValues(alpha: 0.1),
       ),
-      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 0),
       child: Column(
         spacing: 8,
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          commonText(
-            text: title ?? "Billable",
-            fontWeight: FontWeight.w700,
-            fontSize: 14,
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+            child: Row(
+              spacing: 10,
+              children: [
+                commonAssetImage(image??icWallet,width: 30,height: 30,color: colorIcon),
+                commonText(
+
+
+                  text: title ?? "Billable",
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                ),
+              ],
+            ),
           ),
-          Row(
-            children: [
-              commonText(
-                text: "Total Time Spent: ",
-                fontWeight: FontWeight.w600,
-                fontSize: 12,
-              ),
-              commonText(text: spentValue ?? "128.02 hr", fontSize: 12),
-            ],
+          Divider(height: 1,color: colorBorder,),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+            child: Column(
+              spacing: 8,
+              children: [
+                Row(
+                  children: [
+                    commonText(
+                      text: "Total Time Spent: ",
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
+                    ),
+                    commonText(text: spentValue ?? "128.02 hr", fontSize: 12),
+                  ],
+                ),
+                Row(
+                  children: [
+                    commonText(
+                      text: "Total Allocation Effort: ",
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
+                    ),
+                    commonText(text: allocationHours ?? "123 hr", fontSize: 12),
+                  ],
+                ),
+              ],
+            ),
           ),
 
-          Row(
-            children: [
-              commonText(
-                text: "Total Allocation Effort: ",
-                fontWeight: FontWeight.w600,
-                fontSize: 12,
-              ),
-              commonText(text: allocationHours ?? "123 hr", fontSize: 12),
-            ],
-          ),
+
         ],
       ),
     );
