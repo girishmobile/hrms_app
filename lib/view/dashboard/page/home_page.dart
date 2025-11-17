@@ -167,9 +167,12 @@ class _HomePageState extends State<HomePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   commonAssetImage(
-                                      color: Colors.blueAccent,
-                                      icAdd,height: 30,width: 30),
-                                /*  Icon(
+                                    color: Colors.blueAccent,
+                                    icAdd,
+                                    height: 30,
+                                    width: 30,
+                                  ),
+                                  /*  Icon(
                                     Icons.add_circle_outline,
                                     color: Colors.blueAccent,
                                     size: 36,
@@ -247,7 +250,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 10),
                   SizedBox(
-                    height: 150,
+                    height: 130,
                     child: ListView.builder(
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,

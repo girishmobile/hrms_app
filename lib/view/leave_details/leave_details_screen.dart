@@ -293,7 +293,9 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
                                                                 cancelText:
                                                                     "No",
                                                                 onPressed: () async {
-                                                                  Navigator.of(context).pop(); // 🔹 Pehle dialog band karo
+                                                                  Navigator.of(
+                                                                    context,
+                                                                  ).pop(); // 🔹 Pehle dialog band karo
 
                                                                   final Map<
                                                                     String,
