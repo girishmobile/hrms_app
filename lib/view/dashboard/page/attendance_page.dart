@@ -64,7 +64,7 @@ class _AttendancePageState extends State<AttendancePage> {
                           },
                         ),
                       )*/
-                    /*  Expanded(
+                      /*  Expanded(
                         child: Consumer<AttendanceProvider>(
                           builder: (context, provider, _) {
                             final items = [
@@ -114,20 +114,25 @@ class _AttendancePageState extends State<AttendancePage> {
                               ],
                               // 👇 Instead of binding the dropdown's 'value' strictly,
                               // show custom text using a 'displayText' property or hint override
-                              initialValue: provider.selectedDateRange == "Custom Date"
+                              initialValue:
+                                  provider.selectedDateRange == "Custom Date"
                                   ? null // so dropdown doesn’t try to select this item
                                   : provider.selectedDateRange,
-                              customText: provider.selectedDateRange.contains('-')
-                                  ? provider.selectedDateRange // e.g. "2025-10-31 - 2025-11-06"
+                              customText:
+                                  provider.selectedDateRange.contains('-')
+                                  ? provider
+                                        .selectedDateRange // e.g. "2025-10-31 - 2025-11-06"
                                   : null,
                               onChanged: (value) {
-                                provider.handleDateRangeSelection(context, value ?? '');
+                                provider.handleDateRangeSelection(
+                                  context,
+                                  value ?? '',
+                                );
                               },
                             );
                           },
                         ),
                       ),
-
                     ],
                   ),
                   Expanded(

@@ -36,7 +36,7 @@ Widget buildItemView({
               duration: Duration(seconds: 2),
               style: commonTextStyle(
                 fontSize: 22,
-                 color: item['color'],
+                color: item['color'],
                 fontWeight: FontWeight.w700,
               ),
             ),

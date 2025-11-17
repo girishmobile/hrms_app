@@ -56,55 +56,33 @@ class NotificationService {
   /// Token setup
   static Future<void> initFirebaseToken() async {
     if (Platform.isIOS) {
+      // Request permissions on iOS
       await FirebaseMessaging.instance.requestPermission(
         alert: true,
         badge: true,
         sound: true,
       );
-      // Try to obtain APNs token, but avoid an infinite loop (simulator won't provide one).
-      String? apnsToken;
-      int attempts = 0;
-      const int maxAttempts = 6; // ~3 seconds total
+      // Note: APNS token will be obtained asynchronously by native code.
+      // Do NOT call getAPNSToken() directly as it will fail if not yet available.
+    }
 
-      try {
-        apnsToken = await _messaging.getAPNSToken();
-      } catch (e) {
-        // PlatformException thrown when APNs token hasn't been set yet.
-        debugPrint('getAPNSToken() initial attempt failed: $e');
-        apnsToken = null;
-      }
-
-      while (apnsToken == null && attempts < maxAttempts) {
-        await Future.delayed(const Duration(milliseconds: 500));
-        try {
-          apnsToken = await _messaging.getAPNSToken();
-        } catch (e) {
-          debugPrint('getAPNSToken() attempt #$attempts failed: $e');
-          apnsToken = null;
-        }
-        attempts++;
-      }
-
-      if (apnsToken == null) {
-        debugPrint(
-          'APNs token not available (simulator or not registered). Continuing without APNs token.',
-        );
-      } else {
-        debugPrint('APNs token: $apnsToken');
-      }
+    // Wait a bit for APNS token to be available (iOS)
+    if (Platform.isIOS) {
+      await Future.delayed(const Duration(seconds: 1));
     }
 
     try {
       token = await FirebaseMessaging.instance.getToken();
-      debugPrint("Firebase Token by Flutter code: $token");
+      debugPrint("✅ Firebase Token obtained: $token");
     } catch (e) {
-      debugPrint('Error getting FCM token: $e');
+      debugPrint('❌ Error getting FCM token: $e');
       token = null;
     }
 
+    // Listen for token refresh
     _messaging.onTokenRefresh.listen((newToken) {
       token = newToken;
-      debugPrint("Token refreshed: $token");
+      debugPrint("✅ Token refreshed: $token");
     });
   }
 
@@ -240,10 +218,7 @@ class NotificationService {
     );
 
     debugPrint("🌙 Background notification saved: ${message.messageId}");
-    _handlePayloadNavigation(
-      payload: safeData['type'] ?? '',
-      data: safeData,
-    );
+    _handlePayloadNavigation(payload: safeData['type'] ?? '', data: safeData);
   }
 
   /// Handle navigation from notification
@@ -252,7 +227,6 @@ class NotificationService {
     required Map<String, dynamic> data,
   }) async {
     debugPrint('Handling payload: $payload');
-
 
     switch (data['type']) {
       case 'leave_request':
