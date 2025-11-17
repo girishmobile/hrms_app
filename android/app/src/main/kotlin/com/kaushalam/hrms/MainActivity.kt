@@ -1,4 +1,4 @@
-package com.redefine.hrms
+package com.kaushalam.hrms
 
 import io.flutter.embedding.android.FlutterActivity
 

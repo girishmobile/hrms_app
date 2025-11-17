@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "913862869329",
-    "project_id": "hrms-1eb10",
-    "storage_bucket": "hrms-1eb10.firebasestorage.app"
+    "project_number": "408577066262",
+    "project_id": "kaushalam-hrms",
+    "storage_bucket": "kaushalam-hrms.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:913862869329:android:6f0f84411cdaf4e9979370",
+        "mobilesdk_app_id": "1:408577066262:android:498411ba8f6f5af810fc37",
         "android_client_info": {
-          "package_name": "com.redefine.hrms"
+          "package_name": "com.kaushalam.hrms"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBfBvNn6UCoCtkX1bEAls0Ly_OfJCffLpM"
+          "current_key": "AIzaSyBLc3p0PosR2qOipC-nmuXd7Q2kK0kv290"
         }
       ],
       "services": {

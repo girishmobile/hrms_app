@@ -33,28 +33,29 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBfBvNn6UCoCtkX1bEAls0Ly_OfJCffLpM',
-    appId: '1:913862869329:android:6f0f84411cdaf4e9979370',
-    messagingSenderId: '913862869329',
-    projectId: 'hrms-1eb10',
-    storageBucket: 'hrms-1eb10.firebasestorage.app',
+    apiKey: 'AIzaSyBLc3p0PosR2qOipC-nmuXd7Q2kK0kv290',
+    appId: '1:408577066262:android:498411ba8f6f5af810fc37',
+    messagingSenderId: '408577066262',
+    projectId: 'kaushalam-hrms',
+    storageBucket: 'kaushalam-hrms.firebasestorage.app',
   );
   static const FirebaseOptions ios = FirebaseOptions(
-    iosBundleId: 'com.redefine.hrms',
-    apiKey: 'AIzaSyAPhS13IYNhm6hfZien18GiyoDenmiuLUk',
-    appId: '1:913862869329:ios:773bda644c5b397d979370',
-    messagingSenderId: '913862869329',
-    projectId: 'hrms-1eb10',
-    storageBucket: 'hrms-1eb10.firebasestorage.app',
+    iosBundleId: 'com.kaushalam.hrms',
+    apiKey: 'AIzaSyCrN1wqJ5ncSuP9flTISLmtw-Xpzc0x2NE',
+    appId: '1:408577066262:ios:9856a2667938426b10fc37',
+    messagingSenderId: '408577066262',
+    projectId: 'kaushalam-hrms',
+    storageBucket: 'kaushalam-hrms.firebasestorage.app',
   );
 
   static const FirebaseOptions web = FirebaseOptions(
-      apiKey: "AIzaSyAA3Ka_9Jhnncf7mTly2AnJC8VT95MIz_8",
-      authDomain: "yoga-buddy-266417.firebaseapp.com",
-      databaseURL: "https://yoga-buddy-266417.firebaseio.com",
-      projectId: "yoga-buddy-266417",
-      storageBucket: "yoga-buddy-266417.appspot.com",
-      messagingSenderId: "380744735472",
-      appId: "1:380744735472:web:d16f75db3520f6b6234035",
-      measurementId: "G-1J6ZPSTCE5");
+    apiKey: "AIzaSyAA3Ka_9Jhnncf7mTly2AnJC8VT95MIz_8",
+    authDomain: "yoga-buddy-266417.firebaseapp.com",
+    databaseURL: "https://yoga-buddy-266417.firebaseio.com",
+    projectId: "yoga-buddy-266417",
+    storageBucket: "yoga-buddy-266417.appspot.com",
+    messagingSenderId: "380744735472",
+    appId: "1:380744735472:web:d16f75db3520f6b6234035",
+    measurementId: "G-1J6ZPSTCE5",
+  );
 }
