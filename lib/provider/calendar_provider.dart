@@ -49,7 +49,6 @@ class CalendarProvider extends ChangeNotifier {
     } catch (e) {
       notifyListeners();
       _setLoading(false);
-      debugPrint('Error: $e');
     } finally {
       _setLoading(false);
       notifyListeners();

@@ -154,10 +154,8 @@ class DashboardProvider with ChangeNotifier {
       );
 
       if (globalStatusCode == 200) {
-        final decoded = json.decode(response);
         _birthdayModel = HolidayBirthdayModel.fromJson(json.decode(response));
 
-        debugPrint('======$decoded');
         _setLoading(false);
       }
       _setLoading(false);
@@ -179,7 +177,6 @@ class DashboardProvider with ChangeNotifier {
 
         headers: null,
       );
-      debugPrint('======$globalStatusCode');
       if (globalStatusCode == 200) {
         _currentAttendanceModel = CurrentAttendanceModel.fromJson(
           json.decode(response),
@@ -220,8 +217,6 @@ class DashboardProvider with ChangeNotifier {
         } else {
           _notificationList = [];
         }
-
-        debugPrint('======$decoded');
         _setLoading(false);
       } else {
         showCommonDialog(
@@ -261,7 +256,7 @@ class DashboardProvider with ChangeNotifier {
           _leaveCountData = [];
         }
 
-        debugPrint('======$decoded');
+
       } else {
 
       }
@@ -291,7 +286,7 @@ class DashboardProvider with ChangeNotifier {
       }
 
       Map<String, dynamic> body = {"fcm_token": fcmToken};
-      final response = await callApi(
+       await callApi(
         url: ApiConfig.updateFCMTokenUrl,
         method: HttpMethod.post,
 
@@ -299,14 +294,9 @@ class DashboardProvider with ChangeNotifier {
         headers: null,
       );
 
-      if (globalStatusCode == 200) {
-        final decoded = json.decode(response);
 
-        debugPrint('======$decoded');
-        _setLoading(false);
-      } else {
 
-      }
+      _setLoading(false);
       _setLoading(false);
       notifyListeners();
     } catch (e) {
@@ -321,7 +311,7 @@ class DashboardProvider with ChangeNotifier {
       Map<String, dynamic> body ={
         "id":id
       };
-      final response = await callApi(
+     await callApi(
         url: ApiConfig.deleteNotificationUrl,
         method: HttpMethod.post,
 
@@ -330,9 +320,7 @@ class DashboardProvider with ChangeNotifier {
       );
 
       if (globalStatusCode == 200) {
-        final decoded = json.decode(response);
 
-        debugPrint('======$decoded');
         _setLoading(false);
       } else {
 

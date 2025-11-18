@@ -55,11 +55,11 @@ Future<void> _initializeFirebase() async {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
-      debugPrint('Firebase initialized successfully');
+
       return;
     } catch (e) {
       attempts++;
-      debugPrint('Firebase init attempt $attempts failed: $e');
+
       if (attempts == maxAttempts) rethrow;
       await Future.delayed(Duration(seconds: 1));
     }

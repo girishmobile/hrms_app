@@ -41,104 +41,109 @@ class _ProfilePageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Consumer<ProfileProvider>(
-        builder: (context, provider, child) {
-          return Stack(
-            children: [
-              ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                physics: const BouncingScrollPhysics(),
-                children: [
-                  const SizedBox(height: 15),
+      child: commonRefreshIndicator(
+        onRefresh: ()async{
+          init();
+        },
+        child: Consumer<ProfileProvider>(
+          builder: (context, provider, child) {
+            return Stack(
+              children: [
+                ListView(
+                  padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                  physics: const BouncingScrollPhysics(),
+                  children: [
+                    const SizedBox(height: 15),
 
-                  // Divider(height: 0.2,color: colorBorder.withValues(alpha: 0.05),),
-                  Container(
-                    decoration: BoxDecoration(color: Colors.white),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: profileTopView(
-                        provider: provider,
-                        colorText: colorProduct,
-                        colorBorder: colorProduct,
+                    // Divider(height: 0.2,color: colorBorder.withValues(alpha: 0.05),),
+                    Container(
+                      decoration: BoxDecoration(color: Colors.white),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: profileTopView(
+                          provider: provider,
+                          colorText: colorProduct,
+                          colorBorder: colorProduct,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 15),
+                    const SizedBox(height: 15),
 
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 15,
-                      vertical: 0,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 15,
+                        vertical: 0,
+                      ),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 15),
+                          commonView(
+                            onTap: () {
+                              navigatorKey.currentState?.pushNamed(
+                                RouteName.profileScreen,
+                              );
+                            },
+                            image: icEdit,
+                            bgColor: Colors.blue.shade50, // light blue
+                          ),
+                          const SizedBox(height: 15),
+                          commonView(
+                            title: "Change Password",
+                            onTap: () {
+                              navigatorKey.currentState?.pushNamed(
+                                RouteName.updatePasswordScreen,
+                              );
+                            },
+                            image: icPassword,
+                            bgColor: Colors.pink.shade50,
+                          ),
+                          const SizedBox(height: 15),
+                          commonView(
+                            title: "My Hours",
+                            onTap: () {
+                              navigatorKey.currentState?.pushNamed(
+                                RouteName.myWorkScreen,
+                              );
+                            },
+                            bgColor: Colors.green.shade50,
+                            image: icTime,
+                          ),
+                          const SizedBox(height: 15),
+                          commonView(
+                            title: "Hotline",
+                            onTap: () {
+                              navigatorKey.currentState?.pushNamed(
+                                RouteName.hotlineScreen,
+                              );
+                            },
+                            bgColor: Colors.orange.shade50,
+                            image: icMenuProfile,
+                          ),
+                       /*   const SizedBox(height: 15),
+                          commonView(
+                            title: "Hubstaff Logs ",
+                            onTap: () {
+                              navigatorKey.currentState?.pushNamed(
+                                RouteName.hubStaffLogScreen,
+                              );
+                            },
+                            bgColor: Colors.orange.shade50,
+                            image: icHubStaff,
+                          ),*/
+
+                          const SizedBox(height: 70),
+
+                          logoutButton(context),
+                        ],
+                      ),
                     ),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 15),
-                        commonView(
-                          onTap: () {
-                            navigatorKey.currentState?.pushNamed(
-                              RouteName.profileScreen,
-                            );
-                          },
-                          image: icEdit,
-                          bgColor: Colors.blue.shade50, // light blue
-                        ),
-                        const SizedBox(height: 15),
-                        commonView(
-                          title: "Change Password",
-                          onTap: () {
-                            navigatorKey.currentState?.pushNamed(
-                              RouteName.updatePasswordScreen,
-                            );
-                          },
-                          image: icPassword,
-                          bgColor: Colors.pink.shade50,
-                        ),
-                        const SizedBox(height: 15),
-                        commonView(
-                          title: "My Hours",
-                          onTap: () {
-                            navigatorKey.currentState?.pushNamed(
-                              RouteName.myWorkScreen,
-                            );
-                          },
-                          bgColor: Colors.green.shade50,
-                          image: icTime,
-                        ),
-                        const SizedBox(height: 15),
-                        commonView(
-                          title: "Hotline",
-                          onTap: () {
-                            navigatorKey.currentState?.pushNamed(
-                              RouteName.hotlineScreen,
-                            );
-                          },
-                          bgColor: Colors.orange.shade50,
-                          image: icMenuProfile,
-                        ),
-                     /*   const SizedBox(height: 15),
-                        commonView(
-                          title: "Hubstaff Logs ",
-                          onTap: () {
-                            navigatorKey.currentState?.pushNamed(
-                              RouteName.hubStaffLogScreen,
-                            );
-                          },
-                          bgColor: Colors.orange.shade50,
-                          image: icHubStaff,
-                        ),*/
-
-                        const SizedBox(height: 70),
-
-                        logoutButton(context),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              provider.isLoading ? showLoaderList() : SizedBox.shrink(),
-            ],
-          );
-        },
+                  ],
+                ),
+                provider.isLoading ? showLoaderList() : SizedBox.shrink(),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

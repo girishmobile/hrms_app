@@ -112,7 +112,6 @@ class CommonImagePicker {
     }
 
     if (!permissionGranted) {
-      debugPrint("Permissions not granted");
       return null;
     }
 

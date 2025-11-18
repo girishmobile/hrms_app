@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 
@@ -6,6 +7,7 @@ import '../core/api/api_config.dart';
 import '../core/api/gloable_status_code.dart';
 import '../core/api/network_repository.dart';
 import '../core/widgets/component.dart';
+import '../data/models/leave/LeaveListingModel.dart';
 import '../data/models/leave/all_leave_model.dart';
 import '../data/models/leave/leave_model.dart';
 import '../main.dart';
@@ -128,6 +130,8 @@ class LeaveProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  final  tetRejectReason =TextEditingController();
+
   void clearLeaveType() {
     _fromDate = null;
     _toDate = null;
@@ -135,6 +139,7 @@ class LeaveProvider with ChangeNotifier {
     _leaveType = null;
     _isHalfDay = false;
     tetReason.clear();
+    tetRejectReason.clear();
     notifyListeners();
   }
 
@@ -162,10 +167,9 @@ class LeaveProvider with ChangeNotifier {
       );
 
       if (globalStatusCode == 200) {
-        final decoded = json.decode(response);
+
         _leaveModel = LeaveModel.fromJson(json.decode(response));
 
-        debugPrint('======$decoded');
         _setLoading(false);
       } else {
         showCommonDialog(
@@ -191,7 +195,6 @@ class LeaveProvider with ChangeNotifier {
         body: body,
         headers: null,
       );
-      debugPrint('==globalStatusCode===$globalStatusCode');
       if (globalStatusCode == 200) {
         final decoded = json.decode(response);
 
@@ -237,7 +240,6 @@ class LeaveProvider with ChangeNotifier {
         body: body,
         headers: null,
       );
-      debugPrint('==globalStatusCode===$globalStatusCode');
       if (globalStatusCode == 200) {
         final decoded = json.decode(response);
 
@@ -297,27 +299,12 @@ class LeaveProvider with ChangeNotifier {
         headers: null,
       );
 
-      debugPrint('API Status Code: $globalStatusCode');
-      debugPrint('Raw Response: $response');
 
       if (globalStatusCode == 200) {
-        // Decode response
         final decoded = json.decode(response);
-
-        // Parse JSON into model
         _allLeaveModel = LeaveResponse.fromJson(decoded);
 
-        // Safe debug prints
-        final leaveList = _allLeaveModel?.data;
-        if (leaveList != null && leaveList.isNotEmpty) {
-          debugPrint('Total leaves: ${leaveList.length}');
-          debugPrint('First leave status: ${leaveList.first.status}');
-          debugPrint(
-            'First leave type: ${leaveList.first.leaveType?.leavetype ?? 'N/A'}',
-          );
-        } else {
-          debugPrint('No leave data available.');
-        }
+
       } else {
         // Show error dialog
         showCommonDialog(
@@ -329,7 +316,43 @@ class LeaveProvider with ChangeNotifier {
       }
     } catch (e) {
       // Print full error with stacktrace for better debugging
-      debugPrint("Error while fetching leave data: $e");
+    } finally {
+      _setLoading(false);
+      notifyListeners();
+    }
+  }
+
+  LeaveDashboardModel? _leaveDashboardModel;
+
+  LeaveDashboardModel? get leaveDashboardModel => _leaveDashboardModel;
+  Future<void> getAllListingLeave() async {
+    _setLoading(true);
+    try {
+      final response = await callApi(
+        url: ApiConfig.getAllListingLeaveUrl,
+        method: HttpMethod.get,
+
+        headers: null,
+      );
+
+
+      if (globalStatusCode == 200) {
+        final decoded = json.decode(response);
+        _leaveDashboardModel = LeaveDashboardModel.fromJson(decoded);
+
+
+      } else {
+        // Show error dialog
+        showCommonDialog(
+          showCancel: false,
+          title: "Error",
+          context: navigatorKey.currentContext!,
+          content: errorMessage,
+        );
+      }
+      _setLoading(false);
+    } catch (e) {
+      // Print full error with stacktrace for better debugging
     } finally {
       _setLoading(false);
       notifyListeners();
@@ -346,8 +369,6 @@ class LeaveProvider with ChangeNotifier {
         headers: null,
       );
 
-      debugPrint('API Status Code: $globalStatusCode');
-      debugPrint('Raw Response: $response');
 
       if (globalStatusCode == 200) {
         _setLoading(false);
@@ -369,4 +390,93 @@ class LeaveProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+  Future<void> approvedLeave({required Map<String, dynamic> body}) async {
+    _setLoading(true);
+    try {
+         await callApi(
+        url: ApiConfig.approvedLeaveUrl,
+        method: HttpMethod.post,
+        body: body,
+        headers: null,
+      );
+         debugPrint("Error while fetching leave data: $body");
+         debugPrint("Error while fetching leave data: $globalStatusCode");
+
+      if (globalStatusCode == 200) {
+        _setLoading(false);
+        ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
+          const SnackBar(
+            content: Text("Leave approved successfully!"),
+            backgroundColor: Colors.green,
+          ),
+        );
+        getAllListingLeave();
+      } else {
+        // Show error dialog
+        showCommonDialog(
+          showCancel: false,
+          title: "Error",
+          context: navigatorKey.currentContext!,
+          content: errorMessage,
+        );
+        _setLoading(false);
+      }
+    } catch (e) {
+      // Print full error with stacktrace for better debugging
+      debugPrint("Error while fetching leave data: $e");
+    } finally {
+      _setLoading(false);
+      notifyListeners();
+    }
+  }
+
+  Future<void> rejectLeave({required Map<String, dynamic> body}) async {
+    _setLoading(true);
+    try {
+      await callApi(
+        url: ApiConfig.rejectLeaveUrl,
+        method: HttpMethod.post,
+        body: body,
+        headers: null,
+      );
+      debugPrint("Error while fetching leave data: $body");
+      debugPrint("Error while fetching leave data: $globalStatusCode");
+
+      if (globalStatusCode == 200) {
+        _setLoading(false);
+        ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
+          const SnackBar(
+            content: Text("Leave rejected successfully!"),
+            backgroundColor: Colors.green,
+          ),
+        );
+        tetRejectReason.clear();
+        getAllListingLeave();
+      } else {
+        // Show error dialog
+        showCommonDialog(
+          showCancel: false,
+          title: "Error",
+          context: navigatorKey.currentContext!,
+          content: errorMessage,
+        );
+        _setLoading(false);
+      }
+    } catch (e) {
+      // Print full error with stacktrace for better debugging
+      debugPrint("Error while fetching leave data: $e");
+    } finally {
+      _setLoading(false);
+      notifyListeners();
+    }
+  }
+  final List<Color> colors = [
+    Colors.orange,
+    Colors.red,
+    Colors.green,
+    Colors.indigo,
+    Colors.blue,
+    Colors.redAccent,
+  ];
+
 }

@@ -72,7 +72,6 @@ class ProfileProvider extends ChangeNotifier {
   Future<void> getUserDetails({required Map<String, dynamic> body}) async {
     _setLoading(true);
 
-    debugPrint('===$body');
     try {
       final response = await callApi(
         url: ApiConfig.getUserDetailsByIdUrl,
@@ -138,7 +137,7 @@ class ProfileProvider extends ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
-      debugPrint('===$e');
+
       _setLoading(false);
     }
   }
@@ -162,8 +161,6 @@ class ProfileProvider extends ChangeNotifier {
       var streamedResponse = await request.send();
       var response = await http.Response.fromStream(streamedResponse);
 
-      debugPrint('Response: ${response.body}');
-      debugPrint('Response: ${response.statusCode}');
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
@@ -304,7 +301,6 @@ class ProfileProvider extends ChangeNotifier {
   Future<void> updateProfileData({required Map<String, dynamic> body}) async {
     _setLoading(true);
 
-    debugPrint('===$body');
     try {
       final response = await callApi(
         url: ApiConfig.updateProfileDataUrl,
@@ -314,7 +310,6 @@ class ProfileProvider extends ChangeNotifier {
       );
 
       if (globalStatusCode == 200) {
-        debugPrint('json.decode(response)${json.decode(response)}');
         UserModel? user = await AppConfigCache.getUserModel();
         Map<String, dynamic> body = {"employee_id": user?.data?.user?.id};
 

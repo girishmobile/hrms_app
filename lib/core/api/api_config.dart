@@ -22,6 +22,7 @@ class ApiConfig {
   static String updateProfileDataUrl = "$apiBASEURL/user/update_employee";
   static String getNotificationUrl = "$apiBASEURL/activity_box/getEmpNotifications";
   static String getAllLeaveUrl = "$apiBASEURL/datatable/getLeaveRequiredData";
+  static String getAllListingLeaveUrl = "$apiBASEURL/dashboard/getLeaveDataDashboard";
   static String getAttendanceUrl = "$apiBASEURL/hikattendance/getUserAttendanceByDate";
   static String updateFCMTokenUrl = "$apiBASEURL/user/update-fcm-token";
   static String calenderUrl = "$apiBASEURL/dashboard/getLeavesSelfDashboard";
@@ -37,6 +38,8 @@ class ApiConfig {
   static String kpiDetailsUrl = "$apiBASEURL/kra-kpi/month-details";
   static String getUserDetailsBYIDUrl = "$apiBASEURL/user/getEmpDetailsById";
   static String getUserImpressionsUrl = "$apiBASEURL/impressions/update-profile-view";
+  static String approvedLeaveUrl = "$apiBASEURL/leave_application/update_accept_status";
+  static String rejectLeaveUrl = "$apiBASEURL/leave_application/update_reject_status";
 
 
   //==========================================================Shopify API=================================================================================================================

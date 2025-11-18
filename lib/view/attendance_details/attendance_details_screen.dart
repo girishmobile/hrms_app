@@ -38,8 +38,6 @@ class AttendanceDetailsScreen extends StatelessWidget {
                 children: [
                   CommonInlineRangePicker(
                     onRangeSelected: (range) {
-                      debugPrint('From: ${range.start}');
-                      debugPrint('To: ${range.end}');
                     },
                   ),
                 ],

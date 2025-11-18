@@ -9,6 +9,7 @@ import 'package:hrms/view/holiday/holiday_screen.dart';
 import 'package:hrms/view/hotline/hotline_screen.dart';
 import 'package:hrms/view/hubstaff_log/hub_staff_log_screen.dart';
 import 'package:hrms/view/kpi_details/kpi_details_screen.dart';
+import 'package:hrms/view/leave/leave_listing_screen.dart';
 import 'package:hrms/view/leave_details/leave_details_screen.dart';
 import 'package:hrms/view/my_work/my_work_screen.dart';
 import 'package:hrms/view/notification/notification_screen.dart';
@@ -72,6 +73,8 @@ class RouteGenerate {
         return _buildPageRoute(const MyWorkScreen());
       case RouteName.hotlineScreen:
         return _buildPageRoute(const HotlineScreen());
+      case RouteName.leaveListingScreen:
+        return _buildPageRoute(const LeaveListingScreen());
 
       default:
         return _buildPageRoute(const SplashScreen());

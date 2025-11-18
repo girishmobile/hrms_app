@@ -88,8 +88,7 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
       "search": {"value": widget.title == "All" ? "" : "", "regex": false},
     };
 
-    debugPrint('widget====$body');
-    debugPrint('widget====${widget.title.toString()}');
+
     await profile.getAllLeave(body: body);
   }
 

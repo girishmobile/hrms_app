@@ -63,8 +63,6 @@ class HotlineProvider with ChangeNotifier {
         } else {
           _hotlineCount = [];
         }
-
-        debugPrint('======$decoded');
       } else {}
     } catch (e) {
       debugPrint('Error: $e');
@@ -88,12 +86,11 @@ class HotlineProvider with ChangeNotifier {
       );
 
       if (globalStatusCode == 200) {
-        final decoded = json.decode(response);
 
         _departmentModel = DepartmentModel.fromJson(json.decode(response));
         setDepartments(departmentModel?.data ?? []);
         _setLoading(false);
-        debugPrint('======$decoded');
+
       } else {
         _setLoading(false);
       }
@@ -141,12 +138,10 @@ class HotlineProvider with ChangeNotifier {
       );
 
       if (globalStatusCode == 200) {
-        final decoded = json.decode(response);
 
         _designationModel = DesignationModel.fromJson(json.decode(response));
         setDesignationData(_designationModel?.data ?? []);
         _setLoading(false);
-        debugPrint('======$decoded');
       } else {
         _setLoading(false);
       }
@@ -211,11 +206,10 @@ class HotlineProvider with ChangeNotifier {
       );
 
       if (globalStatusCode == 200) {
-        final decoded = json.decode(response);
 
         _hotlineListModel = HotlineListModel.fromJson(json.decode(response));
         _setLoading(false);
-        debugPrint('======$decoded');
+
       } else {
         _setLoading(false);
       }

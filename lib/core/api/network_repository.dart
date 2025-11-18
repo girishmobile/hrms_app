@@ -26,7 +26,6 @@ Future callApi({
   try {
     final uri = Uri.parse(url).replace(queryParameters: queryParams);
 
-    debugPrint('====R{$url');
     final requestHeaders = headers ?? await ApiConfig.getCommonHeaders();
 
     late http.Response response;
@@ -77,7 +76,7 @@ Future callApi({
 
     return {'status': false, 'message': errorMessage};
   } catch (e) {
-    debugPrint('====R{$e');
+
     errorMessage = "Something went wrong. Please try again.";
     return {'status': false, 'message': errorMessage};
   }
@@ -99,7 +98,6 @@ Future<String> getResponse(Response response) async {
       parsedJson['data']?['message']?.toString() == 'Token Expired') {
     errorMessage =
         parsedJson['data']?['message'] ?? 'Session expired, please login again';
-    debugPrint('Error: $errorMessage');
 
     if (!_isRedirectingToLogin) {
       _isRedirectingToLogin = true;
