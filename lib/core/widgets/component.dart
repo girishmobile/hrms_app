@@ -466,9 +466,11 @@ Future<bool?> showCommonDialog({
   String confirmText = 'OK',
   bool? barrierDismissible,
   String cancelText = 'Cancel',
+
   VoidCallback? onConfirm,
   VoidCallback? onCancel,
-  void Function()? onPressed,
+  VoidCallback? onPressed,
+
   List<Widget>? actions,
   Widget? contentView,
   bool showCancel = true,
@@ -512,12 +514,21 @@ Future<bool?> showCommonDialog({
                 ),
               CupertinoDialogAction(
                 isDefaultAction: true,
-                onPressed:
-                    onPressed ??
-                    () {
-                      onConfirm?.call();
-                      Navigator.of(context).pop(true); // return true
-                    },
+                // priority = onOk → onConfirm
+                onPressed: () {
+                  if (onPressed != null) {
+                    Navigator.pop(context);
+                    onPressed();
+                  } else {
+                    onConfirm?.call();
+                    Navigator.pop(context, true);
+                  }
+                },
+                // onPressed ??
+                // () {
+                //   onConfirm?.call();
+                //   Navigator.of(context).pop(true); // return true
+                // },
                 child: commonText(
                   text: confirmText.toUpperCase(),
                   fontWeight: FontWeight.w500,

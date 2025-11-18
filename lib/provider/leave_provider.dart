@@ -33,10 +33,6 @@ class Leave {
 }
 
 class LeaveProvider with ChangeNotifier {
-
-
-
-
   bool _isHalfDay = false;
   double leaveDays = 0; // change from int to double
   String _selectedHalfType = "First Half";
@@ -165,7 +161,6 @@ class LeaveProvider with ChangeNotifier {
         final decoded = json.decode(response);
         _leaveModel = LeaveModel.fromJson(json.decode(response));
 
-        debugPrint('======$decoded');
         _setLoading(false);
       } else {
         showCommonDialog(
@@ -191,7 +186,7 @@ class LeaveProvider with ChangeNotifier {
         body: body,
         headers: null,
       );
-      debugPrint('==globalStatusCode===$globalStatusCode');
+
       if (globalStatusCode == 200) {
         final decoded = json.decode(response);
 
@@ -201,6 +196,9 @@ class LeaveProvider with ChangeNotifier {
             context: navigatorKey.currentContext!,
             content: "Leave applied successfully!",
             showCancel: false,
+            onPressed: () {
+              Navigator.of(navigatorKey.currentContext!).pop(true);
+            },
           );
 
           clearLeaveType();

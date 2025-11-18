@@ -74,47 +74,11 @@ class KpiProvider with ChangeNotifier {
     notifyListeners();
   }
 
-KpiDetailsModel ? _kpiDetailsModel;
+  KpiDetailsModel? _kpiDetailsModel;
 
   KpiDetailsModel? get kpiDetailsModel => _kpiDetailsModel;
 
-/*  Future<void> getKPIDetails({required Map<String, dynamic> queryParams}) async {
-    _setLoading(true);
-    final response = await callApi(
-      url: ApiConfig.kpiDetailsUrl,
-      method: HttpMethod.get,
-
-      queryParams: queryParams,
-      headers: null,
-    );
-
-    if (globalStatusCode == 200) {
-      print('========$response=');
-      final decoded = json.decode(response);
-      _kpiDetailsModel = KpiDetailsModel.fromJson(json.decode(response));
-      print('====${decoded}');
-      // Ensure it's a list
-      *//*  if (decoded is List) {
-          _kpiList = decoded.map((e) => KpiModel.fromJson(e)).toList();
-        } else {
-          _kpiList = [];
-        }*//*
-    } else {
-      showCommonDialog(
-        showCancel: false,
-        title: "Error",
-        context: navigatorKey.currentContext!,
-        content: errorMessage,
-      );
-    }
-    try {
-
-    } catch (e) {
-      _setLoading(false);
-      notifyListeners();
-    }
-  }*/
-  Future<void> getKPIDetails({String ? year,String ?month}) async {
+  Future<void> getKPIDetails({String? year, String? month}) async {
     _setLoading(true);
 
     try {
@@ -126,17 +90,13 @@ KpiDetailsModel ? _kpiDetailsModel;
       );
       final decoded = json.decode(response);
       if (globalStatusCode == 200) {
-
-        if(decoded !=[]){
+        if (decoded != []) {
           _kpiDetailsModel = KpiDetailsModel.fromJson(json.decode(response));
-        }
-        else
-        {
-          _kpiDetailsModel?.data =[];
+        } else {
+          _kpiDetailsModel?.data = [];
         }
         // ✅ Decode only once
         _setLoading(false);
-
       } else {
         _setLoading(false);
         showCommonDialog(
@@ -147,9 +107,8 @@ KpiDetailsModel ? _kpiDetailsModel;
         );
       }
     } catch (e) {
-      _kpiDetailsModel?.data =[];
+      _kpiDetailsModel?.data = [];
       _setLoading(false);
     }
   }
-
 }

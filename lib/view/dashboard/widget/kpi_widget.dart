@@ -8,14 +8,25 @@ import '../../../core/widgets/component.dart';
 import '../../../data/models/kpi/kpi_model.dart';
 import '../../../provider/kpi_provider.dart';
 import '../../leave_details/leave_details_args.dart';
+
 Widget buildMonthCard({
   required KpiModel item,
   required KpiProvider provider,
   required BuildContext context,
 }) {
   const List<String> monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
 
   final int month = item.month ?? 1;
@@ -34,7 +45,6 @@ Widget buildMonthCard({
       );
     },
     child: Container(
-      margin: EdgeInsets.only(bottom: 8),
       decoration: commonBoxDecoration(
         color: color.withValues(alpha: 0.03),
         borderColor: colorBorder,
@@ -68,8 +78,8 @@ Widget buildMonthCard({
               duration: const Duration(seconds: 2),
               style: commonTextStyle(
                 fontSize: 26,
-              color: Colors.black54,
-              //  color: color,
+                color: Colors.black54,
+                //  color: color,
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -79,8 +89,6 @@ Widget buildMonthCard({
     ),
   );
 }
-
-
 
 Color _getMonthColor(int month) {
   switch (month) {
@@ -113,7 +121,6 @@ Color _getMonthColor(int month) {
   }
 }
 
-
 void showYearPopover({
   required BuildContext context,
   required KpiProvider provider,
@@ -121,9 +128,9 @@ void showYearPopover({
 }) async {
   // Get button position
   final RenderBox button =
-  buttonKey.currentContext!.findRenderObject() as RenderBox;
+      buttonKey.currentContext!.findRenderObject() as RenderBox;
   final RenderBox overlay =
-  Overlay.of(context).context.findRenderObject() as RenderBox;
+      Overlay.of(context).context.findRenderObject() as RenderBox;
 
   final Offset buttonPosition = button.localToGlobal(
     Offset.zero,
@@ -157,4 +164,3 @@ void showYearPopover({
     provider.setYear(selected); // ✅ Update Provider
   }
 }
-

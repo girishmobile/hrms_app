@@ -34,7 +34,7 @@ class _MyKpiPageState extends State<MyKpiPage> {
     if (provider.selectedYear.isEmpty) {
       provider.selectedYear = currentYear;
     }
-    await provider.getKPIList(date:  provider.selectedYear);
+    await provider.getKPIList(date: provider.selectedYear);
   }
 
   @override
@@ -100,16 +100,17 @@ class _MyKpiPageState extends State<MyKpiPage> {
                 ),
                 Expanded(
                   child: GridView.builder(
-                    padding: EdgeInsets.symmetric(horizontal: 16,vertical: 0),
-                   // padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    // padding: const EdgeInsets.all(16),
                     shrinkWrap: true,
                     itemCount: provider.kpiList.length,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
-                      childAspectRatio: 1.2,
-                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: 1.2,
+                        ),
                     itemBuilder: (context, index) {
                       final item = provider.kpiList[index];
                       return buildMonthCard(
@@ -122,7 +123,7 @@ class _MyKpiPageState extends State<MyKpiPage> {
                 ),
               ],
             ),
-            provider.isLoading?showLoaderList():SizedBox.shrink()
+            provider.isLoading ? showLoaderList() : SizedBox.shrink(),
           ],
         );
       },

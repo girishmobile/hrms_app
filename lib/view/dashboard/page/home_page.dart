@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:hrms/components/components.dart';
 import 'package:hrms/core/constants/color_utils.dart';
 import 'package:hrms/core/constants/image_utils.dart';
 import 'package:hrms/core/routes/app_routes.dart';
@@ -36,7 +37,6 @@ class _HomePageState extends State<HomePage> {
       provider.getLeaveCountData(),
       provider.updateFCMToken(),
     ]);
-
   }
 
   @override
@@ -130,7 +130,6 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(height: 10),
                   GridView.builder(
                     shrinkWrap: true,
-
                     physics: const BouncingScrollPhysics(),
                     padding: const EdgeInsets.only(
                       left: 0,
@@ -142,32 +141,36 @@ class _HomePageState extends State<HomePage> {
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2, // 2 columns
-                          crossAxisSpacing: 8,
-                          mainAxisSpacing: 8,
-                          childAspectRatio: 1.3,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: 1.2,
                         ),
                     itemBuilder: (context, index) {
                       if (index == provider.leaveCountData.length) {
                         return GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(
+                          onTap: () async {
+                            final result = await Navigator.pushNamed(
                               context,
                               RouteName
                                   .addLeaveScreen, // define this route in app_routes.dart
                             );
+                            // If add leave screen returned success → refresh page
+                            if (result == true) {
+                              provider.getLeaveCountData();
+                            }
                           },
                           child: Container(
                             decoration: commonBoxDecoration(
                               borderRadius: 8,
                               borderColor: colorBorder,
-                              color: Colors.blueAccent.withValues(alpha: 0.06),
+                              color: Colors.indigo.withValues(alpha: 0.06),
                             ),
                             child: Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   commonAssetImage(
-                                    color: Colors.blueAccent,
+                                    color: Colors.indigo,
                                     icAdd,
                                     height: 30,
                                     width: 30,
@@ -180,7 +183,7 @@ class _HomePageState extends State<HomePage> {
                                   SizedBox(height: 8),
                                   commonText(
                                     text: "Apply Leave",
-                                    color: Colors.blueAccent,
+                                    color: Colors.indigo,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 14,
                                   ),
@@ -192,9 +195,7 @@ class _HomePageState extends State<HomePage> {
                       }
 
                       final item = provider.leaveCountData[index];
-                      final color =
-                          provider.colors[index %
-                              provider.colors.length]; // pick color cyclically
+                      final color = getStatusColor(item.title.toString());
                       return buildItemView(
                         item: item,
                         color: color,

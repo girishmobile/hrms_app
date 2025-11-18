@@ -23,27 +23,26 @@ class HotlineProvider with ChangeNotifier {
   List<HotlineCountModel> _hotlineCount = [];
 
   List<HotlineCountModel> get hotlineCount => _hotlineCount;
-  int ? _selectedHotlineIndex=0;
-
+  int? _selectedHotlineIndex = 0;
 
   int? get selectedHotlineIndex => _selectedHotlineIndex;
 
-  void selectHotline(int index, ) {
+  void selectHotline(int index) {
     _selectedHotlineIndex = index;
 
     notifyListeners();
   }
 
-  String ? _title="online";
-
+  String? _title = "online";
 
   String? get title => _title;
 
-  void setHeaderTitle(String title, ) {
+  void setHeaderTitle(String title) {
     _title = title;
 
     notifyListeners();
   }
+
   Future<void> getLeaveCountData() async {
     _setLoading(true);
     try {
@@ -63,8 +62,6 @@ class HotlineProvider with ChangeNotifier {
         } else {
           _hotlineCount = [];
         }
-
-        debugPrint('======$decoded');
       } else {}
     } catch (e) {
       debugPrint('Error: $e');
@@ -93,7 +90,6 @@ class HotlineProvider with ChangeNotifier {
         _departmentModel = DepartmentModel.fromJson(json.decode(response));
         setDepartments(departmentModel?.data ?? []);
         _setLoading(false);
-        debugPrint('======$decoded');
       } else {
         _setLoading(false);
       }
@@ -121,8 +117,8 @@ class HotlineProvider with ChangeNotifier {
   /// Select a department
   void selectDepartment(Data department) {
     _selectedDepartment = department;
-    if(_selectedDepartment!=null){
-      getAllHotline( desId: _selectedDepartment?.id??0);
+    if (_selectedDepartment != null) {
+      getAllHotline(desId: _selectedDepartment?.id ?? 0);
     }
     notifyListeners();
   }
@@ -146,7 +142,6 @@ class HotlineProvider with ChangeNotifier {
         _designationModel = DesignationModel.fromJson(json.decode(response));
         setDesignationData(_designationModel?.data ?? []);
         _setLoading(false);
-        debugPrint('======$decoded');
       } else {
         _setLoading(false);
       }
@@ -175,8 +170,8 @@ class HotlineProvider with ChangeNotifier {
   /// Select a department
   void selectDesignationData(DesignationData designationData) {
     _selectDesignation = designationData;
-    if(_selectDesignation!=null){
-      getAllHotline( desId: _selectDesignation?.id??0);
+    if (_selectDesignation != null) {
+      getAllHotline(desId: _selectDesignation?.id ?? 0);
     }
 
     notifyListeners();
@@ -188,17 +183,17 @@ class HotlineProvider with ChangeNotifier {
 
   Future<void> getAllHotline({
     String? search,
-    int ? depId,
-    String ? status,
+    int? depId,
+    String? status,
     int? desId,
   }) async {
     final Map<String, dynamic> body = {
-      "status":status?.isEmpty==true ?"":status,
+      "status": status?.isEmpty == true ? "" : status,
       "start": 1,
-        "length": 500,
-      "search": search?.isEmpty==true ?"":search,
-      "dep_id":  depId ?? "",
-      "des_id": desId?? ""
+      "length": 500,
+      "search": search?.isEmpty == true ? "" : search,
+      "dep_id": depId ?? "",
+      "des_id": desId ?? "",
     };
 
     _setLoading(true);
@@ -215,7 +210,6 @@ class HotlineProvider with ChangeNotifier {
 
         _hotlineListModel = HotlineListModel.fromJson(json.decode(response));
         _setLoading(false);
-        debugPrint('======$decoded');
       } else {
         _setLoading(false);
       }

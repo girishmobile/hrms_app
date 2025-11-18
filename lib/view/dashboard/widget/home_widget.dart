@@ -20,12 +20,12 @@ Widget buildItemView({
 }) {
   return commonInkWell(
     onTap: () {
-      provider.setSelectedLeaveType(item.title );
+      provider.setSelectedLeaveType(item.title);
       Navigator.pushNamed(
         context,
 
         RouteName.leaveDetailsScreen, // define this route in app_routes.dart
-        arguments: LeaveDetailsArgs(title: item.title , color: color),
+        arguments: LeaveDetailsArgs(title: item.title, color: color),
       );
     },
 
@@ -41,27 +41,34 @@ Widget buildItemView({
         children: [
           const SizedBox(height: 10),
           commonText(
-            text: item.title ,
+            text: item.title,
             fontSize: 14,
             fontWeight: FontWeight.w500,
             color: colorProduct,
           ),
-          item.title.toString().toLowerCase().contains('apply')
-              ? SizedBox()
-              : const SizedBox(height: 6),
-          item.title.toString().toLowerCase().contains('apply')
-              ? SizedBox()
-              : AnimatedCounter(
-                  leftText: '',
-                  rightText: '',
-                  endValue: item.count ,
-                  duration: Duration(seconds: 2),
-                  style: commonTextStyle(
-                    fontSize: 26,
-                    color: color,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+          const SizedBox(height: 6),
+          commonText(
+            text: "${item.count}",
+            fontSize: 24,
+            color: color,
+            fontWeight: FontWeight.w600,
+          ),
+          // item.title.toString().toLowerCase().contains('apply')
+          //     ? SizedBox()
+          //     : const SizedBox(height: 6),
+          // item.title.toString().toLowerCase().contains('apply')
+          //     ? SizedBox()
+          //     : AnimatedCounter(
+          //         leftText: '',
+          //         rightText: '',
+          //         endValue: item.count,
+          //         duration: Duration(seconds: 2),
+          //         style: commonTextStyle(
+          //           fontSize: 26,
+          //           color: color,
+          //           fontWeight: FontWeight.w700,
+          //         ),
+          //       ),
         ],
       ),
     ),
@@ -201,7 +208,7 @@ Widget buildBirthdayItemView({
       onTap: () {},
       child: Container(
         padding: EdgeInsets.symmetric(
-          horizontal: 5,
+          horizontal: 0,
           vertical: verticalPadding ?? 0,
         ),
 
@@ -283,6 +290,11 @@ Widget commonTopView({
   String? desc,
   String? leftText,
 }) {
+  final String left = (leftText == null || leftText.trim().isEmpty)
+      ? '0'
+      : leftText;
+  final String right = desc ?? '';
+
   return Expanded(
     child: Column(
       spacing: 5,
@@ -294,16 +306,13 @@ Widget commonTopView({
           fontSize: 14,
           fontWeight: FontWeight.w700,
         ),
+
         AnimatedCounter(
           leftText: leftText ?? '',
           rightText: ' $desc',
           endValue: value ?? 0,
           duration: Duration(seconds: 2),
-          style: commonTextStyle(
-            fontSize: 12,
-            color: colorProduct,
-            fontWeight: FontWeight.w500,
-          ),
+          style: commonTextStyle(),
         ),
       ],
     ),

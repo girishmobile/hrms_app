@@ -29,7 +29,7 @@ class DashboardProvider with ChangeNotifier {
 
   int get currentIndex => _currentIndex;
 
-  String? _appbarTitle=home;
+  String? _appbarTitle = home;
 
   String? get appbarTitle => _appbarTitle;
 
@@ -49,10 +49,6 @@ class DashboardProvider with ChangeNotifier {
     notifyListeners();
   }
 
-
-
-
-
   final List<Color> colors = [
     Colors.orange,
     Colors.red,
@@ -62,13 +58,7 @@ class DashboardProvider with ChangeNotifier {
     Colors.redAccent,
   ];
 
-
-
-
-  final List<Map<String, dynamic>> allAttendanceDetails = [
-
-  ];
-
+  final List<Map<String, dynamic>> allAttendanceDetails = [];
 
   Color getBirthdayBgColor(DateTime date) {
     switch (date.month) {
@@ -90,8 +80,6 @@ class DashboardProvider with ChangeNotifier {
         return const Color(0xFFE8EAF6);
       case 9:
         return const Color(0xFFE0F2F1);
-
-
 
       case 10:
         return const Color(0xFFFFFDE7);
@@ -118,8 +106,6 @@ class DashboardProvider with ChangeNotifier {
         return const Color(0xFFE0E0E0); // Light grey fallback
     }
   }
-
-
 
   String _selectedYear = "2025";
   String get selectedYear => _selectedYear;
@@ -154,10 +140,9 @@ class DashboardProvider with ChangeNotifier {
       );
 
       if (globalStatusCode == 200) {
-        final decoded = json.decode(response);
+        // final decoded = json.decode(response);
         _birthdayModel = HolidayBirthdayModel.fromJson(json.decode(response));
 
-        debugPrint('======$decoded');
         _setLoading(false);
       }
       _setLoading(false);
@@ -179,16 +164,14 @@ class DashboardProvider with ChangeNotifier {
 
         headers: null,
       );
-      debugPrint('======$globalStatusCode');
+
       if (globalStatusCode == 200) {
         _currentAttendanceModel = CurrentAttendanceModel.fromJson(
           json.decode(response),
         );
 
         _setLoading(false);
-      } else {
-
-      }
+      } else {}
       _setLoading(false);
       notifyListeners();
     } catch (e) {
@@ -221,7 +204,6 @@ class DashboardProvider with ChangeNotifier {
           _notificationList = [];
         }
 
-        debugPrint('======$decoded');
         _setLoading(false);
       } else {
         showCommonDialog(
@@ -260,11 +242,7 @@ class DashboardProvider with ChangeNotifier {
         } else {
           _leaveCountData = [];
         }
-
-        debugPrint('======$decoded');
-      } else {
-
-      }
+      } else {}
     } catch (e) {
       debugPrint('Error: $e');
     } finally {
@@ -274,7 +252,7 @@ class DashboardProvider with ChangeNotifier {
   }
 
   void printFcmToken() async {
-   await FirebaseMessaging.instance.getToken();
+    await FirebaseMessaging.instance.getToken();
   }
 
   Future<void> updateFCMToken() async {
@@ -302,11 +280,8 @@ class DashboardProvider with ChangeNotifier {
       if (globalStatusCode == 200) {
         final decoded = json.decode(response);
 
-        debugPrint('======$decoded');
         _setLoading(false);
-      } else {
-
-      }
+      } else {}
       _setLoading(false);
       notifyListeners();
     } catch (e) {
@@ -317,10 +292,7 @@ class DashboardProvider with ChangeNotifier {
   Future<void> deleteNotification({required int id}) async {
     _setLoading(true);
     try {
-
-      Map<String, dynamic> body ={
-        "id":id
-      };
+      Map<String, dynamic> body = {"id": id};
       final response = await callApi(
         url: ApiConfig.deleteNotificationUrl,
         method: HttpMethod.post,
@@ -332,20 +304,18 @@ class DashboardProvider with ChangeNotifier {
       if (globalStatusCode == 200) {
         final decoded = json.decode(response);
 
-        debugPrint('======$decoded');
         _setLoading(false);
-      } else {
-
-      }
+      } else {}
       _setLoading(false);
       notifyListeners();
     } catch (e) {
       _setLoading(false);
     }
   }
-  HubStaffModel ?_hubStaffModel;
 
-  HubStaffModel?  get hubStaffModel => _hubStaffModel;
+  HubStaffModel? _hubStaffModel;
+
+  HubStaffModel? get hubStaffModel => _hubStaffModel;
   Future<void> getHubStaffLog() async {
     _setLoading(true);
     try {
@@ -356,18 +326,9 @@ class DashboardProvider with ChangeNotifier {
       );
 
       if (globalStatusCode == 200) {
-        final decoded = json.decode(response);
-
-
-        _hubStaffModel = HubStaffModel.fromJson(
-          json.decode(response),
-        );
-
+        _hubStaffModel = HubStaffModel.fromJson(json.decode(response));
         _setLoading(false);
-        debugPrint('=ddsdds=====$decoded');
-      } else {
-
-      }
+      } else {}
     } catch (e) {
       debugPrint('Error: $e');
     } finally {
@@ -376,16 +337,13 @@ class DashboardProvider with ChangeNotifier {
     }
   }
 
-  MyWorkModel ?_myWorkModel;
+  MyWorkModel? _myWorkModel;
 
-  MyWorkModel?  get myWorkModel => _myWorkModel;
+  MyWorkModel? get myWorkModel => _myWorkModel;
   Future<void> getMYHours({required int id}) async {
     _setLoading(true);
     try {
-
-      Map<String, dynamic> body ={
-        "id":id
-      };
+      Map<String, dynamic> body = {"id": id};
       final response = await callApi(
         url: ApiConfig.getMyHoursURL,
         method: HttpMethod.post,
@@ -395,14 +353,10 @@ class DashboardProvider with ChangeNotifier {
       );
 
       if (globalStatusCode == 200) {
-
-        _myWorkModel = MyWorkModel.fromJson(  json.decode(response),);
-
+        _myWorkModel = MyWorkModel.fromJson(json.decode(response));
 
         _setLoading(false);
-      } else {
-
-      }
+      } else {}
       _setLoading(false);
       notifyListeners();
     } catch (e) {
