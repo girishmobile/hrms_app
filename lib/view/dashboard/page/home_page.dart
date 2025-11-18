@@ -5,7 +5,6 @@ import 'package:hrms/components/components.dart';
 import 'package:hrms/core/constants/color_utils.dart';
 import 'package:hrms/core/constants/image_utils.dart';
 import 'package:hrms/core/routes/app_routes.dart';
-import 'package:hrms/core/widgets/cached_image_widget.dart';
 import 'package:hrms/core/widgets/component.dart';
 import 'package:hrms/main.dart';
 import 'package:hrms/provider/dashboard_provider.dart';
@@ -31,7 +30,8 @@ class _HomePageState extends State<HomePage> {
       init();
     });
   }
-  UserModel? user ;
+
+  UserModel? user;
   Future<void> init() async {
     user = await AppConfigCache.getUserModel();
 
@@ -64,34 +64,41 @@ class _HomePageState extends State<HomePage> {
                 ),
                 physics: const BouncingScrollPhysics(),
                 children: [
+                  user?.data?.user?.role?.name.toString().toLowerCase() == "hr"
+                      ? Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: commonInkWell(
+                                onTap: () {
+                                  navigatorKey.currentState?.pushNamed(
+                                    RouteName.leaveListingScreen,
+                                  );
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.only(
+                                    left: 100,
+                                  ), // optional
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: commonBoxDecoration(
+                                    borderRadius: 4,
+                                    color: colorProduct,
+                                    borderColor: colorProduct,
+                                  ),
+                                  child: commonText(
+                                    text: "View Leave Request",
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
 
-                user?.data?.user?.role?.name.toString().toLowerCase()=="hr" ?Column(
-                   children: [
-                     Align(
-                       alignment: Alignment.topRight,
-                       child: commonInkWell(
-                         onTap: (){
-
-                           navigatorKey.currentState?.pushNamed(RouteName.leaveListingScreen);
-                         },
-                         child: Container(
-                           margin: const EdgeInsets.only(left: 100), // optional
-                           padding: const EdgeInsets.all(8),
-                           decoration: commonBoxDecoration(
-                               color: colorSale.withValues(alpha:  0.05),
-                               borderColor: colorSale),
-                           child: commonText(
-                             text: "View Leave Request",
-                             fontWeight: FontWeight.w500,
-                             fontSize: 12,
-                           ),
-                         ),
-                       ),
-                     ),
-
-                     const SizedBox(height: 10),
-                   ],
-                 ):SizedBox.shrink(),
+                            const SizedBox(height: 10),
+                          ],
+                        )
+                      : SizedBox.shrink(),
                   commonHomeRowView(
                     title: "Record Your Attendance",
                     isHideSeeMore: true,

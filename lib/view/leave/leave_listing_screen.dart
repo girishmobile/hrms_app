@@ -17,8 +17,6 @@ class LeaveListingScreen extends StatefulWidget {
 }
 
 class _LeaveListingScreenState extends State<LeaveListingScreen> {
-
-
   @override
   void initState() {
     super.initState();
@@ -26,6 +24,7 @@ class _LeaveListingScreenState extends State<LeaveListingScreen> {
       await init();
     });
   }
+
   Future<void> init() async {
     final provider = Provider.of<LeaveProvider>(context, listen: false);
 
@@ -42,7 +41,7 @@ class _LeaveListingScreenState extends State<LeaveListingScreen> {
         centerTitle: true,
       ),
       body: commonRefreshIndicator(
-        onRefresh: ()async{
+        onRefresh: () async {
           init();
         },
         child: Consumer<LeaveProvider>(
@@ -80,12 +79,13 @@ class _LeaveListingScreenState extends State<LeaveListingScreen> {
                   padding: const EdgeInsets.all(12),
                   child: GridView.builder(
                     itemCount: items.length,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, // 2 columns
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
-                      childAspectRatio: 1.3,
-                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2, // 2 columns
+                          crossAxisSpacing: 8,
+                          mainAxisSpacing: 8,
+                          childAspectRatio: 1.3,
+                        ),
                     itemBuilder: (context, index) {
                       Color borderColor =
                           provider.colors[index % provider.colors.length];
@@ -212,11 +212,11 @@ class LeavesListScreen extends StatelessWidget {
 
         if (startDate == endDate) {
           // Same Date
-          formattedDate = formatDate(startDate, format: "dd MMM");
+          formattedDate = formatDate(startDate, format: "dd MMM yyyy");
         } else {
           // Date Range
           formattedDate =
-              '${formatDate(startDate, format: "dd MMM")} to ${formatDate(endDate, format: "dd MMM")}';
+              '${formatDate(startDate, format: "dd MMM yyyy")} to ${formatDate(endDate, format: "dd MMM yyyy")}';
         }
 
         return Container(
@@ -280,9 +280,8 @@ class LeavesListScreen extends StatelessWidget {
                   ),
                   leading: CachedImageWidget(
                     width: 45,
-
-                    borderRadius: 15,
                     height: 45,
+                    borderRadius: 22.5,
                     imageUrl: item["profile_image"],
                   ),
                 ),
@@ -360,11 +359,14 @@ class LeavesListScreen extends StatelessWidget {
                                 if (user?.data?.user?.id != item['emp_id']) {
                                   showCommonDialog(
                                     onPressed: () async {
-
-                                      if(provider.tetRejectReason.text.isNotEmpty){
+                                      if (provider
+                                          .tetRejectReason
+                                          .text
+                                          .isNotEmpty) {
                                         Map<String, dynamic> body = {
                                           "id": leave["id"],
-                                          "reject_reason": provider.tetRejectReason.text,
+                                          "reject_reason":
+                                              provider.tetRejectReason.text,
                                         };
 
                                         Navigator.of(
@@ -374,14 +376,15 @@ class LeavesListScreen extends StatelessWidget {
                                           context,
                                         ).pop(); // close dialog
                                         await provider.rejectLeave(body: body);
+                                      } else {
+                                        showCommonDialog(
+                                          showCancel: false,
+                                          cancelText: "Close",
+                                          title: "Error",
+                                          context: context,
+                                          content: "Please enter valid reason ",
+                                        );
                                       }
-                                else
-                                  {
-                                    showCommonDialog(
-                                        showCancel: false,
-                                        cancelText: "Close",
-                                        title: "Error", context: context,content: "Please enter valid reason ");
-                                  }
                                     },
 
                                     title: "Reject Leave",
@@ -398,7 +401,8 @@ class LeavesListScreen extends StatelessWidget {
                                             textAlign: TextAlign.center,
                                           ),
                                           commonTextField(
-                                            controller: provider.tetRejectReason,
+                                            controller:
+                                                provider.tetRejectReason,
                                             hintText: "Enter reject reason",
                                           ),
                                         ],
@@ -407,19 +411,17 @@ class LeavesListScreen extends StatelessWidget {
                                     confirmText: "Yes",
                                     cancelText: "No",
                                   );
+                                } else {
+                                  showCommonDialog(
+                                    title: "Action Not Allowed",
+                                    context: context,
+                                    showCancel: false,
+                                    content:
+                                        "You can't decline your own leave.",
+                                    confirmText: "Close",
+                                    cancelText: "No",
+                                  );
                                 }
-                                else
-                                  {
-                                    showCommonDialog(
-                                      title: "Action Not Allowed",
-                                      context: context,
-                                      showCancel: false,
-                                      content:
-                                      "You can't decline your own leave.",
-                                      confirmText: "Close",
-                                      cancelText: "No",
-                                    );
-                                  }
                               },
                             ),
                           ],

@@ -88,7 +88,6 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
       "search": {"value": widget.title == "All" ? "" : "", "regex": false},
     };
 
-
     await profile.getAllLeave(body: body);
   }
 
@@ -110,7 +109,258 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
               children: [
                 provider.allLeaveModel?.data?.isEmpty == true
                     ? Center(child: Text("No ${widget.title ?? ''} available"))
-                    : ListView.builder(
+                    : listOfLeaveType(provider),
+
+                provider.isLoading ? showLoaderList() : SizedBox.shrink(),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget listOfLeaveType(LeaveProvider provider) {
+    final list = provider.allLeaveModel?.data;
+    // If null or empty → return empty view
+    if (list == null || list.isEmpty) {
+      return const Center(child: Text("No data available"));
+    }
+    return ListView.separated(
+      padding: const EdgeInsets.all(16),
+      itemBuilder: (context, index) {
+        final data = list[index];
+
+        //  data?.leaveDate?.date ??
+        //  DateTime.now().toString(),
+        return Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            border: Border.all(color: widget.color ?? colorBorder),
+            borderRadius: BorderRadius.circular(4),
+            color: widget.color?.withValues(alpha: 0.05) ?? colorBorder,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            spacing: 8,
+            children: [
+              Row(
+                spacing: 8,
+                children: [
+                  Text(
+                    "Leave Type:",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                  ),
+
+                  Text(
+                    data.halfDay == true
+                        ? '${data.leaveType?.leavetype} - ${data.halfDayType}'
+                        : '${data.leaveType?.leavetype}',
+                  ),
+                ],
+              ),
+              Row(
+                spacing: 8,
+                children: [
+                  Text(
+                    "Reason:",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                  ),
+                  Text(data.reason ?? ''),
+                ],
+              ),
+              Row(
+                spacing: 8,
+                children: [
+                  Text(
+                    "Days:",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                  ),
+                  Text("${data.leaveCount} Days"),
+                ],
+              ),
+              Row(
+                spacing: 8,
+                children: [
+                  Text(
+                    "Status:",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                  ),
+                  Text(data.status ?? ''),
+                  SizedBox(width: 16),
+                  if (data.status?.toLowerCase() == "pending") ...[
+                    Expanded(
+                      child: Row(
+                        spacing: 16,
+
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Expanded(
+                            child: commonInkWell(
+                              onTap: () {
+                                navigatorKey.currentState?.push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        AddLeaveScreen(data: data),
+                                  ),
+                                );
+                              },
+                              child: commonText(
+                                text: "Edit Leave",
+                                fontSize: 14,
+                                color: widget.color ?? colorLogo,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: commonInkWell(
+                              onTap: () async {
+                                showCommonDialog(
+                                  title: "Delete",
+                                  context: context,
+                                  content:
+                                      "Are you sure want to delete this leave?",
+                                  confirmText: "Yes",
+                                  cancelText: "No",
+                                  onPressed: () async {
+                                    Navigator.of(
+                                      context,
+                                    ).pop(); // 🔹 Pehle dialog band karo
+
+                                    final Map<String, dynamic> body = {
+                                      "id": data.id ?? 0,
+                                    };
+
+                                    await provider.deleteLeave(body: body);
+
+                                    init();
+                                  },
+                                );
+                              },
+                              child: commonText(
+                                text: "Delete",
+                                fontSize: 14,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+
+              Container(
+                height: 36,
+                alignment: Alignment.center,
+                color: widget.color?.withValues(alpha: 0.9),
+                width: double.infinity,
+                child: Text(
+                  comrateStartEndate(
+                    data.leaveDate?.date,
+                    data.leaveEndDate?.date,
+                  ),
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+      separatorBuilder: (context, index) => const SizedBox(height: 8),
+      itemCount: list.length,
+    );
+  }
+
+  Widget fromToView({String? from, String? to, required Color color}) {
+    final formattedFrom = formatDate(from);
+    final formattedTo = formatDate(to);
+    return Container(
+      decoration: commonBoxDecoration(
+        // borderColor: color,
+        color: color.withValues(alpha: 0.04),
+        borderRadius: 8,
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      child: Column(
+        spacing: 3,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          commonText(
+            text: formattedFrom,
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: color,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 4),
+          commonText(
+            text: "To",
+            color: color,
+            textAlign: TextAlign.center,
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+          ),
+          const SizedBox(height: 4),
+          commonText(
+            text: formattedTo,
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: color,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget commonItemView({String? title, String? value, Widget? customView}) {
+    return Row(
+      children: [
+        Expanded(
+          child: commonText(
+            text: "$title :",
+            fontWeight: FontWeight.w500,
+            fontSize: 13,
+          ),
+        ),
+        Expanded(
+          child:
+              customView ??
+              commonText(
+                textAlign: TextAlign.right,
+                text: value ?? '',
+                fontWeight: FontWeight.w400,
+                fontSize: 13,
+              ),
+        ),
+      ],
+    );
+  }
+}
+
+String comrateStartEndate(dynamic startDate, dynamic endDate) {
+  String formattedDate;
+
+  if (startDate == endDate) {
+    // Same Date
+    formattedDate = formatDate(startDate, format: "dd MMM yyyy");
+  } else {
+    // Date Range
+    formattedDate =
+        '${formatDate(startDate, format: "dd MMM yyyy")} To ${formatDate(endDate, format: "dd MMM yyyy")}';
+  }
+  return formattedDate;
+}
+
+/**
+ * ListView.builder(
                         padding: const EdgeInsets.all(16),
                         itemCount: provider.allLeaveModel?.data?.length ?? 0,
                         itemBuilder: (context, index) {
@@ -357,79 +607,4 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
                           );
                         },
                       ),
-
-                provider.isLoading ? showLoaderList() : SizedBox.shrink(),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget fromToView({String? from, String? to, required Color color}) {
-    final formattedFrom = formatDate(from);
-    final formattedTo = formatDate(to);
-    return Container(
-      decoration: commonBoxDecoration(
-        // borderColor: color,
-        color: color.withValues(alpha: 0.04),
-        borderRadius: 8,
-      ),
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      child: Column(
-        spacing: 3,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          commonText(
-            text: formattedFrom,
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: color,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 4),
-          commonText(
-            text: "To",
-            color: color,
-            textAlign: TextAlign.center,
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-          ),
-          const SizedBox(height: 4),
-          commonText(
-            text: formattedTo,
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: color,
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget commonItemView({String? title, String? value, Widget? customView}) {
-    return Row(
-      children: [
-        Expanded(
-          child: commonText(
-            text: "$title :",
-            fontWeight: FontWeight.w500,
-            fontSize: 13,
-          ),
-        ),
-        Expanded(
-          child:
-              customView ??
-              commonText(
-                textAlign: TextAlign.right,
-                text: value ?? '',
-                fontWeight: FontWeight.w400,
-                fontSize: 13,
-              ),
-        ),
-      ],
-    );
-  }
-}
+ */

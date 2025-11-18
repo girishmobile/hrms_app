@@ -484,7 +484,7 @@ Future<bool?> showCommonDialog({
           text: title,
           textAlign: TextAlign.center,
           fontWeight: FontWeight.w500,
-          fontSize: 16,
+          fontSize: 18,
         ),
         content:
             contentView ??
@@ -493,7 +493,7 @@ Future<bool?> showCommonDialog({
               child: commonText(
                 text: content ?? '',
                 textAlign: TextAlign.center,
-                fontSize: 12,
+                fontSize: 14,
               ),
             ),
         actions:
@@ -524,11 +524,7 @@ Future<bool?> showCommonDialog({
                     Navigator.pop(context, true);
                   }
                 },
-                // onPressed ??
-                // () {
-                //   onConfirm?.call();
-                //   Navigator.of(context).pop(true); // return true
-                // },
+
                 child: commonText(
                   text: confirmText.toUpperCase(),
                   fontWeight: FontWeight.w500,
