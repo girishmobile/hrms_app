@@ -35,6 +35,13 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> checkStatus() async {
     try {
+<<<<<<< HEAD
+=======
+      // Add a small delay to ensure Hive is ready
+      await Future.delayed(const Duration(milliseconds: 300));
+
+      // Try to read cached user; if Hive isn't initialized or box missing this may throw
+>>>>>>> 4b367d4 (testing on leavr)
       UserModel? user;
       user = await AppConfigCache.getUserModel();
 
@@ -69,7 +76,13 @@ class _SplashScreenState extends State<SplashScreen> {
       body: SizedBox(
         width: size.width,
         height: size.height,
+<<<<<<< HEAD
 
+=======
+        /* decoration: commonBoxDecoration(
+          image: DecorationImage(fit: BoxFit.fill, image: AssetImage(icImg1)),
+        ),*/
+>>>>>>> 4b367d4 (testing on leavr)
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
