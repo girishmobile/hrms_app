@@ -51,7 +51,7 @@ class _ProfilePageState extends State<AccountPage> {
               children: [
                 ListView(
                   padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                  physics: const BouncingScrollPhysics(),
+                //  physics: const BouncingScrollPhysics(),
                   children: [
                     const SizedBox(height: 15),
 

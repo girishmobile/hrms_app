@@ -41,90 +41,95 @@ class _MyKpiPageState extends State<MyKpiPage> {
   Widget build(BuildContext context) {
     return Consumer<KpiProvider>(
       builder: (context, provider, child) {
-        return Stack(
-          children: [
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsetsGeometry.symmetric(
-                    horizontal: 16,
-                    vertical: 16,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      commonText(
-                        text: "My KRA KPI",
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: colorProduct,
-                      ),
+        return commonRefreshIndicator(
+          onRefresh: ()async{
+            init();
+          },
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsetsGeometry.symmetric(
+                      horizontal: 16,
+                      vertical: 16,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        commonText(
+                          text: "My KRA KPI",
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: colorProduct,
+                        ),
 
-                      //year drop down
-                      GestureDetector(
-                        key: _buttonKey,
-                        onTap: () => showYearPopover(
-                          context: context,
+                        //year drop down
+                        GestureDetector(
+                          key: _buttonKey,
+                          onTap: () => showYearPopover(
+                            context: context,
+                            provider: provider,
+                            buttonKey: _buttonKey,
+                          ),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: colorProduct.withValues(alpha: 0.05),
+                              border: Border.all(color: colorProduct),
+                            ),
+                            child: Row(
+                              spacing: 4,
+                              children: [
+                                commonText(
+                                  text: provider.selectedYear,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: colorProduct,
+                                ),
+                                const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: colorProduct,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: GridView.builder(
+                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      // padding: const EdgeInsets.all(16),
+                      shrinkWrap: true,
+                      itemCount: provider.kpiList.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                            childAspectRatio: 1.2,
+                          ),
+                      itemBuilder: (context, index) {
+                        final item = provider.kpiList[index];
+                        return buildMonthCard(
+                          item: item,
                           provider: provider,
-                          buttonKey: _buttonKey,
-                        ),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: colorProduct.withValues(alpha: 0.05),
-                            border: Border.all(color: colorProduct),
-                          ),
-                          child: Row(
-                            spacing: 4,
-                            children: [
-                              commonText(
-                                text: provider.selectedYear,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: colorProduct,
-                              ),
-                              const Icon(
-                                Icons.arrow_drop_down,
-                                color: colorProduct,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                          context: context,
+                        );
+                      },
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: GridView.builder(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    // padding: const EdgeInsets.all(16),
-                    shrinkWrap: true,
-                    itemCount: provider.kpiList.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                          childAspectRatio: 1.2,
-                        ),
-                    itemBuilder: (context, index) {
-                      final item = provider.kpiList[index];
-                      return buildMonthCard(
-                        item: item,
-                        provider: provider,
-                        context: context,
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-            provider.isLoading ? showLoaderList() : SizedBox.shrink(),
-          ],
+                ],
+              ),
+              provider.isLoading ? showLoaderList() : SizedBox.shrink(),
+            ],
+          ),
         );
       },
     );
