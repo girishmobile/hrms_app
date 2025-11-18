@@ -29,16 +29,12 @@ Widget buildItemView({
               color: colorProduct,
             ),
             const SizedBox(height: 6),
-            AnimatedCounter(
-              leftText: '',
-              rightText: item['desc'],
-              endValue: item['value'],
-              duration: Duration(seconds: 2),
-              style: commonTextStyle(
-                fontSize: 22,
-                 color: item['color'],
-                fontWeight: FontWeight.w700,
-              ),
+
+            commonText(
+              fontSize: 22,
+              color: item['color'],
+              fontWeight: FontWeight.w600,
+              text: "${item['value']}${item['desc']}",
             ),
           ],
         ),

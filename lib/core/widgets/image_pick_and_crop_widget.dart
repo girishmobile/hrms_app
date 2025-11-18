@@ -12,9 +12,7 @@ import '../constants/color_utils.dart';
 import 'component.dart';
 
 class CommonImagePicker {
-  static Future<String?> pickImage({ required BuildContext context,}
-
-  ) async {
+  static Future<String?> pickImage({required BuildContext context}) async {
     final source = await showDialog<ImageSource>(
       context: context,
       builder: (_) => CupertinoActionSheet(

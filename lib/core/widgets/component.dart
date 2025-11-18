@@ -319,7 +319,7 @@ OutlineInputBorder commonTextFiledBorder({
   Color? borderColor,
 }) {
   return OutlineInputBorder(
-    borderRadius: BorderRadius.circular(borderRadius ?? 15),
+    borderRadius: BorderRadius.circular(borderRadius ?? 12),
     borderSide: BorderSide(
       color: borderColor ?? Colors.grey.withValues(alpha: 0.5),
     ),
@@ -466,9 +466,11 @@ Future<bool?> showCommonDialog({
   String confirmText = 'OK',
   bool? barrierDismissible,
   String cancelText = 'Cancel',
+
   VoidCallback? onConfirm,
   VoidCallback? onCancel,
-  void Function()? onPressed,
+  VoidCallback? onPressed,
+
   List<Widget>? actions,
   Widget? contentView,
   bool showCancel = true,
@@ -512,12 +514,21 @@ Future<bool?> showCommonDialog({
                 ),
               CupertinoDialogAction(
                 isDefaultAction: true,
-                onPressed:
-                    onPressed ??
-                    () {
-                      onConfirm?.call();
-                      Navigator.of(context).pop(true); // return true
-                    },
+                // priority = onOk → onConfirm
+                onPressed: () {
+                  if (onPressed != null) {
+                    Navigator.pop(context);
+                    onPressed();
+                  } else {
+                    onConfirm?.call();
+                    Navigator.pop(context, true);
+                  }
+                },
+                // onPressed ??
+                // () {
+                //   onConfirm?.call();
+                //   Navigator.of(context).pop(true); // return true
+                // },
                 child: commonText(
                   text: confirmText.toUpperCase(),
                   fontWeight: FontWeight.w500,
@@ -637,7 +648,11 @@ Widget commonRefreshIndicator({
   );
 }
 
-Widget commonBoxView({required Widget contentView, required String title,double ?fontSize}) {
+Widget commonBoxView({
+  required Widget contentView,
+  required String title,
+  double? fontSize,
+}) {
   return Container(
     decoration: commonBoxDecoration(
       color: colorProduct.withValues(alpha: 0.01),
@@ -649,7 +664,7 @@ Widget commonBoxView({required Widget contentView, required String title,double 
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Title
-        commonHeadingView(title: title,fontSize: fontSize),
+        commonHeadingView(title: title, fontSize: fontSize),
 
         const Divider(height: 0.5, color: colorBorder),
 
@@ -690,7 +705,7 @@ Widget commonRowLeftRightView({
   );
 }
 
-Widget commonHeadingView({String? title,double ? fontSize}) {
+Widget commonHeadingView({String? title, double? fontSize}) {
   return Padding(
     padding: EdgeInsets.all(12.0),
     child: Row(
@@ -699,7 +714,7 @@ Widget commonHeadingView({String? title,double ? fontSize}) {
           child: commonText(
             color: colorProduct,
             text: title ?? "Product Information",
-            fontSize:fontSize?? 16,
+            fontSize: fontSize ?? 16,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -729,7 +744,7 @@ Widget commonPasswordFieldView({
     obscureText: obscureText,
     keyboardType: TextInputType.visiblePassword,
     validator: validator,
-/*    decoration: InputDecoration(
+    /*    decoration: InputDecoration(
       labelText: text,
       prefixIcon: prefixIcon,
       suffixIcon: IconButton(
@@ -753,11 +768,10 @@ void showCommonBottomSheet({
 
   bool isDismissible = true,
 }) {
-
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
-    backgroundColor:  Colors.white,
+    backgroundColor: Colors.white,
     isDismissible: isDismissible,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -775,6 +789,7 @@ void showCommonBottomSheet({
     },
   );
 }
+
 int getMonthNumber(String monthName) {
   Map<String, int> monthMap = {
     'January': 1,

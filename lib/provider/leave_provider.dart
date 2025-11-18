@@ -35,10 +35,6 @@ class Leave {
 }
 
 class LeaveProvider with ChangeNotifier {
-
-
-
-
   bool _isHalfDay = false;
   double leaveDays = 0; // change from int to double
   String _selectedHalfType = "First Half";
@@ -204,6 +200,9 @@ class LeaveProvider with ChangeNotifier {
             context: navigatorKey.currentContext!,
             content: "Leave applied successfully!",
             showCancel: false,
+            onPressed: () {
+              Navigator.of(navigatorKey.currentContext!).pop(true);
+            },
           );
 
           clearLeaveType();

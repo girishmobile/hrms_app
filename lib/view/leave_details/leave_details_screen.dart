@@ -116,12 +116,12 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
                         itemBuilder: (context, index) {
                           final data = provider.allLeaveModel?.data?[index];
                           return Container(
-                            margin: const EdgeInsets.only(bottom: 10),
+                            margin: const EdgeInsets.only(bottom: 12),
                             decoration: BoxDecoration(
                               border: Border.all(
                                 color: widget.color ?? colorBorder,
                               ),
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(8),
                             ),
                             padding: const EdgeInsets.only(
                               left: 0,
@@ -182,6 +182,7 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
                                                 title: "Applied On",
                                                 value: '${data['appliedOn']}',
                                               ),*/
+                                              SizedBox(height: 4),
                                               commonItemView(
                                                 title: "Status",
                                                 customView: Row(

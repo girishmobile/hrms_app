@@ -42,8 +42,10 @@ List<SingleChildWidget> providers = [
   ChangeNotifierProvider<ProfileProvider>(create: (_) => ProfileProvider()),
   ChangeNotifierProvider<CalendarProvider>(create: (_) => CalendarProvider()),
   ChangeNotifierProvider<KpiProvider>(create: (_) => KpiProvider()),
-  ChangeNotifierProvider<AttendanceProvider>(create: (_) => AttendanceProvider(),),
-  ChangeNotifierProvider<HotlineProvider>(create: (_) => HotlineProvider(),),
+  ChangeNotifierProvider<AttendanceProvider>(
+    create: (_) => AttendanceProvider(),
+  ),
+  ChangeNotifierProvider<HotlineProvider>(create: (_) => HotlineProvider()),
 ];
 
 Future<void> _initializeFirebase() async {

@@ -69,69 +69,69 @@ class _ProfilePageState extends State<AccountPage> {
                     ),
                     const SizedBox(height: 15),
 
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 15,
-                        vertical: 0,
-                      ),
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 15),
-                          commonView(
-                            onTap: () {
-                              navigatorKey.currentState?.pushNamed(
-                                RouteName.profileScreen,
-                              );
-                            },
-                            image: icEdit,
-                            bgColor: Colors.blue.shade50, // light blue
-                          ),
-                          const SizedBox(height: 15),
-                          commonView(
-                            title: "Change Password",
-                            onTap: () {
-                              navigatorKey.currentState?.pushNamed(
-                                RouteName.updatePasswordScreen,
-                              );
-                            },
-                            image: icPassword,
-                            bgColor: Colors.pink.shade50,
-                          ),
-                          const SizedBox(height: 15),
-                          commonView(
-                            title: "My Hours",
-                            onTap: () {
-                              navigatorKey.currentState?.pushNamed(
-                                RouteName.myWorkScreen,
-                              );
-                            },
-                            bgColor: Colors.green.shade50,
-                            image: icTime,
-                          ),
-                          const SizedBox(height: 15),
-                          commonView(
-                            title: "Hotline",
-                            onTap: () {
-                              navigatorKey.currentState?.pushNamed(
-                                RouteName.hotlineScreen,
-                              );
-                            },
-                            bgColor: Colors.orange.shade50,
-                            image: icMenuProfile,
-                          ),
-                       /*   const SizedBox(height: 15),
-                          commonView(
-                            title: "Hubstaff Logs ",
-                            onTap: () {
-                              navigatorKey.currentState?.pushNamed(
-                                RouteName.hubStaffLogScreen,
-                              );
-                            },
-                            bgColor: Colors.orange.shade50,
-                            image: icHubStaff,
-                          ),*/
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 0,
+                    ),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 15),
+                        commonView(
+                          onTap: () {
+                            navigatorKey.currentState?.pushNamed(
+                              RouteName.profileScreen,
+                            );
+                          },
+                          image: icEdit,
+                          bgColor: Colors.blue.shade50, // light blue
+                        ),
+                        const SizedBox(height: 15),
+                        commonView(
+                          title: "Change Password",
+                          onTap: () {
+                            navigatorKey.currentState?.pushNamed(
+                              RouteName.updatePasswordScreen,
+                            );
+                          },
+                          image: icPassword,
+                          bgColor: Colors.pink.shade50,
+                        ),
+                        const SizedBox(height: 15),
+                        commonView(
+                          title: "My Hours",
+                          onTap: () {
+                            navigatorKey.currentState?.pushNamed(
+                              RouteName.myWorkScreen,
+                            );
+                          },
+                          bgColor: Colors.green.shade50,
+                          image: icTime,
+                        ),
+                        const SizedBox(height: 15),
+                        commonView(
+                          title: "Hotline",
+                          onTap: () {
+                            navigatorKey.currentState?.pushNamed(
+                              RouteName.hotlineScreen,
+                            );
+                          },
+                          bgColor: Colors.orange.shade50,
+                          image: icMenuProfile,
+                        ),
 
-                          const SizedBox(height: 70),
+                        /*   const SizedBox(height: 15),
+                        commonView(
+                          title: "Hubstaff Logs ",
+                          onTap: () {
+                            navigatorKey.currentState?.pushNamed(
+                              RouteName.hubStaffLogScreen,
+                            );
+                          },
+                          bgColor: Colors.orange.shade50,
+                          image: icHubStaff,
+                        ),*/
+                        const SizedBox(height: 36),
 
                           logoutButton(context),
                         ],
