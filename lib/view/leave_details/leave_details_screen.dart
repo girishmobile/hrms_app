@@ -99,7 +99,7 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
           appBar: commonAppBar(
             context: context,
             centerTitle: true,
-            title: widget.title ?? 'Leaves',
+            title: "${widget.title} LEAVE",
           ),
           body: commonRefreshIndicator(
             onRefresh: () async {
@@ -126,176 +126,155 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
     if (list == null || list.isEmpty) {
       return const Center(child: Text("No data available"));
     }
-    return Column(
-      children: [
-        Text("YOUR ${widget.title}"),
-        Expanded(
-          child: ListView.separated(
-            padding: const EdgeInsets.all(16),
-            itemBuilder: (context, index) {
-              final data = list[index];
+    return ListView.separated(
+      padding: const EdgeInsets.all(16),
+      itemBuilder: (context, index) {
+        final data = list[index];
 
-              //  data?.leaveDate?.date ??
-              //  DateTime.now().toString(),
-              return Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  border: Border.all(color: widget.color ?? colorBorder),
-                  borderRadius: BorderRadius.circular(4),
-                  color: widget.color?.withValues(alpha: 0.05) ?? colorBorder,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  spacing: 8,
-                  children: [
-                    Row(
-                      spacing: 8,
-                      children: [
-                        Text(
-                          "Leave Type:",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
-                          ),
-                        ),
+        //  data?.leaveDate?.date ??
+        //  DateTime.now().toString(),
+        return Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            border: Border.all(color: widget.color ?? colorBorder),
+            borderRadius: BorderRadius.circular(4),
+            color: widget.color?.withValues(alpha: 0.05) ?? colorBorder,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            spacing: 8,
+            children: [
+              Row(
+                spacing: 8,
+                children: [
+                  Text(
+                    "Leave Type:",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                  ),
 
-                        Text(
-                          data.halfDay == true
-                              ? '${data.leaveType?.leavetype} - ${data.halfDayType}'
-                              : '${data.leaveType?.leavetype}',
-                        ),
-                      ],
-                    ),
-                    Row(
-                      spacing: 8,
-                      children: [
-                        Text(
-                          "Reason:",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
-                          ),
-                        ),
-                        Text(data.reason ?? ''),
-                      ],
-                    ),
-                    Row(
-                      spacing: 8,
-                      children: [
-                        Text(
-                          "Days:",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
-                          ),
-                        ),
-                        Text("${data.leaveCount} Days"),
-                      ],
-                    ),
-                    Row(
-                      spacing: 8,
-                      children: [
-                        Text(
-                          "Status:",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
-                          ),
-                        ),
-                        Text(data.status ?? ''),
-                        SizedBox(width: 16),
-                        if (data.status?.toLowerCase() == "pending") ...[
+                  Text(
+                    data.halfDay == true
+                        ? '${data.leaveType?.leavetype} - ${data.halfDayType}'
+                        : '${data.leaveType?.leavetype}',
+                  ),
+                ],
+              ),
+              Row(
+                spacing: 8,
+                children: [
+                  Text(
+                    "Reason:",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                  ),
+                  Text(data.reason ?? ''),
+                ],
+              ),
+              Row(
+                spacing: 8,
+                children: [
+                  Text(
+                    "Days:",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                  ),
+                  Text("${data.leaveCount} Days"),
+                ],
+              ),
+              Row(
+                spacing: 8,
+                children: [
+                  Text(
+                    "Status:",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                  ),
+                  Text(data.status ?? ''),
+                  SizedBox(width: 16),
+                  if (data.status?.toLowerCase() == "pending") ...[
+                    Expanded(
+                      child: Row(
+                        spacing: 16,
+
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
                           Expanded(
-                            child: Row(
-                              spacing: 16,
-
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Expanded(
-                                  child: commonInkWell(
-                                    onTap: () {
-                                      navigatorKey.currentState?.push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              AddLeaveScreen(data: data),
-                                        ),
-                                      );
-                                    },
-                                    child: commonText(
-                                      text: "Edit Leave",
-                                      fontSize: 14,
-                                      color: widget.color ?? colorLogo,
-                                    ),
+                            child: commonInkWell(
+                              onTap: () {
+                                navigatorKey.currentState?.push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        AddLeaveScreen(data: data),
                                   ),
-                                ),
-                                Expanded(
-                                  child: commonInkWell(
-                                    onTap: () async {
-                                      showCommonDialog(
-                                        title: "Delete",
-                                        context: context,
-                                        content:
-                                            "Are you sure want to delete this leave?",
-                                        confirmText: "Yes",
-                                        cancelText: "No",
-                                        onPressed: () async {
-                                          Navigator.of(
-                                            context,
-                                          ).pop(); // 🔹 Pehle dialog band karo
+                                );
+                              },
+                              child: commonText(
+                                text: "Edit Leave",
+                                fontSize: 14,
+                                color: widget.color ?? colorLogo,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: commonInkWell(
+                              onTap: () async {
+                                showCommonDialog(
+                                  title: "Delete",
+                                  context: context,
+                                  content:
+                                      "Are you sure want to delete this leave?",
+                                  confirmText: "Yes",
+                                  cancelText: "No",
+                                  onPressed: () async {
+                                    Navigator.of(
+                                      context,
+                                    ).pop(); // 🔹 Pehle dialog band karo
 
-                                          final Map<String, dynamic> body = {
-                                            "id": data.id ?? 0,
-                                          };
+                                    final Map<String, dynamic> body = {
+                                      "id": data.id ?? 0,
+                                    };
 
-                                          await provider.deleteLeave(
-                                            body: body,
-                                          );
+                                    await provider.deleteLeave(body: body);
 
-                                          init();
-                                        },
-                                      );
-                                    },
-                                    child: commonText(
-                                      text: "Delete",
-                                      fontSize: 14,
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                                    init();
+                                  },
+                                );
+                              },
+                              child: commonText(
+                                text: "Delete",
+                                fontSize: 14,
+                                color: Colors.red,
+                              ),
                             ),
                           ),
                         ],
-                      ],
-                    ),
-
-                    Container(
-                      height: 36,
-                      alignment: Alignment.center,
-                      color: widget.color?.withValues(alpha: 0.9),
-                      width: double.infinity,
-                      child: Text(
-                        comrateStartEndate(
-                          data.leaveDate?.date,
-                          data.leaveEndDate?.date,
-                        ),
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
                       ),
                     ),
                   ],
+                ],
+              ),
+
+              Container(
+                height: 36,
+                alignment: Alignment.center,
+                color: widget.color?.withValues(alpha: 0.9),
+                width: double.infinity,
+                child: Text(
+                  comrateStartEndate(
+                    data.leaveDate?.date,
+                    data.leaveEndDate?.date,
+                  ),
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
                 ),
-              );
-            },
-            separatorBuilder: (context, index) => const SizedBox(height: 8),
-            itemCount: list.length,
+              ),
+            ],
           ),
-        ),
-      ],
+        );
+      },
+      separatorBuilder: (context, index) => const SizedBox(height: 8),
+      itemCount: list.length,
     );
   }
 
