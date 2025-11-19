@@ -29,6 +29,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
   }
   Future<void> init() async {
     final provider = Provider.of<HotlineProvider>(context, listen: false);
+    await provider.resetHotlineData(  );
     await Future.wait([
       provider.getLeaveCountData(),
       provider.getAllDepartment(),
@@ -364,7 +365,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
                                       child: CachedImageWidget(
-                                        borderRadius: 10,
+                                        borderRadius:100,
                                         imageUrl: data?.profileImage,
                                         width: 60,
                                         height: 60,
@@ -402,10 +403,10 @@ class _HotlineScreenState extends State<HotlineScreen> {
                             );
                           },
                         )
-                      : Container(
+                      : SizedBox(
                       width: size.width,
                       height: size.height*0.6,
-                      child: commonErrorView(text: "No data found")),
+                      child: provider.isLoading?SizedBox.shrink():commonErrorView(text: "No data found")),
                 ],
               ),
             ),
@@ -452,11 +453,11 @@ class _HotlineScreenState extends State<HotlineScreen> {
               color: colorProduct,
             ),
             const SizedBox(width: 6),
-            AnimatedCounter(
-              leftText: '',
-              rightText: '',
-              endValue: item.count,
-              duration: Duration(seconds: 2),
+            commonText(
+            /*  leftText: '',
+              rightText: '',*/
+              text: '${item.count}',
+             // duration: Duration(seconds: 2),
               style: commonTextStyle(
                 fontSize: 16,
                 color: color,
@@ -472,7 +473,6 @@ class _HotlineScreenState extends State<HotlineScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Debug helper: print when HotlineScreen becomes visible in the widget tree
-    debugPrint('HotlineScreen didChangeDependencies ✅');
+
   }
 }

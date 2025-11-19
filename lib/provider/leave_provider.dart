@@ -163,7 +163,7 @@ class LeaveProvider with ChangeNotifier {
       );
 
       if (globalStatusCode == 200) {
-
+        print('====response===${json.decode(response)}');
         _leaveModel = LeaveModel.fromJson(json.decode(response));
 
         _setLoading(false);
@@ -283,6 +283,7 @@ class LeaveProvider with ChangeNotifier {
     _selectedLeaveType = type;
     notifyListeners();
   }
+
 
   LeaveResponse? _allLeaveModel;
 

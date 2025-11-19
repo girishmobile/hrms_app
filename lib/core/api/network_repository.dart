@@ -6,8 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:hrms/core/api/api_config.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:provider/provider.dart';
 
 import '../../main.dart';
+import '../../provider/dashboard_provider.dart';
+import '../constants/string_utils.dart';
+import '../hive/app_config_cache.dart';
 import '../routes/app_routes.dart';
 import 'gloable_status_code.dart';
 
@@ -101,9 +105,12 @@ Future<String> getResponse(Response response) async {
 
     if (!_isRedirectingToLogin) {
       _isRedirectingToLogin = true;
-      Future.microtask(() {
+      Future.microtask(() async {
+
         final context = navigatorKey.currentContext;
+
         if (context != null) {
+
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
@@ -115,7 +122,11 @@ Future<String> getResponse(Response response) async {
             ),
           );
         }
+        final dashboardProvider = context?.read<DashboardProvider>();
+        dashboardProvider?.setIndex(2);
+        dashboardProvider?.setAppBarTitle(home);
 
+        await AppConfigCache.clearUserData();
         // ✅ Redirect after short delay
         Future.delayed(const Duration(seconds: 2), () {
           navigatorKey.currentState?.pushNamedAndRemoveUntil(

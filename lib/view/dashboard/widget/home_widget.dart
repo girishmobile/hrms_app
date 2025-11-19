@@ -218,18 +218,22 @@ Widget buildBirthdayItemView({
           borderRadius: 8,
         ),
 
-        child: IntrinsicHeight(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 5),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch, // <-- Important
+          //  crossAxisAlignment: CrossAxisAlignment.stretch, // <-- Important
             spacing: 10,
 
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: CachedImageWidget(
                   imageUrl: item?.profileImage,
-                  width: 120,
+                  borderRadius: 0,
+
+                  width: 60,
                   fit:
                       BoxFit.cover, // <-- Ensures image fills the height nicely
                 ),

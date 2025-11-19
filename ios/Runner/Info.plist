@@ -33,8 +33,7 @@
 	</dict>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need access to your photo library to select pictures.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>We need access to your camera to take pictures.</string>
+	    
 	<key>NSMicrophoneUsageDescription</key>
 	<string>We need access to your microphone for video recording.</string>
 	<key>NSUserNotificationUsageDescription</key>
@@ -65,5 +64,14 @@
 	</array>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
+	<key>NSCameraUsageDescription</key>
+    <string>App ko camera use karne ke liye permission chahiye (profile photo / document capture).</string>
+
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>App ko location chahiye taaki aapki location save ki ja sake (attendance / site verification).</string>
+
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Background location zarurat ho to use karenge (agar required ho toh).</string>
+
 </dict>
 </plist>

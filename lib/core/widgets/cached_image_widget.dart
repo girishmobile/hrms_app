@@ -55,7 +55,7 @@ class CachedImageWidget extends StatelessWidget {
         placeholder: (context, url) =>
             const Center(child: CircularProgressIndicator(strokeWidth: 2)),
         errorWidget: (context, url, error) => ClipRRect(
-          borderRadius: BorderRadius.circular(borderRadius??100),
+          borderRadius: BorderRadius.circular(borderRadius),
           child: Center(
             child: Image.asset(
               errorImage ?? icBoy,

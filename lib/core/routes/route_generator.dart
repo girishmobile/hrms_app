@@ -19,6 +19,7 @@ import 'package:hrms/view/update_password/update_password_screen.dart';
 
 import '../../view/auth/login_screen.dart';
 import '../../view/leave_details/leave_details_args.dart';
+import '../../view/onboarding_screen.dart';
 import 'app_routes.dart';
 
 class RouteGenerate {
@@ -75,6 +76,8 @@ class RouteGenerate {
         return _buildPageRoute(const HotlineScreen());
       case RouteName.leaveListingScreen:
         return _buildPageRoute(const LeaveListingScreen());
+      case RouteName.onboardingScreen:
+        return _buildPageRoute( OnboardingScreen());
 
       default:
         return _buildPageRoute(const SplashScreen());

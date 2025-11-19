@@ -37,7 +37,7 @@ class _LeaveListingScreenState extends State<LeaveListingScreen> {
     var size = MediaQuery.sizeOf(context);
     return commonScaffold(
       appBar: commonAppBar(
-        title: "`Leave Request",
+        title: "Leave Request",
         context: context,
         centerTitle: true,
       ),
@@ -50,7 +50,7 @@ class _LeaveListingScreenState extends State<LeaveListingScreen> {
             final model = provider.leaveDashboardModel;
 
             if (model == null) {
-              return const Center(child: Text("No data found"));
+              return provider.isLoading?showLoaderList(): Center(child: Text("No data found"));
             }
             final recentPendingLeaves = model.recentLeaves
                 .where(
@@ -428,29 +428,7 @@ class LeavesListScreen extends StatelessWidget {
                     : SizedBox.shrink(),
               ],
             ),
-          ) /*ListTile(
-            leading: CircleAvatar(
-              radius: 25,
-              backgroundImage: NetworkImage(
-                "YOUR_IMAGE_URL/${item["profile_image"]}",
-              ),
-            ),
-            title: Text(
-              "${item["firstname"]} ${item["lastname"]}",
-              style: const TextStyle(
-                  fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Designation: ${item['designation']}"),
-                Text("Leave Type: ${item['leavetype']}"),
-                Text("Reason: ${leave['reason']}"),
-                Text("Status: ${leave['status']}"),
-                Text("Date: ${leave['leave_date']['date']}"),
-              ],
-            ),
-          )*/,
+          )
         );
       },
     );

@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:hrms/provider/OnboardingProvider.dart';
 import 'package:hrms/provider/attendance_provider.dart';
 import 'package:hrms/provider/calendar_provider.dart';
 import 'package:hrms/provider/dashboard_provider.dart';
@@ -46,6 +47,7 @@ List<SingleChildWidget> providers = [
     create: (_) => AttendanceProvider(),
   ),
   ChangeNotifierProvider<HotlineProvider>(create: (_) => HotlineProvider()),
+  ChangeNotifierProvider<OnboardingProvider>(create: (_) => OnboardingProvider()),
 ];
 
 Future<void> _initializeFirebase() async {

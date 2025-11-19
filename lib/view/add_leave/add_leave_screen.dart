@@ -58,8 +58,25 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
         });
       }
 
-      leaveProvider.setHalfDay(true);
+
+
+      leaveProvider.setHalfDay(widget.data?.halfDay??false
+      );
       leaveProvider.setSelectedHalfType(widget.data?.halfDayType ?? '');
+      final backendType = widget.data?.leaveType?.leavetype;
+      if (backendType != null && backendType.isNotEmpty) {
+        leaveProvider.leaveModel?.leaveTypes?.forEach((e) {
+        });
+        final matchedType = leaveProvider.leaveModel?.leaveTypes?.firstWhere(
+              (item) => item.leavetype?.toLowerCase() == backendType.toLowerCase(),
+        );
+        if (matchedType != null) {
+          leaveProvider.setSelectedLeaveType(matchedType);
+        }
+      }
+      setState(() {
+
+      });
     } else {
       UserModel? user = await AppConfigCache.getUserModel();
 
@@ -254,7 +271,7 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
                               "reason": provider.tetReason.text,
                             };
 
-                            provider.addLeaveAPI(body: body);
+                               provider.addLeaveAPI(body: body);
                           }
                         },
                       ),

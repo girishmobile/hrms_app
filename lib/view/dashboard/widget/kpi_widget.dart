@@ -50,17 +50,18 @@ Widget buildMonthCard({
         borderColor: colorBorder,
         borderRadius: 8,
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: .center,
+          crossAxisAlignment:.center,
           children: [
+
             commonAssetImage(
               userKPI,
               width: 35,
               height: 35,
-              color: color.withValues(alpha: 0.8),
+              color: Colors.black54.withValues(alpha: 0.5),
             ),
             const SizedBox(height: 10),
             commonText(
@@ -70,7 +71,13 @@ Widget buildMonthCard({
               color: colorProduct,
             ),
             const SizedBox(height: 6),
-            AnimatedCounter(
+
+            commonText(text: '$percent%', fontSize: 26,
+              //color: Colors.black54,
+                color: color,
+
+              fontWeight: FontWeight.w700,),
+            /*AnimatedCounter(
               leftText: '',
               rightText: '%',
 
@@ -82,7 +89,7 @@ Widget buildMonthCard({
                 //  color: color,
                 fontWeight: FontWeight.w700,
               ),
-            ),
+            ),*/
           ],
         ),
       ),

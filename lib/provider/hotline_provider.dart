@@ -32,7 +32,23 @@ class HotlineProvider with ChangeNotifier {
 
     notifyListeners();
   }
+  Future<void> resetHotlineData() async {
+    _setLoading(true);
 
+    // Clear all stored data
+    _hotlineCount = [];
+    _departmentModel = null;
+    _departments = [];
+    _selectedDepartment = null;
+    _designationModel = null;
+    _designationList = [];
+    _selectDesignation = null;
+    _hotlineListModel = null;
+    _selectedHotlineIndex = 0;
+    _title = "online";
+
+    notifyListeners();
+  }
   String? _title = "online";
 
   String? get title => _title;

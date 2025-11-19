@@ -148,6 +148,7 @@ class _ProfilePageState extends State<AccountPage> {
     );
   }
 
+
   Widget commonView({
     String? title,
     String? image,
@@ -156,57 +157,54 @@ class _ProfilePageState extends State<AccountPage> {
   }) {
     return commonInkWell(
       onTap: onTap,
-      child: IntrinsicHeight(
-        child: Container(
-          decoration: commonBoxDecoration(
-            borderColor: colorBorder,
-            color:
-                bgColor ?? Colors.grey.shade100, // 👈 Dynamic background color
-          ),
-
-          height: 60,
-          child: Row(
-            spacing: 10,
-
-            children: [
-              Container(
-                width: 80,
-                height: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(8),
-                    bottomLeft: Radius.circular(8),
-                  ),
-                  color: colorBorder.withValues(alpha: 0.05),
+      child: Container(
+        height: 60,
+        decoration: commonBoxDecoration(
+          borderColor: colorBorder,
+          color: bgColor ?? Colors.grey.shade100,
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 80,
+              height: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(8),
+                  bottomLeft: Radius.circular(8),
                 ),
-                child: Center(
-                  child: commonAssetImage(
-                    image ?? icDelete,
-                    width: 24,
-                    height: 24,
-                    color: Colors.black.withValues(alpha: 0.5),
-                  ),
-                ),
+                color: colorBorder.withValues(alpha: 0.05),
               ),
-              Expanded(
-                child: commonText(
-                  text: title ?? "Edit Profile",
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: Icon(
-                  Icons.arrow_forward_outlined,
-                  size: 20,
+              child: Center(
+                child: commonAssetImage(
+                  image ?? icDelete,
+                  width: 24,
+                  height: 24,
                   color: Colors.black.withValues(alpha: 0.5),
                 ),
               ),
-            ],
-          ),
+            ),
+
+            /// Very important fix is here:
+            Expanded(
+              child: commonText(
+                text: title ?? "Edit Profile",
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Icon(
+                Icons.arrow_forward_outlined,
+                size: 20,
+                color: Colors.black.withValues(alpha: 0.5),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
+
 }
