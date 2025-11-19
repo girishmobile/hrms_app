@@ -5,7 +5,6 @@ import 'package:hrms/provider/dashboard_provider.dart';
 import '../../../core/constants/color_utils.dart';
 import '../../../core/constants/date_utils.dart';
 import '../../../core/routes/app_routes.dart';
-import '../../../core/widgets/animated_counter.dart';
 import '../../../core/widgets/cached_image_widget.dart';
 import '../../../core/widgets/component.dart';
 import '../../../data/models/dashboard/holiday_birthday_model.dart';
@@ -242,8 +241,8 @@ Widget buildBirthdayItemView({
                 borderRadius: BorderRadius.circular(10),
                 child: CachedImageWidget(
                   imageUrl: item?.profileImage,
-                  borderRadius: 0,
 
+                  borderRadius: 500,
                   width: 60,
                   fit:
                       BoxFit.cover, // <-- Ensures image fills the height nicely
@@ -305,10 +304,10 @@ Widget commonTopView({
   String? desc,
   String? leftText,
 }) {
-  final String left = (leftText == null || leftText.trim().isEmpty)
+/*  final String left = (leftText == null || leftText.trim().isEmpty)
       ? '0'
       : leftText;
-  final String right = desc ?? '';
+  final String right = desc ?? '';*/
 
   return Expanded(
     child: Column(
@@ -322,11 +321,11 @@ Widget commonTopView({
           fontWeight: FontWeight.w700,
         ),
 
-        AnimatedCounter(
-          leftText: leftText ?? '',
-          rightText: ' $desc',
-          endValue: value ?? 0,
-          duration: Duration(seconds: 2),
+        commonText(
+         // leftText: leftText ?? '',
+          //rightText: ' $desc',
+         text: '${ value ?? 0} $desc',
+        //  duration: Duration(seconds: 2),
           style: commonTextStyle(),
         ),
       ],

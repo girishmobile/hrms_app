@@ -6,7 +6,6 @@ import 'package:hrms/provider/hotline_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/constants/color_utils.dart';
-import '../../core/widgets/animated_counter.dart';
 import '../../core/widgets/cached_image_widget.dart';
 import '../../core/widgets/common_dropdown.dart';
 import '../../core/widgets/user_details_by_id_view.dart';
@@ -265,8 +264,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
                   commonText(
                     // text:provider.title.toString().toTitleCase()?? "All Employees",
                     text:
-                        'Employees - ${provider.title.toString().toTitleCase()}' ??
-                        "All Employees",
+                        'Employees - ${provider.title.toString().toTitleCase()}',
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
                   ),

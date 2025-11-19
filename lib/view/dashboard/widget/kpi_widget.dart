@@ -3,7 +3,6 @@ import 'package:hrms/core/constants/image_utils.dart';
 
 import '../../../core/constants/color_utils.dart';
 import '../../../core/routes/app_routes.dart';
-import '../../../core/widgets/animated_counter.dart';
 import '../../../core/widgets/component.dart';
 import '../../../data/models/kpi/kpi_model.dart';
 import '../../../provider/kpi_provider.dart';

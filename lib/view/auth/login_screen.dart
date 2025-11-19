@@ -18,7 +18,7 @@ class LoginScreen extends StatelessWidget {
     final formLoginKey = GlobalKey<FormState>();
     return commonScaffold(
       resizeToAvoidBottomInset: true,
-      body: Container(
+      body: SizedBox(
         width: size.width,
         height: size.height,
 
@@ -108,7 +108,6 @@ class LoginScreen extends StatelessWidget {
                                 hideKeyboard(context);
                                 if (formLoginKey.currentState?.validate() ==
                                     true) {
-                                  print("Login Pressed");
                                   Map<String, dynamic> body = {
                                     "email": provider.tetEmail.text.trim(),
                                     "password": provider.tetPassword.text

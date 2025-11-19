@@ -536,12 +536,12 @@ Future<bool?> showCommonDialog({
   );
 }
 
-Widget showLoaderList() {
+Widget showLoaderList({Color ? color,Color? colorBG}) {
   return Center(
     child: Container(
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [colorProduct, colorProduct],
+        gradient:  LinearGradient(
+          colors: [colorBG?? colorProduct,colorBG?? colorProduct],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -551,7 +551,7 @@ Widget showLoaderList() {
       child: SizedBox(
         height: 40,
         width: 40,
-        child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+        child: CircularProgressIndicator(color:color?? Colors.white, strokeWidth: 2),
       ),
     ),
   );

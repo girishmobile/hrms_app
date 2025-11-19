@@ -299,8 +299,6 @@ class DashboardProvider with ChangeNotifier {
       );
 
       if (globalStatusCode == 200) {
-        final decoded = json.decode(response);
-
         _setLoading(false);
       } else {}
       _setLoading(false);

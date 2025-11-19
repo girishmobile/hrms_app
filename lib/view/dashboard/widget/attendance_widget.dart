@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/color_utils.dart';
-import '../../../core/widgets/animated_counter.dart';
 import '../../../core/widgets/component.dart';
 
 Widget buildItemView({

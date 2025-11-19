@@ -11,6 +11,7 @@ import '../../core/widgets/common_date_picker.dart';
 import '../../core/widgets/common_dropdown.dart';
 import '../../core/widgets/common_switch.dart';
 import '../../data/models/leave/leave_model.dart';
+import '../../provider/location_provider.dart';
 import '../../provider/leave_provider.dart';
 import 'leave_type_dropdown.dart';
 
@@ -35,6 +36,7 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
 
   Future<void> init() async {
     final leaveProvider = Provider.of<LeaveProvider>(context, listen: false);
+
     UserModel? user = await AppConfigCache.getUserModel();
 
     Map<String, dynamic> body = {"emp_id": user?.data?.user?.id};
@@ -96,8 +98,8 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
       ),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: Consumer<LeaveProvider>(
-          builder: (context, provider, child) {
+        child: Consumer2<LeaveProvider,LocationProvider >(
+          builder: (context, provider,locationProvider, child) {
             return commonPopScope(
               onBack: () {
                 provider.clearLeaveType();
@@ -202,6 +204,11 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
                       commonButton(
                         text: "Apply",
                         onPressed: () async {
+
+
+                          await locationProvider.requestPermissionsAndFetchData(isAddress: true) ;
+
+
                           if (provider.fromDate == null) {
                             showToast("Please select a start date");
                             return;
@@ -247,7 +254,8 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
                               // ✅ This sends full JSON of selected type
                               "half_day": provider.isHalfDay,
                               "half_day_type": provider.selectedHalfType,
-                              "reason": provider.tetReason.text,
+                              "reason": provider.tetReason.text
+                             // "location ":locationProvider.currentAddress
                             };
 
                             provider.updateLeaveAPI(body: body);
@@ -268,7 +276,8 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
                               // ✅ This sends full JSON of selected type
                               "half_day": provider.isHalfDay,
                               "half_day_type": provider.selectedHalfType,
-                              "reason": provider.tetReason.text,
+                              "reason": provider.tetReason.text
+                             // "location ":locationProvider.currentAddress
                             };
 
                                provider.addLeaveAPI(body: body);
@@ -278,7 +287,7 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
                     ],
                   ),
 
-                  provider.isLoading ? showLoaderList() : SizedBox.shrink(),
+                  provider.isLoading || locationProvider.loading ?  showLoaderList() : SizedBox.shrink(),
                 ],
               ),
             );

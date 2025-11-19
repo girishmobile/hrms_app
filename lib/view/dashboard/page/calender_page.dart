@@ -76,7 +76,7 @@ class _CalenderPageState extends State<CalenderPage> {
                         shape: BoxShape.circle,
                       ),
                       todayDecoration: BoxDecoration(
-                        color: colorProduct.withOpacity(0.4),
+                        color: colorProduct.withValues(alpha: 0.4),
                         shape: BoxShape.circle,
                       ),
                       weekendTextStyle: commonTextStyle(color: Colors.redAccent),

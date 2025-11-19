@@ -24,7 +24,9 @@ class ProfileView extends StatelessWidget {
     if (provider.pickedFile != null) {
       imageProvider = FileImage(provider.pickedFile!);
     } else if (provider.imageUrl != null && provider.imageUrl!.isNotEmpty) {
-      imageProvider = NetworkImage(provider.imageUrl!);
+      imageProvider = NetworkImage(
+
+          provider.imageUrl!);
     } else {
       imageProvider = AssetImage(assetPath ?? icBoy);
     }
@@ -40,7 +42,7 @@ class ProfileView extends StatelessWidget {
             borderWidth: 2,
             shape: BoxShape.circle,
 
-            image: DecorationImage(image: imageProvider, fit: BoxFit.fill),
+            image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
           ),
         ),
 

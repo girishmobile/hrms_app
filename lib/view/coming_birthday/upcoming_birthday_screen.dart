@@ -59,70 +59,74 @@ class UpcomingBirthdayScreen extends StatelessWidget {
                     ),
 
                     child: IntrinsicHeight(
-                      child: Row(
-                        spacing: 10,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadiusGeometry.circular(8),
+                      child: Padding  (
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          spacing: 10,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadiusGeometry.circular(8),
 
-                            child: CachedImageWidget(
+                              child: CachedImageWidget(
 
-                              width: 120,
+                                width: 80,
+                                height: 80,
 
 
-                              borderRadius: 8,
-                              imageUrl:
-                                  '${ApiConfig.imageBaseUrl}/${item.profileImage ?? ''}',
+                                borderRadius: 500,
+                                imageUrl:
+                                    '${ApiConfig.imageBaseUrl}/${item.profileImage ?? ''}',
+                              ),
                             ),
-                          ),
 
-                          Column(
-                            spacing: 3,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              commonText(
-                                text: '${item.firstname} ${item.lastname}',
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: colorProduct,
-                              ),
+                            Column(
+                              spacing: 3,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                commonText(
+                                  text: '${item.firstname} ${item.lastname}',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: colorProduct,
+                                ),
 
-                              commonText(
-                                text: '${item.designation}',
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color: colorProduct,
-                              ),
-                              Row(
-                                children: [
-                                  commonText(
-                                    fontWeight: FontWeight.w400,
-                                    text: formatDay(
-                                      item.dateOfBirth?.date ??
-                                          DateTime.now().toString(),
+                                commonText(
+                                  text: '${item.designation}',
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: colorProduct,
+                                ),
+                                Row(
+                                  children: [
+                                    commonText(
+                                      fontWeight: FontWeight.w400,
+                                      text: formatDay(
+                                        item.dateOfBirth?.date ??
+                                            DateTime.now().toString(),
+                                      ),
+                                      fontSize: 12,
+                                      color: colorText,
                                     ),
-                                    fontSize: 12,
-                                    color: colorText,
-                                  ),
 
-                                  commonText(
-                                    fontWeight: FontWeight.w400,
-                                    text: formatDate(
-                                      item.dateOfBirth?.date ??
-                                          DateTime.now().toString(),
-                                      format: "MMMM yyyy",
+                                    commonText(
+                                      fontWeight: FontWeight.w400,
+                                      text: formatDate(
+                                        item.dateOfBirth?.date ??
+                                            DateTime.now().toString(),
+                                        format: "MMMM yyyy",
+                                      ),
+                                      fontSize: 12,
+                                      color: colorText,
                                     ),
-                                    fontSize: 12,
-                                    color: colorText,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

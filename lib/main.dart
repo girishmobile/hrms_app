@@ -4,7 +4,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hrms/provider/OnboardingProvider.dart';
+import 'package:hrms/core/constants/string_utils.dart';
+import 'package:hrms/provider/location_provider.dart';
+import 'package:hrms/provider/onboarding_provider.dart';
 import 'package:hrms/provider/attendance_provider.dart';
 import 'package:hrms/provider/calendar_provider.dart';
 import 'package:hrms/provider/dashboard_provider.dart';
@@ -48,6 +50,7 @@ List<SingleChildWidget> providers = [
   ),
   ChangeNotifierProvider<HotlineProvider>(create: (_) => HotlineProvider()),
   ChangeNotifierProvider<OnboardingProvider>(create: (_) => OnboardingProvider()),
+  ChangeNotifierProvider<LocationProvider>(create: (_) => LocationProvider()),
 ];
 
 Future<void> _initializeFirebase() async {
@@ -118,7 +121,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
     return MaterialApp(
-      title: 'HRMS',
+      title: appName,
       scaffoldMessengerKey: rootScaffoldMessengerKey,
       navigatorKey: navigatorKey,
       initialRoute: RouteName.splashScreen,

@@ -39,12 +39,13 @@ class _SplashScreenState extends State<SplashScreen> {
       // Try to read cached user; if Hive isn't initialized or box missing this may throw
       UserModel? user;
       user = await AppConfigCache.getUserModel();
+      var isBoarding = await AppConfigCache.getOnBoarding();
 
       final isLoggedIn = user?.data?.user?.id != null;
 
       final route = isLoggedIn
           ? RouteName.dashboardScreen
-          : RouteName.loginScreen;
+          : isBoarding ?RouteName.loginScreen:RouteName.onboardingScreen;
 
       if (mounted) {
         navigatorKey.currentState?.pushNamedAndRemoveUntil(
@@ -54,8 +55,9 @@ class _SplashScreenState extends State<SplashScreen> {
       }
     } catch (e) {
       if (mounted) {
+        var isBoarding = await AppConfigCache.getOnBoarding();
         navigatorKey.currentState?.pushNamedAndRemoveUntil(
-          RouteName.loginScreen,
+          isBoarding ?RouteName.loginScreen:RouteName.onboardingScreen  ,
           (Route<dynamic> route) => false,
         );
       }

@@ -394,7 +394,6 @@ class ProfileProvider extends ChangeNotifier {
     try {
       Map<String, dynamic> body = {"id": id, "imp_id": impId};
 
-      print('====${body}');
       final response = await callApi(
         url: ApiConfig.getUserImpressionsUrl,
         method: HttpMethod.post,

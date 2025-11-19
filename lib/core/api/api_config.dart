@@ -22,7 +22,7 @@ class ApiConfig {
   static String updateProfileDataUrl = "$apiBASEURL/user/update_employee";
   static String getNotificationUrl = "$apiBASEURL/activity_box/getEmpNotifications";
   static String getAllLeaveUrl = "$apiBASEURL/datatable/getLeaveRequiredData";
-  static String getAllListingLeaveUrl = "$apiBASEURL/dashboard/getLeaveDataDashboard";
+  static String getAllListingLeaveUrl = "$apiBASEURL/datatable/getAllLeaves";
   static String getAttendanceUrl = "$apiBASEURL/hikattendance/getUserAttendanceByDate";
   static String updateFCMTokenUrl = "$apiBASEURL/user/update-fcm-token";
   static String calenderUrl = "$apiBASEURL/dashboard/getLeavesSelfDashboard";

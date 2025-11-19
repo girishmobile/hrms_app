@@ -1,4 +1,4 @@
-const String appName = "ECom Manager";
+const String appName = "hrms";
 const String fontRoboto = "Roboto";
 const String noCustomer = "No Customer";
 const String rupeeIcon = "\$";

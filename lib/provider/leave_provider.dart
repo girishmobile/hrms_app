@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:math';
+
 
 import 'package:flutter/material.dart';
 
@@ -7,7 +7,7 @@ import '../core/api/api_config.dart';
 import '../core/api/gloable_status_code.dart';
 import '../core/api/network_repository.dart';
 import '../core/widgets/component.dart';
-import '../data/models/leave/LeaveListingModel.dart';
+import '../data/models/leave/leave_listing_model.dart';
 import '../data/models/leave/all_leave_model.dart';
 import '../data/models/leave/leave_model.dart';
 import '../main.dart';
@@ -323,11 +323,95 @@ class LeaveProvider with ChangeNotifier {
   LeaveDashboardModel? get leaveDashboardModel => _leaveDashboardModel;
   Future<void> getAllListingLeave() async {
     _setLoading(true);
+
+    Map<String ,dynamic> data={
+      "draw": 1,
+      "columns": [
+        {
+          "data": 0,
+          "name": "id",
+          "searchable": true,
+          "orderable": false,
+          "search": {
+            "value": "",
+            "regex": false
+          }
+        },
+        {
+          "data": 1,
+          "name": "firstname",
+          "searchable": true,
+          "orderable": true,
+          "search": {
+            "value": "",
+            "regex": false
+          }
+        },
+        {
+          "data": 2,
+          "name": "leave_date",
+          "searchable": true,
+          "orderable": true,
+          "search": {
+            "value": "all",
+            "regex": false
+          }
+        },
+        {
+          "data": 3,
+          "name": "leave_end_date",
+          "searchable": true,
+          "orderable": true,
+          "search": {
+            "value": "",
+            "regex": false
+          }
+        },
+        {
+          "data": 4,
+          "name": "leave_count",
+          "searchable": true,
+          "orderable": true,
+          "search": {
+            "value": "Pending",
+            "regex": false
+          }
+        },
+        {
+          "data": 5,
+          "name": "reason",
+          "searchable": true,
+          "orderable": true,
+          "search": {
+            "value": "",
+            "regex": false
+          }
+        },
+        {
+          "data": 6,
+          "name": "status",
+          "searchable": false,
+          "orderable": false,
+          "search": {
+            "value": "",
+            "regex": false
+          }
+        }
+      ],
+      "order": [],
+      "start": 0,
+      "length": 100,
+      "search": {
+        "value": "",
+        "regex": false
+      }
+    };
+
     try {
       final response = await callApi(
         url: ApiConfig.getAllListingLeaveUrl,
-        method: HttpMethod.get,
-
+        method: HttpMethod.post,
+body: data,
         headers: null,
       );
 
@@ -355,7 +439,7 @@ class LeaveProvider with ChangeNotifier {
   Future<void> deleteLeave({required Map<String, dynamic> body}) async {
     _setLoading(true);
     try {
-      final response = await callApi(
+    await callApi(
         url: ApiConfig.deleteLeaveUrl,
         method: HttpMethod.post,
         body: body,
