@@ -19,14 +19,25 @@ Widget buildItemView({
   required BuildContext context,
 }) {
   return commonInkWell(
-    onTap: () {
+    onTap: () async {
       provider.setSelectedLeaveType(item.title);
+
       Navigator.pushNamed(
         context,
-
         RouteName.leaveDetailsScreen, // define this route in app_routes.dart
         arguments: LeaveDetailsArgs(title: item.title, color: color),
       );
+
+      // final result = await Navigator.pushNamed(
+      //   context,
+      //   RouteName.leaveDetailsScreen, // define this route in app_routes.dart
+      //   arguments: LeaveDetailsArgs(title: item.title, color: color),
+      // );
+      // // If add leave screen returned success → refresh page
+      // if (result == true) {
+      //   print("data refresh");
+      //   provider.getLeaveCountData();
+      // }
     },
 
     child: Container(

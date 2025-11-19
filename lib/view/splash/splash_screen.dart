@@ -17,7 +17,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -30,21 +29,22 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(const Duration(seconds: 3), () async {
       await checkStatus();
     });
-
   }
 
   Future<void> checkStatus() async {
     try {
+      // Add a small delay to ensure Hive is ready
+      await Future.delayed(const Duration(milliseconds: 300));
+
+      // Try to read cached user; if Hive isn't initialized or box missing this may throw
       UserModel? user;
       user = await AppConfigCache.getUserModel();
-
 
       final isLoggedIn = user?.data?.user?.id != null;
 
       final route = isLoggedIn
           ? RouteName.dashboardScreen
           : RouteName.loginScreen;
-
 
       if (mounted) {
         navigatorKey.currentState?.pushNamedAndRemoveUntil(
@@ -69,13 +69,12 @@ class _SplashScreenState extends State<SplashScreen> {
       body: SizedBox(
         width: size.width,
         height: size.height,
-
+        /* decoration: commonBoxDecoration(
+          image: DecorationImage(fit: BoxFit.fill, image: AssetImage(icImg1)),
+        ),*/
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            commonAssetImage(icAppLogo, width: size.width * 0.7),
-
-          ],
+          children: [commonAssetImage(icAppLogo, width: size.width * 0.7)],
         ),
       ),
     );

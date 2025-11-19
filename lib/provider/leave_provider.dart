@@ -126,7 +126,7 @@ class LeaveProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  final  tetRejectReason =TextEditingController();
+  final tetRejectReason = TextEditingController();
 
   void clearLeaveType() {
     _fromDate = null;
@@ -163,7 +163,6 @@ class LeaveProvider with ChangeNotifier {
       );
 
       if (globalStatusCode == 200) {
-        print('====response===${json.decode(response)}');
         _leaveModel = LeaveModel.fromJson(json.decode(response));
 
         _setLoading(false);
@@ -299,12 +298,9 @@ class LeaveProvider with ChangeNotifier {
         headers: null,
       );
 
-
       if (globalStatusCode == 200) {
         final decoded = json.decode(response);
         _allLeaveModel = LeaveResponse.fromJson(decoded);
-
-
       } else {
         // Show error dialog
         showCommonDialog(
@@ -335,12 +331,9 @@ class LeaveProvider with ChangeNotifier {
         headers: null,
       );
 
-
       if (globalStatusCode == 200) {
         final decoded = json.decode(response);
         _leaveDashboardModel = LeaveDashboardModel.fromJson(decoded);
-
-
       } else {
         // Show error dialog
         showCommonDialog(
@@ -369,7 +362,6 @@ class LeaveProvider with ChangeNotifier {
         headers: null,
       );
 
-
       if (globalStatusCode == 200) {
         _setLoading(false);
       } else {
@@ -390,17 +382,18 @@ class LeaveProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
   Future<void> approvedLeave({required Map<String, dynamic> body}) async {
     _setLoading(true);
     try {
-         await callApi(
+      await callApi(
         url: ApiConfig.approvedLeaveUrl,
         method: HttpMethod.post,
         body: body,
         headers: null,
       );
-         debugPrint("Error while fetching leave data: $body");
-         debugPrint("Error while fetching leave data: $globalStatusCode");
+      debugPrint("Error while fetching leave data: $body");
+      debugPrint("Error while fetching leave data: $globalStatusCode");
 
       if (globalStatusCode == 200) {
         _setLoading(false);
@@ -470,6 +463,7 @@ class LeaveProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
   final List<Color> colors = [
     Colors.orange,
     Colors.red,
@@ -478,5 +472,4 @@ class LeaveProvider with ChangeNotifier {
     Colors.blue,
     Colors.redAccent,
   ];
-
 }
