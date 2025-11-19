@@ -109,6 +109,7 @@ class _HomePageState extends State<HomePage> {
                   Container(
                     decoration: commonBoxDecoration(
                       borderColor: colorProduct.withValues(alpha: 0.3),
+                      color: colorProduct.withValues(alpha: 0.03),
                     ),
                     padding: const EdgeInsets.all(15),
                     child: Column(

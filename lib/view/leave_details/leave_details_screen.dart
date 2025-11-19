@@ -99,7 +99,7 @@ class _LeaveDetailsScreenState extends State<LeaveDetailsScreen> {
           appBar: commonAppBar(
             context: context,
             centerTitle: true,
-            title: widget.title ?? 'Leaves',
+            title: "${widget.title} LEAVE",
           ),
           body: commonRefreshIndicator(
             onRefresh: () async {
