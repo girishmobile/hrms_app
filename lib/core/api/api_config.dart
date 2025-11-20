@@ -40,6 +40,10 @@ class ApiConfig {
   static String getUserImpressionsUrl = "$apiBASEURL/impressions/update-profile-view";
   static String approvedLeaveUrl = "$apiBASEURL/leave_application/update_accept_status";
   static String rejectLeaveUrl = "$apiBASEURL/leave_application/update_reject_status";
+  static String getEmployeeCountLeaveUrl = "$apiBASEURL/user_leave/getLeaveByEmp";
+  static String getCurrentMonthIncrementEmpUrl = "$apiBASEURL/dashboard/getCurrentMonthIncrementEmp";
+  static String getHikAttendanceUrl = "$apiBASEURL/dashboard/getHikAttendanceDashboard";
+
 
 
   //==========================================================Shopify API=================================================================================================================

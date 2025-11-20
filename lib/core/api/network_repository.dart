@@ -30,6 +30,7 @@ Future callApi({
   try {
     final uri = Uri.parse(url).replace(queryParameters: queryParams);
 
+    print('----$url');
     final requestHeaders = headers ?? await ApiConfig.getCommonHeaders();
 
     late http.Response response;

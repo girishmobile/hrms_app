@@ -300,33 +300,33 @@ Widget buildBirthdayItemView({
 
 Widget commonTopView({
   String? title,
-  int? value,
+  dynamic  value,
   String? desc,
+  CrossAxisAlignment ?crossAxisAlignment,
+  Color ?colorTitle,
   String? leftText,
 }) {
-/*  final String left = (leftText == null || leftText.trim().isEmpty)
-      ? '0'
-      : leftText;
-  final String right = desc ?? '';*/
 
   return Expanded(
     child: Column(
       spacing: 5,
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: crossAxisAlignment??CrossAxisAlignment.start,
       children: [
         commonText(
           text: title ?? "Attendance",
           fontSize: 14,
+          color: colorTitle,
           fontWeight: FontWeight.w700,
         ),
 
         commonText(
+          fontSize: 12,
          // leftText: leftText ?? '',
           //rightText: ' $desc',
          text: '${ value ?? 0} $desc',
         //  duration: Duration(seconds: 2),
-          style: commonTextStyle(),
+
         ),
       ],
     ),

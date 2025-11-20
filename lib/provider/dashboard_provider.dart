@@ -13,7 +13,10 @@ import '../core/api/gloable_status_code.dart';
 import '../core/api/network_repository.dart';
 import '../core/widgets/component.dart';
 import '../data/models/dashboard/holiday_birthday_model.dart';
+import '../data/models/hr/EmployeeAttendanceModel.dart';
+import '../data/models/hr/EmployeeIncrementModel.dart';
 import '../data/models/hub_staff_model/hun_staff_model.dart';
+import '../data/models/leave/EmployeeLeaveCountModel.dart';
 import '../main.dart';
 
 class LeaveModel {
@@ -21,6 +24,7 @@ class LeaveModel {
   final String? desc;
   int? count;
   final Color? bgColor;
+
   LeaveModel({this.title, this.count, this.bgColor, this.desc});
 }
 
@@ -108,7 +112,9 @@ class DashboardProvider with ChangeNotifier {
   }
 
   String _selectedYear = "2025";
+
   String get selectedYear => _selectedYear;
+
   void setYear(String year) {
     _selectedYear = year;
     notifyListeners();
@@ -129,6 +135,7 @@ class DashboardProvider with ChangeNotifier {
   HolidayBirthdayModel? _birthdayModel;
 
   HolidayBirthdayModel? get birthdayModel => _birthdayModel;
+
   Future<void> getBirthdayHoliday() async {
     _setLoading(true);
     try {
@@ -154,6 +161,7 @@ class DashboardProvider with ChangeNotifier {
   CurrentAttendanceModel? _currentAttendanceModel;
 
   CurrentAttendanceModel? get currentAttendanceModel => _currentAttendanceModel;
+
   Future<void> getCurrentAttendanceRecord() async {
     _setLoading(true);
     try {
@@ -180,6 +188,7 @@ class DashboardProvider with ChangeNotifier {
   List<NotificationModel> _notificationList = [];
 
   List<NotificationModel> get notificationList => _notificationList;
+
   Future<void> getNotification() async {
     _setLoading(true);
     try {
@@ -221,6 +230,7 @@ class DashboardProvider with ChangeNotifier {
   List<LeaveCountDataModel> _leaveCountData = [];
 
   List<LeaveCountDataModel> get leaveCountData => _leaveCountData;
+
   Future<void> getLeaveCountData() async {
     _setLoading(true);
     try {
@@ -267,7 +277,7 @@ class DashboardProvider with ChangeNotifier {
       }
 
       Map<String, dynamic> body = {"fcm_token": fcmToken};
-       await callApi(
+      await callApi(
         url: ApiConfig.updateFCMTokenUrl,
         method: HttpMethod.post,
 
@@ -276,13 +286,57 @@ class DashboardProvider with ChangeNotifier {
       );
 
       if (globalStatusCode == 200) {
-
         _setLoading(false);
       } else {}
       _setLoading(false);
       notifyListeners();
     } catch (e) {
       _setLoading(false);
+    }
+  }
+
+  EmployeeLeaveCountModel? _employeeLeaveCountModel;
+
+  EmployeeLeaveCountModel? get employeeLeaveCountModel =>
+      _employeeLeaveCountModel;
+
+  Future<void> getLeaveEmployeeCount({required int id}) async {
+    _setLoading(true);
+    try {
+      Map<String, dynamic> body = {"emp_id": id};
+      var response = await callApi(
+        url: ApiConfig.getEmployeeCountLeaveUrl,
+        method: HttpMethod.post,
+        body: body,
+        headers: null,
+      );
+
+      if (globalStatusCode == 200) {
+        final decoded = json.decode(response);
+        if (decoded is List && decoded.isNotEmpty) {
+          _employeeLeaveCountModel = EmployeeLeaveCountModel.fromJson(
+            decoded[0],
+          );
+        } else {
+          _employeeLeaveCountModel = null;
+        }
+        _setLoading(false);
+      } else {
+        // Show error dialog
+        showCommonDialog(
+          showCancel: false,
+          title: "Error",
+          context: navigatorKey.currentContext!,
+          content: errorMessage,
+        );
+        _setLoading(false);
+      }
+    } catch (e) {
+      // Print full error with stacktrace for better debugging
+      debugPrint("Error while fetching leave data: $e");
+    } finally {
+      _setLoading(false);
+      notifyListeners();
     }
   }
 
@@ -311,6 +365,7 @@ class DashboardProvider with ChangeNotifier {
   HubStaffModel? _hubStaffModel;
 
   HubStaffModel? get hubStaffModel => _hubStaffModel;
+
   Future<void> getHubStaffLog() async {
     _setLoading(true);
     try {
@@ -335,6 +390,7 @@ class DashboardProvider with ChangeNotifier {
   MyWorkModel? _myWorkModel;
 
   MyWorkModel? get myWorkModel => _myWorkModel;
+
   Future<void> getMYHours({required int id}) async {
     _setLoading(true);
     try {
@@ -357,6 +413,98 @@ class DashboardProvider with ChangeNotifier {
     } catch (e) {
       debugPrint('=====e=$e');
       _setLoading(false);
+    }
+  }
+
+  EmployeeIncrementModel? _employeeIncrementModel;
+
+  EmployeeIncrementModel? get employeeIncrementModel => _employeeIncrementModel;
+
+  Future<void> getCurrentMonthIncrementEmp() async {
+    _setLoading(true);
+    try {
+
+      var response = await callApi(
+        url: ApiConfig.getCurrentMonthIncrementEmpUrl,
+        method: HttpMethod.get,
+
+        headers: null,
+      );
+
+      if (globalStatusCode == 200) {
+        final decoded = json.decode(response);
+        _employeeIncrementModel = EmployeeIncrementModel.fromJson(decoded);
+
+        _setLoading(false);
+      } else {
+        // Show error dialog
+        showCommonDialog(
+          showCancel: false,
+          title: "Error",
+          context: navigatorKey.currentContext!,
+          content: errorMessage,
+        );
+        _setLoading(false);
+      }
+    } catch (e) {
+      // Print full error with stacktrace for better debugging
+      debugPrint("Error while fetching leave data: $e");
+    } finally {
+      _setLoading(false);
+      notifyListeners();
+    }
+  }
+
+
+  List<EmployeeAttendanceModel> _employeeAttendanceModel = [];
+
+  List<EmployeeAttendanceModel> get employeeAttendanceModel => _employeeAttendanceModel;
+
+  Future<void> getHikAttendanceDashboard() async {
+    _setLoading(true);
+    try {
+
+      var response = await callApi(
+        url: ApiConfig.getHikAttendanceUrl,
+        method: HttpMethod.get,
+
+      );
+
+      if (globalStatusCode == 200) {
+        final decoded = json.decode(response);
+        print('----${decoded}');
+      //  _employeeAttendanceModel = EmployeeAttendanceModel.fromJson(decoded);
+        if (decoded is List) {
+          _employeeAttendanceModel = decoded
+              .map((e) => EmployeeAttendanceModel.fromJson(e))
+              .toList();
+        } else if (decoded is Map && decoded['data'] is List) {
+          _employeeAttendanceModel = (decoded['data'] as List)
+              .map((e) => EmployeeAttendanceModel.fromJson(e))
+              .toList();
+        } else {
+          _employeeAttendanceModel = [];
+        }
+
+
+        print('----${_employeeAttendanceModel.length}');
+        _setLoading(false);
+      } else {
+        // Show error dialog
+        showCommonDialog(
+          showCancel: false,
+          title: "Error",
+          context: navigatorKey.currentContext!,
+          content: errorMessage,
+        );
+        _setLoading(false);
+      }
+    } catch (e) {
+      // Print full error with stacktrace for better debugging
+      debugPrint("Error while fetching leave data: $e");
+    } finally {
+      _setLoading(false);
+      notifyListeners();
     }
   }
 }

@@ -13,8 +13,8 @@ import '../../core/widgets/cached_image_widget.dart';
 import '../../data/models/leave/leave_listing_model.dart';
 
 class LeaveListingScreen extends StatefulWidget {
-  const LeaveListingScreen({super.key});
-
+  const LeaveListingScreen({super.key,this.hideAppBar});
+  final bool? hideAppBar;
   @override
   State<LeaveListingScreen> createState() => _LeaveListingScreenState();
 }
@@ -38,7 +38,7 @@ class _LeaveListingScreenState extends State<LeaveListingScreen> {
   Widget build(BuildContext context) {
     var size = MediaQuery.sizeOf(context);
     return commonScaffold(
-      appBar: commonAppBar(
+      appBar:widget.hideAppBar==true? PreferredSize(preferredSize: Size.zero, child: SizedBox.shrink()):commonAppBar(
         title: "Leave Request",
         context: context,
         centerTitle: true,
@@ -82,8 +82,12 @@ class _LeaveListingScreenState extends State<LeaveListingScreen> {
             return Stack(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 0,
+                    vertical: 0,
+                  ),
                   child: ListView.builder(
+                    shrinkWrap: true,
                     itemCount: model.data?.data?.length,
                     /* gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -123,7 +127,7 @@ class _LeaveListingScreenState extends State<LeaveListingScreen> {
                             borderColor: colorBorder,
                           ),
                           margin: const EdgeInsets.symmetric(
-                            horizontal: 8.0,
+                            horizontal: 0.0,
                             vertical: 8,
                           ),
                           padding: const EdgeInsets.symmetric(

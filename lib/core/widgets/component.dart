@@ -763,6 +763,7 @@ void showCommonBottomSheet({
   required Widget content,
 
   bool isDismissible = true,
+   EdgeInsetsGeometry? padding,
 }) {
   showModalBottomSheet(
     context: context,
@@ -774,7 +775,7 @@ void showCommonBottomSheet({
     ),
     builder: (context) {
       return Padding(
-        padding: EdgeInsets.only(
+        padding:padding?? EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,
           left: 16,
           right: 16,
