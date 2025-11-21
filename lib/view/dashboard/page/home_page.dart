@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
       provider.getCurrentAttendanceRecord(),
       provider.getLeaveCountData(),
       provider.updateFCMToken(),
-      provider.getLeaveEmployeeCount( id: user?.data?.user?.id??0),
+      provider.getLeaveEmployeeCount(id: user?.data?.user?.id ?? 0),
     ]);
   }
 
@@ -100,19 +100,13 @@ class _HomePageState extends State<HomePage> {
                           ],
                         )
                       : SizedBox.shrink(),
-                  commonHomeRowView(
-                    title: "Leave",
-                    isHideSeeMore: true,
-                  ),
+                  commonHomeRowView(title: "Leave", isHideSeeMore: true),
 
                   const SizedBox(height: 10),
-
-
 
                   Container(
                     decoration: commonBoxDecoration(
                       borderColor: colorProduct.withValues(alpha: 0.3),
-
                     ),
 
                     child: IntrinsicHeight(
@@ -121,88 +115,85 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: .start,
                         spacing: 0,
                         children: [
-
-
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 12),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0,
+                                vertical: 12,
+                              ),
                               child: Row(
                                 spacing: 0,
                                 crossAxisAlignment: .center,
                                 mainAxisAlignment: .center,
                                 children: [
                                   commonTopView(
-
                                     crossAxisAlignment: .center,
                                     colorTitle: colorProduct,
                                     title: "Approved Leaves",
                                     desc: "",
                                     value:
-                                    provider
-                                        .employeeLeaveCountModel
-                                        ?.totalLeaves ??
+                                        provider
+                                            .employeeLeaveCountModel
+                                            ?.totalLeaves ??
                                         "0",
                                   ),
-
-
                                 ],
                               ),
                             ),
                           ),
 
-                         VerticalDivider(color: Colors.grey,),
-                         Expanded(
-                           child: Padding(
-                             padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 12),
-                             child: Column(
-                               mainAxisAlignment: .center,
-                               crossAxisAlignment: .start,
-                               children: [
-
-                                 commonText(text: "Remaining Leaves",fontWeight: FontWeight.w600,
-                                   color: colorLogo
-                                 ),
-                                 SizedBox(height: 5,),
-                                 Row(
-                                   spacing: 0,
-                                   crossAxisAlignment: .center,
-                                   mainAxisAlignment: .spaceBetween,
-                                   children: [
-                                     commonTopView(
-                                       title: "CL",
-                                       desc: "",
-                                       value:
-                                       provider
-                                           .employeeLeaveCountModel
-                                           ?.cl.toString() ??
-                                           "0",
-                                     ),
-                                     commonTopView(
-                                       desc: "",
-                                       value:
-                                       provider
-                                           .employeeLeaveCountModel
-                                           ?.pl.toString() ??
-                                           "0",
-                                       title: "PL",
-                                     ),
-                                     commonTopView(
-                                       desc: "",
-                                       value:
-                                       provider
-                                           .employeeLeaveCountModel
-                                           ?.sl.toString() ??
-                                           "0",
-                                       title: "SL",
-                                     ),
-
-                                   ],
-                                 ),
-                               ],
-                             ),
-                           ),
-                         )
-
+                          VerticalDivider(color: Colors.grey),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0,
+                                vertical: 12,
+                              ),
+                              child: Column(
+                                mainAxisAlignment: .center,
+                                crossAxisAlignment: .start,
+                                children: [
+                                  commonText(
+                                    text: "Remaining Leaves",
+                                    fontWeight: FontWeight.w600,
+                                    color: colorLogo,
+                                  ),
+                                  SizedBox(height: 5),
+                                  Row(
+                                    spacing: 0,
+                                    crossAxisAlignment: .center,
+                                    mainAxisAlignment: .spaceBetween,
+                                    children: [
+                                      commonTopView(
+                                        title: "CL",
+                                        desc: "",
+                                        value:
+                                            provider.employeeLeaveCountModel?.cl
+                                                .toString() ??
+                                            "0",
+                                      ),
+                                      commonTopView(
+                                        desc: "",
+                                        value:
+                                            provider.employeeLeaveCountModel?.pl
+                                                .toString() ??
+                                            "0",
+                                        title: "PL",
+                                      ),
+                                      commonTopView(
+                                        desc: "",
+                                        value:
+                                            provider.employeeLeaveCountModel?.sl
+                                                .toString() ??
+                                            "0",
+                                        title: "SL",
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),

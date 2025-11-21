@@ -19,5 +19,4 @@ class RouteName {
   static const String leaveListingScreen = "/LeaveListingScreen";
   static const String onboardingScreen = "/OnboardingScreen";
   static const String hrDashboardScreen = "/HrDashboardScreen";
-
 }

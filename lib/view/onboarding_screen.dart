@@ -47,31 +47,29 @@ class OnboardingScreen extends StatelessWidget {
     },
   ];
 
-  Future<void> askPermissions(BuildContext context,bool isPermission ) async {
+  Future<void> askPermissions(BuildContext context, bool isPermission) async {
     bool alreadyGiven = await AppConfigCache.isLocationPermissionGiven();
-    if(alreadyGiven){
+    if (alreadyGiven) {
       await AppConfigCache.saveOnBoarding(true);
-      if(!isPermission){
+      if (!isPermission) {
         if (context.mounted) {
-          navigatorKey.currentState?.pushReplacementNamed(RouteName.loginScreen);
+          navigatorKey.currentState?.pushReplacementNamed(
+            RouteName.loginScreen,
+          );
         }
       }
-
-    }else
-      {
-        final provider =  Provider.of<LocationProvider>(context, listen: false);
-        await provider.requestPermissionsAndFetchData(isAddress: false) ;
-        if(!isPermission){
-          if (context.mounted) {
-            navigatorKey.currentState?.pushReplacementNamed(RouteName.loginScreen);
-          }
-          await AppConfigCache.saveOnBoarding(true);
+    } else {
+      final provider = Provider.of<LocationProvider>(context, listen: false);
+      await provider.requestPermissionsAndFetchData(isAddress: false);
+      if (!isPermission) {
+        if (context.mounted) {
+          navigatorKey.currentState?.pushReplacementNamed(
+            RouteName.loginScreen,
+          );
         }
-
-
+        await AppConfigCache.saveOnBoarding(true);
       }
-
-
+    }
   }
 
   @override
@@ -80,7 +78,7 @@ class OnboardingScreen extends StatelessWidget {
     //final provider =  Provider.of<LocationProvider>(context, listen: false);
     return Scaffold(
       body: Consumer<LocationProvider>(
-        builder: (context,provider,child) {
+        builder: (context, provider, child) {
           return Stack(
             children: [
               Positioned.fill(
@@ -134,16 +132,19 @@ class OnboardingScreen extends StatelessWidget {
                   const SizedBox(height: 30),
                 ],
               ),
-             /* Center(
+              /* Center(
                 child: showLoaderList(color:  Colors.black,colorBG: Colors.white),
               ),*/
               if (provider.loading)
                 Center(
-                  child: showLoaderList(color:  Colors.black,colorBG: Colors.white),
+                  child: showLoaderList(
+                    color: Colors.black,
+                    colorBG: Colors.white,
+                  ),
                 ),
             ],
           );
-        }
+        },
       ),
     );
   }
@@ -181,8 +182,7 @@ class OnboardingScreen extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-
-    /*    commonAssetImage(
+        /*    commonAssetImage(
 
           width: 250,
             icAppLogo,height: 230),*/
@@ -203,13 +203,13 @@ class OnboardingScreen extends StatelessWidget {
         const SizedBox(height: 56),
 
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 75, vertical: 12),
           child: commonButton(
             height: 45,
             color: Colors.red,
             text: "Allow Permissions",
             onPressed: () async {
-              askPermissions(context,true );
+              askPermissions(context, true);
             },
           ),
         ),
@@ -221,20 +221,19 @@ class OnboardingScreen extends StatelessWidget {
   Widget bottomButtons(BuildContext context, OnboardingProvider p) {
     return p.currentIndex == data.length
         ? Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 100.0),
-          child: commonButton(
-            height: 45,
+            padding: const EdgeInsets.symmetric(horizontal: 100.0),
+            child: commonButton(
+              height: 45,
               color: Colors.white,
               fontSize: 12,
               textColor: colorProduct,
               text: "Get Started",
               onPressed: () async {
-              await  askPermissions(context,false);
+                await askPermissions(context, false);
                 await AppConfigCache.saveOnBoarding(true);
               },
             ),
-        )
-
+          )
         : Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: Row(
@@ -251,11 +250,10 @@ class OnboardingScreen extends StatelessWidget {
                       await AppConfigCache.saveOnBoarding(true);
                       navigatorKey.currentState?.pushNamedAndRemoveUntil(
                         RouteName.loginScreen,
-                            (Route<dynamic> route) => false,
+                        (Route<dynamic> route) => false,
                       );
                     },
                   ),
-
                 ),
                 Expanded(
                   child: commonButton(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hrms/core/constants/image_utils.dart';
 import 'package:hrms/core/widgets/component.dart';
 import 'package:hrms/core/widgets/context_extension.dart';
+import 'package:hrms/data/models/hotline/hotline_list_model.dart';
 import 'package:hrms/provider/hotline_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -26,9 +27,10 @@ class _HotlineScreenState extends State<HotlineScreen> {
       await init();
     });
   }
+
   Future<void> init() async {
     final provider = Provider.of<HotlineProvider>(context, listen: false);
-    await provider.resetHotlineData(  );
+    await provider.resetHotlineData();
     await Future.wait([
       provider.getLeaveCountData(),
       provider.getAllDepartment(),
@@ -183,9 +185,14 @@ class _HotlineScreenState extends State<HotlineScreen> {
                 context: context,
               );
             },
-            icon: commonAssetImage(icFitter, color: Colors.white, width: 24,height: 24),
+            icon: commonAssetImage(
+              icFitter,
+              color: Colors.white,
+              width: 24,
+              height: 24,
+            ),
           ),
-          SizedBox(width: 8,)
+          SizedBox(width: 8),
         ],
       ),
       body: Padding(
@@ -343,6 +350,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
                                   ),
                                 );
                               },
+
                               child: Container(
                                 padding: EdgeInsets.symmetric(
                                   horizontal: 5,
@@ -363,7 +371,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
                                       child: CachedImageWidget(
-                                        borderRadius:100,
+                                        borderRadius: 100,
                                         imageUrl: data?.profileImage,
                                         width: 60,
                                         height: 60,
@@ -398,13 +406,17 @@ class _HotlineScreenState extends State<HotlineScreen> {
                                   ],
                                 ),
                               ),
+                              // child: _buildEmployee(data: data),
                             );
                           },
                         )
                       : SizedBox(
-                      width: size.width,
-                      height: size.height*0.6,
-                      child: provider.isLoading?SizedBox.shrink():commonErrorView(text: "No data found")),
+                          width: size.width,
+                          height: size.height * 0.6,
+                          child: provider.isLoading
+                              ? SizedBox.shrink()
+                              : commonErrorView(text: "No data found"),
+                        ),
                 ],
               ),
             ),
@@ -412,6 +424,46 @@ class _HotlineScreenState extends State<HotlineScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildEmployee({HotLineData? data}) {
+    return Stack(
+      children: [
+        CachedImageWidget(
+          imageUrl: data?.profileImage,
+          width: double.infinity,
+          height: double.infinity,
+          fit: BoxFit.cover, // <-- Ensures image fills the height nicely
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            color: Colors.white.withValues(alpha: 0.5),
+            width: double.infinity,
+            padding: const EdgeInsets.all(4),
+
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                commonText(
+                  text: '${data?.firstname} ${data?.lastname}',
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: colorProduct,
+                  textAlign: TextAlign.center,
+                ),
+                commonText(
+                  text: '${data?.designation}',
+                  fontSize: 11,
+                  fontWeight: FontWeight.w400,
+                  color: colorProduct,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -452,10 +504,10 @@ class _HotlineScreenState extends State<HotlineScreen> {
             ),
             const SizedBox(width: 6),
             commonText(
-            /*  leftText: '',
+              /*  leftText: '',
               rightText: '',*/
               text: '${item.count}',
-             // duration: Duration(seconds: 2),
+              // duration: Duration(seconds: 2),
               style: commonTextStyle(
                 fontSize: 16,
                 color: color,
@@ -471,6 +523,5 @@ class _HotlineScreenState extends State<HotlineScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
   }
 }
