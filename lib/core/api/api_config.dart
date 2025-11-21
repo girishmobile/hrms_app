@@ -43,6 +43,8 @@ class ApiConfig {
   static String getEmployeeCountLeaveUrl = "$apiBASEURL/user_leave/getLeaveByEmp";
   static String getCurrentMonthIncrementEmpUrl = "$apiBASEURL/dashboard/getCurrentMonthIncrementEmp";
   static String getHikAttendanceUrl = "$apiBASEURL/dashboard/getHikAttendanceDashboard";
+  static String getLeaveDataDashboardUrl = "$apiBASEURL/dashboard/getLeaveDataDashboard";
+  static String getAllUserLeavesUrl = "$apiBASEURL/datatable/getAllUserLeaves";
 
 
 

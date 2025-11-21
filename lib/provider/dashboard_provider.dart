@@ -15,6 +15,8 @@ import '../core/widgets/component.dart';
 import '../data/models/dashboard/holiday_birthday_model.dart';
 import '../data/models/hr/EmployeeAttendanceModel.dart';
 import '../data/models/hr/EmployeeIncrementModel.dart';
+import '../data/models/hr/EmployeeLeaveBalanceModel.dart';
+import '../data/models/hr/LeaveDashboardModel.dart';
 import '../data/models/hub_staff_model/hun_staff_model.dart';
 import '../data/models/leave/EmployeeLeaveCountModel.dart';
 import '../main.dart';
@@ -507,4 +509,161 @@ class DashboardProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+ int ? _todayLeavesCount=0;
+
+  int? get todayLeavesCount => _todayLeavesCount;
+
+  void setTodayLeavesCount(int ?value){
+    _todayLeavesCount=value;
+    notifyListeners();
+  }
+  Future<void> getLeaveDataDashboard() async {
+    _setLoading(true);
+    try {
+
+      var response = await callApi(
+        url: ApiConfig.getLeaveDataDashboardUrl,
+        method: HttpMethod.get,
+
+      );
+
+      if (globalStatusCode == 200) {
+        final model = leaveDashboardModelFromJson(response);
+        setTodayLeavesCount(model.todayLeavesCount);
+        print('--todayLeavesCount--${model.todayLeavesCount}');
+        _setLoading(false);
+      } else {
+        // Show error dialog
+        showCommonDialog(
+          showCancel: false,
+          title: "Error",
+          context: navigatorKey.currentContext!,
+          content: errorMessage,
+        );
+        _setLoading(false);
+      }
+    } catch (e) {
+      // Print full error with stacktrace for better debugging
+      debugPrint("Error while fetching leave data: $e");
+    } finally {
+      _setLoading(false);
+      notifyListeners();
+    }
+  }
+
+  EmployeeLeaveBalanceModel?  _employeeLeaveBalanceModel ;
+
+  EmployeeLeaveBalanceModel? get employeeLeaveBalanceModel => _employeeLeaveBalanceModel;
+
+  Future<void> getAllUserLeavesBalance() async {
+    _setLoading(true);
+    try {
+      Map<String, dynamic> body={
+        "draw": 1,
+        "columns": [
+          {
+            "data": 0,
+            "name": "id",
+            "searchable": true,
+            "orderable": false,
+            "search": {
+              "value": "",
+              "regex": false
+            }
+          },
+          {
+            "data": 1,
+            "name": "firstname",
+            "searchable": true,
+            "orderable": true,
+            "search": {
+              "value": "",
+              "regex": false
+            }
+          },
+          {
+            "data": 2,
+            "name": "cl",
+            "searchable": false,
+            "orderable": false,
+            "search": {
+              "value": "",
+              "regex": false
+            }
+          },
+          {
+            "data": 3,
+            "name": "pl",
+            "searchable": false,
+            "orderable": false,
+            "search": {
+              "value": "",
+              "regex": false
+            }
+          },
+          {
+            "data": 4,
+            "name": "sl",
+            "searchable": false,
+            "orderable": false,
+            "search": {
+              "value": "",
+              "regex": false
+            }
+          },
+          {
+            "data": 5,
+            "name": "balance",
+            "searchable": true,
+            "orderable": true,
+            "search": {
+              "value": "",
+              "regex": false
+            }
+          }
+        ],
+        "order": [
+
+        ],
+        "start": 0,
+        "length": 400,
+        "search": {
+          "value": "",
+          "regex": false
+        }
+      };
+      var response = await callApi(
+        url: ApiConfig.getAllUserLeavesUrl,
+        method: HttpMethod.post,
+        body:body
+      );
+
+      if (globalStatusCode == 200) {
+        final decoded = json.decode(response);
+        print('----${decoded}');
+        _employeeLeaveBalanceModel = EmployeeLeaveBalanceModel.fromJson(decoded);
+
+
+        print('----${_employeeLeaveBalanceModel?.data?.length}');
+        _setLoading(false);
+      } else {
+        // Show error dialog
+        showCommonDialog(
+          showCancel: false,
+          title: "Error",
+          context: navigatorKey.currentContext!,
+          content: errorMessage,
+        );
+        _setLoading(false);
+      }
+    } catch (e) {
+      // Print full error with stacktrace for better debugging
+      debugPrint("Error while fetching leave data: $e");
+    } finally {
+      _setLoading(false);
+      notifyListeners();
+    }
+  }
+
 }

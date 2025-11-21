@@ -42,6 +42,8 @@ class _HrDashboardScreenState extends State<HrDashboardScreen> {
     await Future.wait([
       provider.getCurrentMonthIncrementEmp(),
       provider.getHikAttendanceDashboard(),
+      provider.getLeaveDataDashboard(),
+      provider.getAllUserLeavesBalance(),
     ]);
   }
 
@@ -54,286 +56,356 @@ class _HrDashboardScreenState extends State<HrDashboardScreen> {
         context: context,
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        child: ListView(
-          shrinkWrap: true,
-          // spacing: 20,
-          children: [
-            commonHomeRowView(
-              title: "Dashboard",
-              isHideSeeMore: true,
-              onTap: () {
-                /* navigatorKey.currentState?.pushNamed(
-                        RouteName.upcomingBirthdayScreen,
-                      );*/
-              },
-            ),
+      body: commonRefreshIndicator(
+        onRefresh: () async {
+          init();
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: ListView(
+            shrinkWrap: true,
+            // spacing: 20,
+            children: [
+              commonHomeRowView(
+                title: "Dashboard",
+                isHideSeeMore: true,
+                onTap: () {
+                  /* navigatorKey.currentState?.pushNamed(
+                          RouteName.upcomingBirthdayScreen,
+                        );*/
+                },
+              ),
 
-            SizedBox(height: 8),
-            Consumer<DashboardProvider>(
-              builder: (context,provider,child) {
-                return Column(
-                  spacing: 20,
-                  children: [
-                    Row(
-                      spacing: 20,
-                      children: [
-                        Expanded(
-                          child: commonView(colorBg: Colors.blue, value:'${provider.employeeIncrementModel?.activeEmp?.activeCount??"0"}' ),
-                        ),
-                        Expanded(
-                          child: commonView(
-                            title: "Today's Leaves",
-                            colorBg: Colors.orange,
-                            value: "3",
+              SizedBox(height: 8),
+              Consumer<DashboardProvider>(
+                builder: (context, provider, child) {
+                  return Column(
+                    spacing: 20,
+                    children: [
+                      Row(
+                        spacing: 20,
+                        children: [
+                          Expanded(
+                            child: commonView(
+                              colorBg: Colors.blue,
+                              value:
+                                  '${provider.employeeIncrementModel?.activeEmp?.activeCount ?? "0"}',
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      spacing: 20,
-                      children: [
-                        Expanded(
-                          child: commonView(
-                            title: "External System Access Employees",
-                            colorBg: Colors.green,
-                          value:'${provider.employeeIncrementModel?.activeEmp?.activeCount??"0"}',
+                          Expanded(
+                            child: commonView(
+                              title: "Today's Leaves",
+                              colorBg: Colors.orange,
+                              value: '${provider.todayLeavesCount}',
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: commonView(
-                            title: "Online Employees",
-                            colorBg: Colors.indigo,
-                            value:'${provider.employeeIncrementModel?.onlineEmployees?.empCount??"0"}',
+                        ],
+                      ),
+                      Row(
+                        spacing: 20,
+                        children: [
+                          Expanded(
+                            child: commonView(
+                              title: "External System Access Employees",
+                              colorBg: Colors.green,
+                              value:
+                                  '${provider.employeeIncrementModel?.activeEmp?.activeCount ?? "0"}',
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      spacing: 20,
-                      children: [
-                        Expanded(
-                          child: commonView(
-                            title: "View Employees Leave Balance",
-                            colorBg: Colors.green,
-                            value: null,
+                          Expanded(
+                            child: commonView(
+                              title: "Online Employees",
+                              colorBg: Colors.indigo,
+                              value:
+                                  '${provider.employeeIncrementModel?.onlineEmployees?.empCount ?? "0"}',
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: commonView(
-                            onTap: () {
-                              showCommonBottomSheet(
-                                context: context,
-                                content: SizedBox(
-                                  height: size.height * 0.8,
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          commonText(
-                                            text: 'Leave Request',
-                                            fontWeight: FontWeight.w600,
-                                            color: colorLogo,
-                                            fontSize: 16,
-                                          ),
-                                          commonInkWell(
-                                            onTap: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: Container(
-                                              width: 35,
-                                              height: 35,
-                                              decoration: commonBoxDecoration(
-                                                color: colorLogo,
-                                                shape: BoxShape.circle,
-                                              ),
-                                              child: Center(
-                                                child: Icon(
-                                                  size: 15,
-                                                  Icons.close,
-                                                  color: Colors.white,
+                        ],
+                      ),
+                      Row(
+                        spacing: 20,
+                        children: [
+                          Expanded(
+                            child: commonView(
+                              onTap: () {
+                                showCommonBottomSheet(
+                                  context: context,
+                                  content: SizedBox(
+                                    height: size.height * 0.8,
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            commonText(
+                                              text: 'Leave Balance',
+                                              fontWeight: FontWeight.w600,
+                                              color: colorLogo,
+                                              fontSize: 16,
+                                            ),
+                                            commonInkWell(
+                                              onTap: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Container(
+                                                width: 35,
+                                                height: 35,
+                                                decoration: commonBoxDecoration(
+                                                  color: colorLogo,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: Center(
+                                                  child: Icon(
+                                                    size: 15,
+                                                    Icons.close,
+                                                    color: Colors.white,
+                                                  ),
                                                 ),
                                               ),
                                             ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 8),
+                                        Expanded(
+                                          child: commonEmpLeaveBalance(
+                                            size: size,
+                                            provider: provider,
                                           ),
-                                        ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                              title: "View Employees Leave Balance",
+                              colorBg: Colors.green,
+                              value:
+                              '${provider.employeeIncrementModel?.activeEmp?.activeCount ?? "0"}',
+                            ),
+                          ),
+                          Expanded(
+                            child: commonView(
+                              onTap: () {
+                                showCommonBottomSheet(
+                                  context: context,
+                                  content: SizedBox(
+                                    height: size.height * 0.8,
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            commonText(
+                                              text: 'Leave Request',
+                                              fontWeight: FontWeight.w600,
+                                              color: colorLogo,
+                                              fontSize: 16,
+                                            ),
+                                            commonInkWell(
+                                              onTap: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Container(
+                                                width: 35,
+                                                height: 35,
+                                                decoration: commonBoxDecoration(
+                                                  color: colorLogo,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: Center(
+                                                  child: Icon(
+                                                    size: 15,
+                                                    Icons.close,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Expanded(
+                                          child: LeaveListingScreen(
+                                            hideAppBar: true,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                              title: "View Leave Request",
+                              colorBg: Colors.indigo,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                },
+              ),
+
+              SizedBox(height: 20),
+              Consumer<DashboardProvider>(
+                builder: (context, provider, child) {
+                  return Column(
+                    children: [
+                      commonHomeRowView(
+                        title: "Today's Attendance",
+                        onTap: () {
+                          showCommonBottomSheet(
+                            context: context,
+                            content: SizedBox(
+                              height: size.height * 0.8,
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      commonText(
+                                        text: 'Attendance List',
+                                        fontWeight: FontWeight.w600,
+                                        color: colorLogo,
+                                        fontSize: 16,
                                       ),
-                                      Expanded(
-                                        child: LeaveListingScreen(hideAppBar: true),
+                                      commonInkWell(
+                                        onTap: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Container(
+                                          width: 35,
+                                          height: 35,
+                                          decoration: commonBoxDecoration(
+                                            color: colorLogo,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: Center(
+                                            child: Icon(
+                                              size: 15,
+                                              Icons.close,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),
-                                ),
-                              );
-                            },
-                            title: "View Leave Request",
-                            colorBg: Colors.indigo,
-                          ),
+                                  SizedBox(height: 8),
+                                  Expanded(
+                                    child: commonAttendanceView(
+                                      size: size,
+                                      provider: provider,
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: provider
+                                          .employeeAttendanceModel
+                                          .length,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      SizedBox(height: 8),
+                      SizedBox(
+                        height: 80,
+
+                        width: size.width,
+                        child: commonAttendanceView(
+                          size: size,
+                          provider: provider,
                         ),
-                      ],
-                    ),
-                  ],
-                );
-              }
-            ),
+                      ),
+                    ],
+                  );
+                },
+              ),
 
-            SizedBox(height: 20),
-            Consumer<DashboardProvider>(
-              builder: (context, provider, child) {
-                return Column(
-                  children: [
-                    commonHomeRowView(
-                      title: "Today's Attendance",
-                      onTap: () {
-                        showCommonBottomSheet(
-                          context: context,
-                          content: SizedBox(
-                            height: size.height*0.8,
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    commonText(
-                                      text: 'Attendance List',
-                                      fontWeight: FontWeight.w600,
-                                      color: colorLogo,
-                                      fontSize: 16,
-                                    ),
-                                    commonInkWell(
-                                      onTap: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Container(
-                                        width: 35,
-                                        height: 35,
-                                        decoration: commonBoxDecoration(
-                                          color: colorLogo,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Center(
-                                          child: Icon(
-                                            size: 15,
-                                            Icons.close,
-                                            color: Colors.white,
+              SizedBox(height: 20),
+              Consumer<DashboardProvider>(
+                builder: (context, provider, child) {
+                  return Column(
+                    children: [
+                      commonHomeRowView(
+                        title: "Upcoming Employee Increments",
+                        onTap: () {
+                          showCommonBottomSheet(
+                            context: context,
+                            content: SizedBox(
+                              height: size.height * 0.8,
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      commonText(
+                                        text: 'Increment List',
+                                        fontWeight: FontWeight.w600,
+                                        color: colorLogo,
+                                        fontSize: 16,
+                                      ),
+                                      commonInkWell(
+                                        onTap: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Container(
+                                          width: 35,
+                                          height: 35,
+                                          decoration: commonBoxDecoration(
+                                            color: colorLogo,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: Center(
+                                            child: Icon(
+                                              size: 15,
+                                              Icons.close,
+                                              color: Colors.white,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 8,),
-                                Expanded(
-                                  child: commonAttendanceView(
-                                    size: size,
-                                    provider: provider,
-                                    scrollDirection: Axis.vertical,
-                                    itemCount:
-                                        provider.employeeAttendanceModel.length ,
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-
-                      },
-                    ),
-                    SizedBox(height: 8),
-                    SizedBox(
-                      height: 80,
-
-                      width: size.width,
-                      child: commonAttendanceView(
-                        size: size,
-                        provider: provider,
-                      ) ,
-                    ),
-                  ],
-                );
-              },
-            ),
-
-            SizedBox(height: 20),
-            Consumer<DashboardProvider>(
-              builder: (context, provider, child) {
-                return Column(
-                  children: [
-                    commonHomeRowView(
-                      title: "Increments",
-                      onTap: () {
-                        showCommonBottomSheet(
-                          context: context,
-                          content: SizedBox(
-                            height: size.height*0.8,
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    commonText(
-                                      text: 'Increment List',
-                                      fontWeight: FontWeight.w600,
-                                      color: colorLogo,
-                                      fontSize: 16,
+                                  SizedBox(height: 8),
+                                  Expanded(
+                                    child: commonAttendanceView(
+                                      size: size,
+                                      provider: provider,
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: provider
+                                          .employeeIncrementModel
+                                          ?.increments
+                                          ?.length,
                                     ),
-                                    commonInkWell(
-                                      onTap: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Container(
-                                        width: 35,
-                                        height: 35,
-                                        decoration: commonBoxDecoration(
-                                          color: colorLogo,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Center(
-                                          child: Icon(
-                                            size: 15,
-                                            Icons.close,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 8,),
-                                Expanded(
-                                  child: commonAttendanceView(
-                                    size: size,
-                                    provider: provider,
-                                    scrollDirection: Axis.vertical,
-                                    itemCount:
-                                    provider.employeeIncrementModel?.increments?.length  ,
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                    SizedBox(height: 8),
-                    SizedBox(
-                      height: 80,
+                          );
+                        },
+                      ),
+                      SizedBox(height: 8),
+                      SizedBox(
+                        height: 80,
 
-                      width: size.width,
-                      child: commonIncrementView(provider: provider,size: size,),
-                    ),
-                  ],
-                );
-              }
-            ),
+                        width: size.width,
+                        child: commonIncrementView(
+                          provider: provider,
+                          size: size,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
 
-            //  Expanded(child: LeaveListingScreen( hideAppBar: true,))
-          ],
+              //  Expanded(child: LeaveListingScreen( hideAppBar: true,))
+            ],
+          ),
         ),
       ),
     );
@@ -401,10 +473,9 @@ class _HrDashboardScreenState extends State<HrDashboardScreen> {
           width: size.width * 0.8,
           decoration: commonBoxDecoration(borderColor: colorBorder),
           padding: const EdgeInsets.symmetric(horizontal: 5.0),
-          margin: const EdgeInsets.symmetric(horizontal: 5.0,vertical: 5),
-          child:ListTile(
-
-            leading:  ClipRRect(
+          margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5),
+          child: ListTile(
+            leading: ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: CachedImageWidget(
                 imageUrl: item.profileImage,
@@ -412,13 +483,12 @@ class _HrDashboardScreenState extends State<HrDashboardScreen> {
                 borderRadius: 500,
                 width: 40,
                 height: 40,
-                fit:
-                BoxFit.cover, // <-- Ensures image fills the height nicely
+                fit: BoxFit.cover, // <-- Ensures image fills the height nicely
               ),
             ),
-            trailing:   commonText(
+            trailing: commonText(
               text:
-              '${item.officeStartTime ?? ''} AM To ${item.officeEndTime ?? ''} PM',
+                  '${item.officeStartTime ?? ''} AM To ${item.officeEndTime ?? ''} PM',
               fontSize: 10,
             ),
             subtitle: commonText(
@@ -426,7 +496,7 @@ class _HrDashboardScreenState extends State<HrDashboardScreen> {
               text: item.designation ?? '',
               fontSize: 12,
             ),
-            title:   Column(
+            title: Column(
               crossAxisAlignment: .start,
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -457,43 +527,42 @@ class _HrDashboardScreenState extends State<HrDashboardScreen> {
       physics: const BouncingScrollPhysics(),
       //padding: const EdgeInsets.only(left: 0, right: 0, bottom: 16),
       itemCount:
-      itemCount ?? min(provider.employeeIncrementModel?.increments?.length ?? 0, 5),
+          itemCount ??
+          min(provider.employeeIncrementModel?.increments?.length ?? 0, 5),
       //itemCount: 5,
       itemBuilder: (context, index) {
-        final item =provider.employeeIncrementModel?.increments?[index];
+        final item = provider.employeeIncrementModel?.increments?[index];
         return Container(
           width: size.width * 0.8,
           decoration: commonBoxDecoration(borderColor: colorBorder),
           padding: const EdgeInsets.symmetric(horizontal: 5.0),
-          margin: const EdgeInsets.symmetric(horizontal: 5.0,vertical: 5),
-          child:ListTile(
-
-            leading:  ClipRRect(
+          margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5),
+          child: ListTile(
+            leading: ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: CachedImageWidget(
-                imageUrl: item?.profileImage??'',
+                imageUrl: item?.profileImage ?? '',
 
                 borderRadius: 500,
                 width: 40,
                 height: 40,
-                fit:
-                BoxFit.cover, // <-- Ensures image fills the height nicely
+                fit: BoxFit.cover, // <-- Ensures image fills the height nicely
               ),
             ),
-           /* trailing:   commonText(
+            /* trailing:   commonText(
               text:
               '${item.officeStartTime ?? ''} AM To ${item.officeEndTime ?? ''} PM',
               fontSize: 10,
             ),*/
-           subtitle:  commonText(
-             color: Colors.black38,
-             text: formatDate(
-               item?.incrementDate?.date ?? '',
-               format: "dd-MM-yyyy",
-             ),
-             fontSize: 12,
-           ),
-            title:   Column(
+            subtitle: commonText(
+              color: Colors.black38,
+              text: formatDate(
+                item?.incrementDate?.date ?? '',
+                format: "dd-MM-yyyy",
+              ),
+              fontSize: 12,
+            ),
+            title: Column(
               crossAxisAlignment: .start,
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -501,12 +570,91 @@ class _HrDashboardScreenState extends State<HrDashboardScreen> {
                   text: '${item?.firstname ?? ''} ${item?.lastname ?? ''}',
                   fontWeight: FontWeight.w600,
                 ),
-
               ],
             ),
           ),
         );
       },
+    );
+  }
+
+  Widget commonEmpLeaveBalance({
+    required DashboardProvider provider,
+    required Size size,
+  }) {
+    return ListView.builder(
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      physics: const BouncingScrollPhysics(),
+      //padding: const EdgeInsets.only(left: 0, right: 0, bottom: 16),
+      itemCount: provider.employeeLeaveBalanceModel?.data?.length,
+      //itemCount: 5,
+      itemBuilder: (context, index) {
+        final item = provider.employeeLeaveBalanceModel?.data?[index];
+        Color color =
+        provider.colors[index % provider.colors.length];
+        return Container(
+          width: size.width * 0.8,
+          decoration: commonBoxDecoration(borderColor: colorBorder,
+          color: color.withValues(alpha: 0.02)),
+          padding: const EdgeInsets.symmetric(horizontal: 5.0,vertical: 8),
+          margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5),
+          child: Column(
+            children: [
+              ListTile(
+                //contentPadding: EdgeInsets.zero,
+
+                leading: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: CachedImageWidget(
+                    imageUrl: item?.profileImage ?? '',
+
+                    borderRadius: 500,
+                    width: 40,
+                    height: 40,
+                    fit: BoxFit.cover, // <-- Ensures image fills the height nicely
+                  ),
+                ),
+
+                trailing: commonText(text: "Total Leave: ${item?.balance}",fontSize: 12,fontWeight: FontWeight.w600),
+                title: commonText(
+                  text: '${item?.firstname ?? ''} ${item?.lastname ?? ''}',
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+
+              SizedBox(height: 8,),
+              Row(
+                spacing: 10,
+                children: [
+                  Expanded(child: commonLeaveView(color:color,value: item?.cl)),
+                  Expanded(child: commonLeaveView(color:color,title: "PL",value: item?.pl)),
+                  Expanded(child: commonLeaveView(color:color,title: "SL",value: item?.sl)),
+                 // / Expanded(child: commonLeaveView(title: "Total")),
+                ],
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+  Widget commonLeaveView({String ? title, dynamic value,required Color color}){
+    return Container(
+     
+      decoration: commonBoxDecoration(
+        borderRadius: 4,
+        color: color.withValues(alpha: 0.06)
+      ),
+
+      child: Column(
+        mainAxisAlignment: .center,
+        crossAxisAlignment: .center,
+        children: [
+          commonText(text:title?? "CL",fontWeight: FontWeight.w400,textAlign: TextAlign.center,fontSize: 10),
+          commonText(text:value??"0.0",fontWeight: FontWeight.w600,textAlign: TextAlign.center,fontSize: 12)
+        ],
+      ),
     );
   }
 }
