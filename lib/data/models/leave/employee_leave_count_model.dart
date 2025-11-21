@@ -34,10 +34,10 @@ class EmployeeLeaveCountModel {
     employmentStarted = json['employment_started'];
     oneYearCompleted = json['one_year_completed'];
     createdAt = json['created_at'] != null
-        ? new CreatedAt.fromJson(json['created_at'])
+        ? CreatedAt.fromJson(json['created_at'])
         : null;
     updatedAt = json['updated_at'] != null
-        ? new CreatedAt.fromJson(json['updated_at'])
+        ? CreatedAt.fromJson(json['updated_at'])
         : null;
     deletedAt = json['deletedAt'];
   }

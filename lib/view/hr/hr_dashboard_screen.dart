@@ -566,7 +566,7 @@ class _HrDashboardScreenState extends State<HrDashboardScreen> {
       physics: const BouncingScrollPhysics(),
       //padding: const EdgeInsets.only(left: 0, right: 0, bottom: 16),
       itemCount:
-          itemCount ?? min(provider.employeeAttendanceModel.length ?? 0, 5),
+          itemCount ?? min(provider.employeeAttendanceModel.length , 5),
       //itemCount: 5,
       itemBuilder: (context, index) {
         final item = provider.employeeAttendanceModel[index];

@@ -621,7 +621,7 @@ class LeavesListScreen extends StatelessWidget {
     );
   }
 
-  commonColumn({required String title, required String value}) {
+  Widget commonColumn({required String title, required String value}) {
     return Row(
       mainAxisAlignment: .spaceBetween,
       crossAxisAlignment: .start,

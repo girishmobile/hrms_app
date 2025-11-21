@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hrms/core/constants/color_utils.dart';
-import 'package:hrms/core/constants/image_utils.dart';
 import 'package:hrms/core/widgets/component.dart';
 import 'package:hrms/provider/location_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 import '../core/hive/app_config_cache.dart';
@@ -179,7 +177,7 @@ class OnboardingScreen extends StatelessWidget {
 
   // Permission Page
   Widget permissionPage(BuildContext context) {
-    final provider = Provider.of<LocationProvider>(context);
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

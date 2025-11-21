@@ -13,12 +13,12 @@ import '../core/api/gloable_status_code.dart';
 import '../core/api/network_repository.dart';
 import '../core/widgets/component.dart';
 import '../data/models/dashboard/holiday_birthday_model.dart';
-import '../data/models/hr/EmployeeAttendanceModel.dart';
-import '../data/models/hr/EmployeeIncrementModel.dart';
-import '../data/models/hr/EmployeeLeaveBalanceModel.dart';
-import '../data/models/hr/LeaveDashboardModel.dart';
+import '../data/models/hr/employee_attendance_model.dart';
+import '../data/models/hr/employee_increment_model.dart';
+import '../data/models/hr/employee_leave_balance_model.dart';
+import '../data/models/hr/leave_dashboard_model.dart';
 import '../data/models/hub_staff_model/hun_staff_model.dart';
-import '../data/models/leave/EmployeeLeaveCountModel.dart';
+import '../data/models/leave/employee_leave_count_model.dart';
 import '../main.dart';
 
 class LeaveModel {
@@ -346,7 +346,7 @@ class DashboardProvider with ChangeNotifier {
     _setLoading(true);
     try {
       Map<String, dynamic> body = {"id": id};
-      final response = await callApi(
+     await callApi(
         url: ApiConfig.deleteNotificationUrl,
         method: HttpMethod.post,
 
@@ -474,7 +474,6 @@ class DashboardProvider with ChangeNotifier {
 
       if (globalStatusCode == 200) {
         final decoded = json.decode(response);
-        print('----${decoded}');
       //  _employeeAttendanceModel = EmployeeAttendanceModel.fromJson(decoded);
         if (decoded is List) {
           _employeeAttendanceModel = decoded
@@ -489,7 +488,6 @@ class DashboardProvider with ChangeNotifier {
         }
 
 
-        print('----${_employeeAttendanceModel.length}');
         _setLoading(false);
       } else {
         // Show error dialog
@@ -531,7 +529,6 @@ class DashboardProvider with ChangeNotifier {
       if (globalStatusCode == 200) {
         final model = leaveDashboardModelFromJson(response);
         setTodayLeavesCount(model.todayLeavesCount);
-        print('--todayLeavesCount--${model.todayLeavesCount}');
         _setLoading(false);
       } else {
         // Show error dialog
@@ -642,11 +639,9 @@ class DashboardProvider with ChangeNotifier {
 
       if (globalStatusCode == 200) {
         final decoded = json.decode(response);
-        print('----${decoded}');
         _employeeLeaveBalanceModel = EmployeeLeaveBalanceModel.fromJson(decoded);
 
 
-        print('----${_employeeLeaveBalanceModel?.data?.length}');
         _setLoading(false);
       } else {
         // Show error dialog

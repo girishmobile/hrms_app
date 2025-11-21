@@ -105,7 +105,7 @@ class LocationProvider extends ChangeNotifier {
   }
 
 
-  Future<Position> _getCurrentLocation() async {
+/*  Future<Position> _getCurrentLocation() async {
     // Verify that location services are enabled.
     final bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
@@ -134,10 +134,10 @@ class LocationProvider extends ChangeNotifier {
         accuracy: LocationAccuracy.high,
         timeLimit: const Duration(seconds: 30)
       ),
-      /*desiredAccuracy: LocationAccuracy.high,
-      timeLimit: const Duration(seconds: 30),*/
+      *//*desiredAccuracy: LocationAccuracy.high,
+      timeLimit: const Duration(seconds: 30),*//*
     );
-  }
+  }*/
 
   Future<String> _getAddressFromLatLng(Position position) async {
     try {

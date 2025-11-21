@@ -7,7 +7,7 @@ import '../core/api/api_config.dart';
 import '../core/api/gloable_status_code.dart';
 import '../core/api/network_repository.dart';
 import '../core/widgets/component.dart';
-import '../data/models/leave/EmployeeLeaveCountModel.dart';
+import '../data/models/leave/employee_leave_count_model.dart';
 import '../data/models/leave/leave_listing_model.dart';
 import '../data/models/leave/all_leave_model.dart';
 import '../data/models/leave/leave_model.dart';
