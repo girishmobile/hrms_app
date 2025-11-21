@@ -78,14 +78,9 @@ class RouteGenerate {
       case RouteName.leaveListingScreen:
         return _buildPageRoute(const LeaveListingScreen());
       case RouteName.onboardingScreen:
-<<<<<<< HEAD
-        return _buildPageRoute( OnboardingScreen());
-      case RouteName.hrDashboardScreen:
-        return _buildPageRoute( HrDashboardScreen());
-=======
         return _buildPageRoute(OnboardingScreen());
->>>>>>> 5a2cb66 (changes)
-
+      case RouteName.hrDashboardScreen:
+        return _buildPageRoute(HrDashboardScreen());
       default:
         return _buildPageRoute(const SplashScreen());
     }
