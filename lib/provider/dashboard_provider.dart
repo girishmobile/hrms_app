@@ -556,7 +556,8 @@ class DashboardProvider with ChangeNotifier {
 
   EmployeeLeaveBalanceModel? get employeeLeaveBalanceModel => _employeeLeaveBalanceModel;
 
-  Future<void> getAllUserLeavesBalance() async {
+  Future<void> getAllUserLeavesBalance({String? search}) async {
+    _employeeLeaveBalanceModel?.data?.clear();
     _setLoading(true);
     try {
       Map<String, dynamic> body={
@@ -629,7 +630,7 @@ class DashboardProvider with ChangeNotifier {
         "start": 0,
         "length": 400,
         "search": {
-          "value": "",
+          "value": search,
           "regex": false
         }
       };
