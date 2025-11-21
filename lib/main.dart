@@ -49,8 +49,9 @@ List<SingleChildWidget> providers = [
     create: (_) => AttendanceProvider(),
   ),
   ChangeNotifierProvider<HotlineProvider>(create: (_) => HotlineProvider()),
-  ChangeNotifierProvider<OnboardingProvider>(create: (_) => OnboardingProvider()),
-  ChangeNotifierProvider<LocationProvider>(create: (_) => LocationProvider()),
+  ChangeNotifierProvider<OnboardingProvider>(
+    create: (_) => OnboardingProvider(),
+  ),
 ];
 
 Future<void> _initializeFirebase() async {
