@@ -50,7 +50,6 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   String? _profileImage;
-
   String? get profileImage => _profileImage;
 
   void setProfileImage(String? imageUrl) {
@@ -66,7 +65,6 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   ProfileModel? _profileModel;
-
   ProfileModel? get profileModel => _profileModel;
 
   Future<void> getUserDetails({required Map<String, dynamic> body}) async {
@@ -137,7 +135,6 @@ class ProfileProvider extends ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
-
       _setLoading(false);
     }
   }
@@ -160,7 +157,6 @@ class ProfileProvider extends ChangeNotifier {
 
       var streamedResponse = await request.send();
       var response = await http.Response.fromStream(streamedResponse);
-
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);

@@ -18,8 +18,8 @@ class LoginProvider with ChangeNotifier {
   final tetCurrentPassword = TextEditingController();
   final tetNewPassword = TextEditingController();
   final tetConfirmPassword = TextEditingController();
-  bool _obscurePassword = true;
 
+  bool _obscurePassword = true;
   bool get obscurePassword => _obscurePassword;
 
   bool _obscureCurrentPassword = true;
@@ -39,11 +39,11 @@ class LoginProvider with ChangeNotifier {
     notifyListeners();
   }
 
-
   void toggleCurrentPassword() {
     _obscureCurrentPassword = !_obscureCurrentPassword;
     notifyListeners();
   }
+
   void toggleNewPassword() {
     _obscureNewPassword = !_obscureNewPassword;
     notifyListeners();
@@ -53,7 +53,6 @@ class LoginProvider with ChangeNotifier {
     _obscureConfirmPassword = !_obscureConfirmPassword;
     notifyListeners();
   }
-
 
   @override
   void dispose() {
@@ -73,7 +72,6 @@ class LoginProvider with ChangeNotifier {
   }
 
   bool _isLoading = false;
-
   bool get isLoading => _isLoading;
 
   void _setLoading(bool val) {
@@ -82,7 +80,6 @@ class LoginProvider with ChangeNotifier {
   }
 
   Future<void> loginApi({required Map<String, dynamic> body}) async {
-
     _setLoading(true);
     try {
       final response = await callApi(
@@ -143,8 +140,7 @@ class LoginProvider with ChangeNotifier {
       if (globalStatusCode == 200) {
         final decoded = json.decode(response);
 
-
-        if(decoded['response']=="success"){
+        if (decoded['response'] == "success") {
           resetState();
           Future.microtask(() {
             final context = navigatorKey.currentContext;
@@ -165,16 +161,11 @@ class LoginProvider with ChangeNotifier {
             Future.delayed(const Duration(seconds: 2), () {
               navigatorKey.currentState?.pushNamedAndRemoveUntil(
                 RouteName.loginScreen,
-                    (route) => false,
+                (route) => false,
               );
             });
           });
-
-
-
-        }
-        else
-        {
+        } else {
           showCommonDialog(
             showCancel: false,
             title: "Error",
@@ -208,18 +199,14 @@ class LoginProvider with ChangeNotifier {
         headers: null,
       );
 
-
       if (globalStatusCode == 200) {
         final decoded = json.decode(response);
 
-
-        if(decoded!="Not Update"){
+        if (decoded != "Not Update") {
           resetState();
           Future.microtask(() {
             final context = navigatorKey.currentContext;
             if (context != null) {
-
-
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
@@ -236,16 +223,11 @@ class LoginProvider with ChangeNotifier {
             Future.delayed(const Duration(seconds: 2), () {
               navigatorKey.currentState?.pushNamedAndRemoveUntil(
                 RouteName.loginScreen,
-                    (route) => false,
+                (route) => false,
               );
             });
           });
-
-
-
-        }
-        else
-        {
+        } else {
           showCommonDialog(
             showCancel: false,
             title: "Error",

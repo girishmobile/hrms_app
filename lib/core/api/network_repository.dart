@@ -80,7 +80,6 @@ Future callApi({
 
     return {'status': false, 'message': errorMessage};
   } catch (e) {
-
     errorMessage = "Something went wrong. Please try again.";
     return {'status': false, 'message': errorMessage};
   }
@@ -106,11 +105,9 @@ Future<String> getResponse(Response response) async {
     if (!_isRedirectingToLogin) {
       _isRedirectingToLogin = true;
       Future.microtask(() async {
-
         final context = navigatorKey.currentContext;
 
         if (context != null) {
-
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(

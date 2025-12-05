@@ -177,7 +177,6 @@ class DashboardProvider with ChangeNotifier {
         _currentAttendanceModel = CurrentAttendanceModel.fromJson(
           json.decode(response),
         );
-
         _setLoading(false);
       } else {}
       _setLoading(false);
@@ -346,7 +345,7 @@ class DashboardProvider with ChangeNotifier {
     _setLoading(true);
     try {
       Map<String, dynamic> body = {"id": id};
-     await callApi(
+      await callApi(
         url: ApiConfig.deleteNotificationUrl,
         method: HttpMethod.post,
 
@@ -425,7 +424,6 @@ class DashboardProvider with ChangeNotifier {
   Future<void> getCurrentMonthIncrementEmp() async {
     _setLoading(true);
     try {
-
       var response = await callApi(
         url: ApiConfig.getCurrentMonthIncrementEmpUrl,
         method: HttpMethod.get,
@@ -457,24 +455,22 @@ class DashboardProvider with ChangeNotifier {
     }
   }
 
-
   List<EmployeeAttendanceModel> _employeeAttendanceModel = [];
 
-  List<EmployeeAttendanceModel> get employeeAttendanceModel => _employeeAttendanceModel;
+  List<EmployeeAttendanceModel> get employeeAttendanceModel =>
+      _employeeAttendanceModel;
 
   Future<void> getHikAttendanceDashboard() async {
     _setLoading(true);
     try {
-
       var response = await callApi(
         url: ApiConfig.getHikAttendanceUrl,
         method: HttpMethod.get,
-
       );
 
       if (globalStatusCode == 200) {
         final decoded = json.decode(response);
-      //  _employeeAttendanceModel = EmployeeAttendanceModel.fromJson(decoded);
+        //  _employeeAttendanceModel = EmployeeAttendanceModel.fromJson(decoded);
         if (decoded is List) {
           _employeeAttendanceModel = decoded
               .map((e) => EmployeeAttendanceModel.fromJson(e))
@@ -486,7 +482,6 @@ class DashboardProvider with ChangeNotifier {
         } else {
           _employeeAttendanceModel = [];
         }
-
 
         _setLoading(false);
       } else {
@@ -508,22 +503,21 @@ class DashboardProvider with ChangeNotifier {
     }
   }
 
- int ? _todayLeavesCount=0;
+  int? _todayLeavesCount = 0;
 
   int? get todayLeavesCount => _todayLeavesCount;
 
-  void setTodayLeavesCount(int ?value){
-    _todayLeavesCount=value;
+  void setTodayLeavesCount(int? value) {
+    _todayLeavesCount = value;
     notifyListeners();
   }
+
   Future<void> getLeaveDataDashboard() async {
     _setLoading(true);
     try {
-
       var response = await callApi(
         url: ApiConfig.getLeaveDataDashboardUrl,
         method: HttpMethod.get,
-
       );
 
       if (globalStatusCode == 200) {
@@ -549,15 +543,16 @@ class DashboardProvider with ChangeNotifier {
     }
   }
 
-  EmployeeLeaveBalanceModel?  _employeeLeaveBalanceModel ;
+  EmployeeLeaveBalanceModel? _employeeLeaveBalanceModel;
 
-  EmployeeLeaveBalanceModel? get employeeLeaveBalanceModel => _employeeLeaveBalanceModel;
+  EmployeeLeaveBalanceModel? get employeeLeaveBalanceModel =>
+      _employeeLeaveBalanceModel;
 
   Future<void> getAllUserLeavesBalance({String? search}) async {
     _employeeLeaveBalanceModel?.data?.clear();
     _setLoading(true);
     try {
-      Map<String, dynamic> body={
+      Map<String, dynamic> body = {
         "draw": 1,
         "columns": [
           {
@@ -565,82 +560,60 @@ class DashboardProvider with ChangeNotifier {
             "name": "id",
             "searchable": true,
             "orderable": false,
-            "search": {
-              "value": "",
-              "regex": false
-            }
+            "search": {"value": "", "regex": false},
           },
           {
             "data": 1,
             "name": "firstname",
             "searchable": true,
             "orderable": true,
-            "search": {
-              "value": "",
-              "regex": false
-            }
+            "search": {"value": "", "regex": false},
           },
           {
             "data": 2,
             "name": "cl",
             "searchable": false,
             "orderable": false,
-            "search": {
-              "value": "",
-              "regex": false
-            }
+            "search": {"value": "", "regex": false},
           },
           {
             "data": 3,
             "name": "pl",
             "searchable": false,
             "orderable": false,
-            "search": {
-              "value": "",
-              "regex": false
-            }
+            "search": {"value": "", "regex": false},
           },
           {
             "data": 4,
             "name": "sl",
             "searchable": false,
             "orderable": false,
-            "search": {
-              "value": "",
-              "regex": false
-            }
+            "search": {"value": "", "regex": false},
           },
           {
             "data": 5,
             "name": "balance",
             "searchable": true,
             "orderable": true,
-            "search": {
-              "value": "",
-              "regex": false
-            }
-          }
+            "search": {"value": "", "regex": false},
+          },
         ],
-        "order": [
-
-        ],
+        "order": [],
         "start": 0,
         "length": 400,
-        "search": {
-          "value": search,
-          "regex": false
-        }
+        "search": {"value": search, "regex": false},
       };
       var response = await callApi(
         url: ApiConfig.getAllUserLeavesUrl,
         method: HttpMethod.post,
-        body:body
+        body: body,
       );
 
       if (globalStatusCode == 200) {
         final decoded = json.decode(response);
-        _employeeLeaveBalanceModel = EmployeeLeaveBalanceModel.fromJson(decoded);
-
+        _employeeLeaveBalanceModel = EmployeeLeaveBalanceModel.fromJson(
+          decoded,
+        );
 
         _setLoading(false);
       } else {
@@ -661,5 +634,4 @@ class DashboardProvider with ChangeNotifier {
       notifyListeners();
     }
   }
-
 }

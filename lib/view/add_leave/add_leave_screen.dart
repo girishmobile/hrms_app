@@ -60,30 +60,22 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
         });
       }
 
-
-
-      leaveProvider.setHalfDay(widget.data?.halfDay??false
-      );
+      leaveProvider.setHalfDay(widget.data?.halfDay ?? false);
       leaveProvider.setSelectedHalfType(widget.data?.halfDayType ?? '');
       final backendType = widget.data?.leaveType?.leavetype;
       if (backendType != null && backendType.isNotEmpty) {
-        leaveProvider.leaveModel?.leaveTypes?.forEach((e) {
-        });
+        leaveProvider.leaveModel?.leaveTypes?.forEach((e) {});
         final matchedType = leaveProvider.leaveModel?.leaveTypes?.firstWhere(
-              (item) => item.leavetype?.toLowerCase() == backendType.toLowerCase(),
+          (item) => item.leavetype?.toLowerCase() == backendType.toLowerCase(),
         );
         if (matchedType != null) {
           leaveProvider.setSelectedLeaveType(matchedType);
         }
       }
-      setState(() {
-
-      });
+      setState(() {});
     } else {
       UserModel? user = await AppConfigCache.getUserModel();
-
       Map<String, dynamic> body = {"emp_id": user?.data?.user?.id};
-
       await leaveProvider.getLeaveData(body: body);
     }
   }
@@ -98,8 +90,8 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
       ),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: Consumer2<LeaveProvider,LocationProvider >(
-          builder: (context, provider,locationProvider, child) {
+        child: Consumer2<LeaveProvider, LocationProvider>(
+          builder: (context, provider, locationProvider, child) {
             return commonPopScope(
               onBack: () {
                 provider.clearLeaveType();
@@ -204,10 +196,9 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
                       commonButton(
                         text: "Apply",
                         onPressed: () async {
-
-
-                          await locationProvider.requestPermissionsAndFetchData(isAddress: true) ;
-
+                          await locationProvider.requestPermissionsAndFetchData(
+                            isAddress: true,
+                          );
 
                           if (provider.fromDate == null) {
                             showToast("Please select a start date");
@@ -254,8 +245,8 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
                               // ✅ This sends full JSON of selected type
                               "half_day": provider.isHalfDay,
                               "half_day_type": provider.selectedHalfType,
-                              "reason": provider.tetReason.text
-                             // "location ":locationProvider.currentAddress
+                              "reason": provider.tetReason.text,
+                              // "location ":locationProvider.currentAddress
                             };
 
                             provider.updateLeaveAPI(body: body);
@@ -276,18 +267,20 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
                               // ✅ This sends full JSON of selected type
                               "half_day": provider.isHalfDay,
                               "half_day_type": provider.selectedHalfType,
-                              "reason": provider.tetReason.text
-                             // "location ":locationProvider.currentAddress
+                              "reason": provider.tetReason.text,
+                              // "location ":locationProvider.currentAddress
                             };
 
-                               provider.addLeaveAPI(body: body);
+                            provider.addLeaveAPI(body: body);
                           }
                         },
                       ),
                     ],
                   ),
 
-                  provider.isLoading || locationProvider.loading ?  showLoaderList() : SizedBox.shrink(),
+                  provider.isLoading || locationProvider.loading
+                      ? showLoaderList()
+                      : SizedBox.shrink(),
                 ],
               ),
             );

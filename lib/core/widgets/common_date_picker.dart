@@ -7,7 +7,6 @@ import 'package:hrms/core/widgets/component.dart';
 import '../../data/models/dashboard/holiday_birthday_model.dart';
 import '../constants/image_utils.dart';
 
-
 class CommonDateField extends StatelessWidget {
   final String text;
   final bool isFromField;
@@ -20,15 +19,19 @@ class CommonDateField extends StatelessWidget {
 
   Future<void> _selectDate(BuildContext context) async {
     final leaveProvider = Provider.of<LeaveProvider>(context, listen: false);
-    final dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
+    final dashboardProvider = Provider.of<DashboardProvider>(
+      context,
+      listen: false,
+    );
 
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
 
     // ✅ Get the holidays list from your DashboardProvider (assuming it stores HolidayBirthdayModel)
-    final List<Holidays> holidays = dashboardProvider.birthdayModel?.holidays ?? [];
+    final List<Holidays> holidays =
+        dashboardProvider.birthdayModel?.holidays ?? [];
 
-    // Convert holiday start_date into DateTime list
+    // Convert holiday start_date into DateTime listadd
     final List<DateTime> holidayDates = holidays
         .map((h) => DateTime.parse(h.startDate?.date ?? ''))
         .toList();
@@ -44,7 +47,8 @@ class CommonDateField extends StatelessWidget {
       // 🚫 Disable weekends and holidays
       selectableDayPredicate: (DateTime day) {
         // Disable Saturday and Sunday
-        if (day.weekday == DateTime.saturday || day.weekday == DateTime.sunday) {
+        if (day.weekday == DateTime.saturday ||
+            day.weekday == DateTime.sunday) {
           return false;
         }
 

@@ -76,22 +76,26 @@ class _HomePageState extends State<HomePage> {
                                     RouteName.hrDashboardScreen,
                                   );
                                 },
-                                child: Container(
-                                  margin: const EdgeInsets.only(
-                                    left: 100,
-                                  ), // optional
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: commonBoxDecoration(
-                                    borderRadius: 4,
-                                    color: colorProduct,
-                                    borderColor: colorProduct,
-                                  ),
-                                  child: commonText(
-                                    text: "View Leave Request",
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 12,
-                                    color: Colors.white,
-                                  ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  spacing: 8,
+                                  children: [
+                                    Text("HR only see"),
+                                    Container(
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: commonBoxDecoration(
+                                        borderRadius: 4,
+                                        color: colorProduct,
+                                        borderColor: colorProduct,
+                                      ),
+                                      child: commonText(
+                                        text: "View Leave Request",
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 12,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),

@@ -4,8 +4,12 @@ class LeaveDashboardModel {
   int? recordsFiltered;
   int? recordsTotal;
 
-  LeaveDashboardModel(
-      {this.data, this.draw, this.recordsFiltered, this.recordsTotal});
+  LeaveDashboardModel({
+    this.data,
+    this.draw,
+    this.recordsFiltered,
+    this.recordsTotal,
+  });
 
   LeaveDashboardModel.fromJson(Map<String, dynamic> json) {
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
@@ -69,22 +73,23 @@ class DataItem {
   LeaveType? leaveType;
   List<LeaveHistory>? leaveHistory;
 
-  DataItem(
-      {this.id,
-        this.leaveDate,
-        this.leaveEndDate,
-        this.halfDay,
-        this.halfDayType,
-        this.leaveCount,
-        this.status,
-        this.reason,
-        this.location,
-        this.finalApprove,
-        this.isLeaveWfh,
-        this.rejectReason,
-        this.userId,
-        this.leaveType,
-        this.leaveHistory});
+  DataItem({
+    this.id,
+    this.leaveDate,
+    this.leaveEndDate,
+    this.halfDay,
+    this.halfDayType,
+    this.leaveCount,
+    this.status,
+    this.reason,
+    this.location,
+    this.finalApprove,
+    this.isLeaveWfh,
+    this.rejectReason,
+    this.userId,
+    this.leaveType,
+    this.leaveHistory,
+  });
 
   DataItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -103,8 +108,7 @@ class DataItem {
     finalApprove = json['final_approve'];
     isLeaveWfh = json['is_leave_wfh'];
     rejectReason = json['reject_reason'];
-    userId =
-    json['user_id'] != null ? UserId.fromJson(json['user_id']) : null;
+    userId = json['user_id'] != null ? UserId.fromJson(json['user_id']) : null;
     leaveType = json['leave_type'] != null
         ? LeaveType.fromJson(json['leave_type'])
         : null;
@@ -141,8 +145,7 @@ class DataItem {
       data['leave_type'] = leaveType!.toJson();
     }
     if (leaveHistory != null) {
-      data['leave_history'] =
-          leaveHistory!.map((v) => v.toJson()).toList();
+      data['leave_history'] = leaveHistory!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -175,9 +178,7 @@ class UserId {
   String? firstname;
   String? lastname;
   String? profileImage;
-
   UserId({this.id, this.firstname, this.lastname, this.profileImage});
-
   UserId.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     firstname = json['firstname'];

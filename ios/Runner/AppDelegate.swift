@@ -16,6 +16,8 @@ import UserNotifications
             FirebaseApp.configure()
         }
 
+ // Set Firebase Messaging delegate (must be set BEFORE requestAuthorization)
+        Messaging.messaging().delegate = self
         // Register Flutter plugins
         GeneratedPluginRegistrant.register(with: self)
 
@@ -34,8 +36,7 @@ import UserNotifications
 
         application.registerForRemoteNotifications()
 
-        // Set Firebase Messaging delegate (must be set BEFORE requestAuthorization)
-        Messaging.messaging().delegate = self
+       
 
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }

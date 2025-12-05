@@ -138,7 +138,9 @@ class _HrDashboardScreenState extends State<HrDashboardScreen> {
                                           builder: (context, setStateSheet) {
                                             return Container(
                                               padding: EdgeInsets.only(
-                                                bottom: MediaQuery.of(context).viewInsets.bottom,
+                                                bottom: MediaQuery.of(
+                                                  context,
+                                                ).viewInsets.bottom,
                                                 left: 16,
                                                 right: 16,
                                                 top: 24,
@@ -148,30 +150,44 @@ class _HrDashboardScreenState extends State<HrDashboardScreen> {
                                                 builder: (context, provider, child) {
                                                   return Column(
                                                     children: [
-
                                                       Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
                                                         children: [
                                                           commonText(
-                                                            text: 'Leave Balance',
-                                                            fontWeight: FontWeight.w600,
+                                                            text:
+                                                                'Leave Balance',
+                                                            fontWeight:
+                                                                FontWeight.w600,
                                                             color: colorLogo,
                                                             fontSize: 16,
                                                           ),
                                                           commonInkWell(
                                                             onTap: () async {
-                                                              Navigator.pop(context);
-                                                              await provider.getAllUserLeavesBalance();
-                                                  },
+                                                              Navigator.pop(
+                                                                context,
+                                                              );
+                                                              await provider
+                                                                  .getAllUserLeavesBalance();
+                                                            },
                                                             child: Container(
                                                               width: 35,
                                                               height: 35,
-                                                              decoration: commonBoxDecoration(
-                                                                color: colorLogo,
-                                                                shape: BoxShape.circle,
-                                                              ),
+                                                              decoration:
+                                                                  commonBoxDecoration(
+                                                                    color:
+                                                                        colorLogo,
+                                                                    shape: BoxShape
+                                                                        .circle,
+                                                                  ),
                                                               child: const Center(
-                                                                child: Icon(Icons.close, size: 15, color: Colors.white),
+                                                                child: Icon(
+                                                                  Icons.close,
+                                                                  size: 15,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
                                                               ),
                                                             ),
                                                           ),
@@ -182,12 +198,18 @@ class _HrDashboardScreenState extends State<HrDashboardScreen> {
 
                                                       /// 🔍 SEARCH FIELD
                                                       commonTextField(
-                                                        hintText: "Search Employee Name",
+                                                        hintText:
+                                                            "Search Employee Name",
                                                         onChanged: (value) async {
-                                                          if (value.length > 3) {
-                                                            await provider.getAllUserLeavesBalance(search: value);
+                                                          if (value.length >
+                                                              3) {
+                                                            await provider
+                                                                .getAllUserLeavesBalance(
+                                                                  search: value,
+                                                                );
                                                           } else {
-                                                            await provider.getAllUserLeavesBalance();
+                                                            await provider
+                                                                .getAllUserLeavesBalance();
                                                           }
 
                                                           // 🔴 This forces the bottom sheet to rebuild instantly
@@ -198,10 +220,12 @@ class _HrDashboardScreenState extends State<HrDashboardScreen> {
                                                       SizedBox(height: 8),
 
                                                       Expanded(
-                                                        child: commonEmpLeaveBalance(
-                                                          size: size,
-                                                          provider: provider,
-                                                        ),
+                                                        child:
+                                                            commonEmpLeaveBalance(
+                                                              size: size,
+                                                              provider:
+                                                                  provider,
+                                                            ),
                                                       ),
                                                     ],
                                                   );
@@ -280,7 +304,7 @@ class _HrDashboardScreenState extends State<HrDashboardScreen> {
                                   title: "View Employees Leave Balance",
                                   colorBg: Colors.green,
                                   value:
-                                  '${provider.employeeIncrementModel?.activeEmp?.activeCount ?? "0"}',
+                                      '${provider.employeeIncrementModel?.activeEmp?.activeCount ?? "0"}',
                                 ),
                               ),
                               Expanded(
@@ -294,7 +318,8 @@ class _HrDashboardScreenState extends State<HrDashboardScreen> {
                                           children: [
                                             Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 commonText(
                                                   text: 'Leave Request',
@@ -309,10 +334,12 @@ class _HrDashboardScreenState extends State<HrDashboardScreen> {
                                                   child: Container(
                                                     width: 35,
                                                     height: 35,
-                                                    decoration: commonBoxDecoration(
-                                                      color: colorLogo,
-                                                      shape: BoxShape.circle,
-                                                    ),
+                                                    decoration:
+                                                        commonBoxDecoration(
+                                                          color: colorLogo,
+                                                          shape:
+                                                              BoxShape.circle,
+                                                        ),
                                                     child: Center(
                                                       child: Icon(
                                                         size: 15,
@@ -410,7 +437,7 @@ class _HrDashboardScreenState extends State<HrDashboardScreen> {
                           ),
                           SizedBox(height: 8),
                           SizedBox(
-                            height: 80,
+                            height: 120,
 
                             width: size.width,
                             child: commonAttendanceView(
@@ -506,7 +533,7 @@ class _HrDashboardScreenState extends State<HrDashboardScreen> {
                 ],
               ),
             );
-          }
+          },
         ),
       ),
     );
@@ -565,8 +592,7 @@ class _HrDashboardScreenState extends State<HrDashboardScreen> {
       scrollDirection: scrollDirection ?? Axis.horizontal,
       physics: const BouncingScrollPhysics(),
       //padding: const EdgeInsets.only(left: 0, right: 0, bottom: 16),
-      itemCount:
-          itemCount ?? min(provider.employeeAttendanceModel.length , 5),
+      itemCount: itemCount ?? min(provider.employeeAttendanceModel.length, 5),
       //itemCount: 5,
       itemBuilder: (context, index) {
         final item = provider.employeeAttendanceModel[index];
@@ -580,22 +606,28 @@ class _HrDashboardScreenState extends State<HrDashboardScreen> {
               borderRadius: BorderRadius.circular(10),
               child: CachedImageWidget(
                 imageUrl: item.profileImage,
-
-                borderRadius: 500,
+                borderRadius: 20,
                 width: 40,
                 height: 40,
                 fit: BoxFit.cover, // <-- Ensures image fills the height nicely
               ),
             ),
-            trailing: commonText(
-              text:
-                  '${item.officeStartTime ?? ''} AM To ${item.officeEndTime ?? ''} PM',
-              fontSize: 10,
-            ),
-            subtitle: commonText(
-              color: Colors.black38,
-              text: item.designation ?? '',
-              fontSize: 12,
+            // trailing:
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 8,
+              children: [
+                commonText(
+                  color: Colors.black38,
+                  text: item.designation ?? '',
+                  fontSize: 12,
+                ),
+                commonText(
+                  text:
+                      '${item.officeStartTime ?? ''} AM To ${item.officeEndTime ?? ''} PM',
+                  fontSize: 10,
+                ),
+              ],
             ),
             title: Column(
               crossAxisAlignment: .start,
@@ -692,19 +724,19 @@ class _HrDashboardScreenState extends State<HrDashboardScreen> {
       //itemCount: 5,
       itemBuilder: (context, index) {
         final item = provider.employeeLeaveBalanceModel?.data?[index];
-        Color color =
-        provider.colors[index % provider.colors.length];
+        Color color = provider.colors[index % provider.colors.length];
         return Container(
           width: size.width * 0.8,
-          decoration: commonBoxDecoration(borderColor: colorBorder,
-          color: color.withValues(alpha: 0.02)),
-          padding: const EdgeInsets.symmetric(horizontal: 5.0,vertical: 8),
+          decoration: commonBoxDecoration(
+            borderColor: colorBorder,
+            color: color.withValues(alpha: 0.02),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 8),
           margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5),
           child: Column(
             children: [
               ListTile(
                 //contentPadding: EdgeInsets.zero,
-
                 leading: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: CachedImageWidget(
@@ -713,47 +745,76 @@ class _HrDashboardScreenState extends State<HrDashboardScreen> {
                     borderRadius: 500,
                     width: 40,
                     height: 40,
-                    fit: BoxFit.cover, // <-- Ensures image fills the height nicely
+                    fit: BoxFit
+                        .cover, // <-- Ensures image fills the height nicely
                   ),
                 ),
 
-                trailing: commonText(text: "Total Leave: ${item?.balance}",fontSize: 12,fontWeight: FontWeight.w600),
+                trailing: commonText(
+                  text: "Total Leave: ${item?.balance}",
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
                 title: commonText(
                   text: '${item?.firstname ?? ''} ${item?.lastname ?? ''}',
                   fontWeight: FontWeight.w600,
                 ),
               ),
 
-              SizedBox(height: 8,),
+              SizedBox(height: 8),
               Row(
                 spacing: 10,
                 children: [
-                  Expanded(child: commonLeaveView(color:color,value: item?.cl)),
-                  Expanded(child: commonLeaveView(color:color,title: "PL",value: item?.pl)),
-                  Expanded(child: commonLeaveView(color:color,title: "SL",value: item?.sl)),
-                 // / Expanded(child: commonLeaveView(title: "Total")),
+                  Expanded(
+                    child: commonLeaveView(color: color, value: item?.cl),
+                  ),
+                  Expanded(
+                    child: commonLeaveView(
+                      color: color,
+                      title: "PL",
+                      value: item?.pl,
+                    ),
+                  ),
+                  Expanded(
+                    child: commonLeaveView(
+                      color: color,
+                      title: "SL",
+                      value: item?.sl,
+                    ),
+                  ),
+                  // / Expanded(child: commonLeaveView(title: "Total")),
                 ],
-              )
+              ),
             ],
           ),
         );
       },
     );
   }
-  Widget commonLeaveView({String ? title, dynamic value,required Color color}){
+
+  Widget commonLeaveView({String? title, dynamic value, required Color color}) {
     return Container(
-     
       decoration: commonBoxDecoration(
         borderRadius: 4,
-        color: color.withValues(alpha: 0.06)
+        color: color.withValues(alpha: 0.06),
       ),
 
       child: Column(
         mainAxisAlignment: .center,
         crossAxisAlignment: .center,
         children: [
-          commonText(text:title?? "CL",fontWeight: FontWeight.w400,textAlign: TextAlign.center,fontSize: 10),
-          commonText(text:value??"0.0",fontWeight: FontWeight.w600,textAlign: TextAlign.center,fontSize: 12)
+          commonText(
+            text: title ?? "CL",
+            fontWeight: FontWeight.w400,
+            textAlign: TextAlign.center,
+            fontSize: 10,
+          ),
+          commonText(
+            text: value ?? "0.0",
+            fontWeight: FontWeight.w600,
+            textAlign: TextAlign.center,
+            fontSize: 12,
+          ),
         ],
       ),
     );

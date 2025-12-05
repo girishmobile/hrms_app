@@ -19,23 +19,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="LaunchImage" translatesAutoresizingMaskIntoConstraints="NO" id="YRO-k0-Ey4">
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="LaunchImage" translatesAutoresizingMaskIntoConstraints="NO" id="YRO-k0-Ey4">
                                 <rect key="frame" x="196.33333333333334" y="426" width="0.33333333333334281" height="0.33333333333331439"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="applogo" translatesAutoresizingMaskIntoConstraints="NO" id="REh-di-jE4">
-                                <rect key="frame" x="58.666666666666657" y="-89.666666666666686" width="276" height="1031.3333333333333"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="applogo" translatesAutoresizingMaskIntoConstraints="NO" id="d11-dv-mnu">
+                                <rect key="frame" x="76.666666666666686" y="362" width="240" height="128"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="276" id="RvT-zV-KTh"/>
+                                    <constraint firstAttribute="height" constant="128" id="ZWN-mo-GUW"/>
+                                    <constraint firstAttribute="width" constant="240" id="zt6-Bw-TbN"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="YRO-k0-Ey4" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="1a2-6s-vTC"/>
-                            <constraint firstItem="YRO-k0-Ey4" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="4X2-HB-R7a"/>
-                            <constraint firstItem="REh-di-jE4" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="5r0-6d-X82"/>
-                            <constraint firstItem="REh-di-jE4" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="height" multiplier="23:71" id="DqN-r3-W21"/>
-                            <constraint firstItem="REh-di-jE4" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="nMd-mv-azD"/>
+                            <constraint firstItem="d11-dv-mnu" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="85J-Y2-RQs"/>
+                            <constraint firstItem="d11-dv-mnu" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="igs-ov-7if"/>
                         </constraints>
                     </view>
                 </viewController>
